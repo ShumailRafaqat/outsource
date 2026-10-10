@@ -1,0 +1,357 @@
+import { createFileRoute } from "@tanstack/react-router";
+import {
+  ArrowRight,
+  ArrowUpRight,
+  Building2,
+  Clock3,
+  Globe2,
+  Mail,
+  MapPin,
+  Phone,
+} from "lucide-react";
+import { SiteHeader } from "@/components/site-header";
+
+export const Route = createFileRoute("/contact")({
+  head: () => ({
+    meta: [
+      { title: "Contact Quorisx — Let’s Talk About Your Business" },
+      {
+        name: "description",
+        content:
+          "Contact Quorisx about offshore staffing, managed operations, software, IT, and digital solutions. Based in Canton, Georgia.",
+      },
+    ],
+  }),
+  component: ContactPage,
+});
+
+const contactDetails = [
+  {
+    icon: Mail,
+    label: "Email",
+    value: "info@quorisx.com",
+    href: "mailto:info@quorisx.com",
+    action: "Send us an email",
+  },
+  {
+    icon: Phone,
+    label: "Phone",
+    value: "201-812-9584",
+    href: "tel:+12018129584",
+    action: "Call our team",
+  },
+  {
+    icon: MapPin,
+    label: "Visit",
+    value: "225 Reformation Pkwy Ste 200, Canton, GA 30114",
+    href: "https://www.google.com/maps/search/?api=1&query=225%20Reformation%20Pkwy%20Ste%20200%2C%20Canton%2C%20GA%2030114",
+    action: "View directions",
+  },
+];
+
+function ContactPage() {
+  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+    const name = String(formData.get("name") ?? "");
+    const email = String(formData.get("email") ?? "");
+    const company = String(formData.get("company") ?? "");
+    const service = String(formData.get("service") ?? "");
+    const message = String(formData.get("message") ?? "");
+    const subject = encodeURIComponent(`Website inquiry: ${service}`);
+    const body = encodeURIComponent(
+      `Name: ${name}\nWork email: ${email}\nCompany: ${company || "Not provided"}\nInterested in: ${service}\n\nMessage:\n${message}`,
+    );
+
+    window.location.href = `mailto:info@quorisx.com?subject=${subject}&body=${body}`;
+  }
+
+  return (
+    <div className="min-h-screen bg-background">
+      <SiteHeader />
+
+      <main>
+        <section className="relative isolate overflow-hidden bg-ink px-6 py-14 md:py-20">
+          <div
+            aria-hidden="true"
+            className="absolute -right-24 -top-40 -z-10 h-[28rem] w-[28rem] rounded-full border border-ink-border"
+          />
+          <div
+            aria-hidden="true"
+            className="absolute -right-12 -top-28 -z-10 h-80 w-80 rounded-full border border-ink-border"
+          />
+          <div
+            aria-hidden="true"
+            className="absolute -bottom-36 left-[38%] -z-10 h-72 w-72 rounded-full bg-accent/[0.06] blur-3xl"
+          />
+          <div className="mx-auto grid max-w-7xl items-center gap-10 lg:grid-cols-[1fr_0.65fr] lg:gap-16">
+            <div>
+              <p className="eyebrow mb-5 inline-flex items-center gap-2">
+                <span className="h-1.5 w-1.5 rounded-full bg-accent shadow-[0_0_12px_var(--accent)]" />
+                Contact Quorisx
+              </p>
+              <h1 className="max-w-3xl font-display text-4xl leading-[1.04] text-ink-foreground md:text-6xl">
+                Let’s make your next move <span className="text-accent">a smart one.</span>
+              </h1>
+              <p className="mt-6 max-w-2xl text-base leading-relaxed text-ink-muted md:text-lg">
+                Tell us what your business needs. Whether you’re building a team, improving
+                operations, or planning a digital project, we’ll help you explore the right next
+                step.
+              </p>
+              <div className="mt-8 flex flex-wrap items-center gap-3">
+                <a
+                  href="#inquiry"
+                  className="inline-flex items-center gap-2 rounded-lg bg-accent px-5 py-3 text-sm font-bold text-accent-foreground transition-all hover:-translate-y-0.5 hover:shadow-lg hover:shadow-accent/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-ink"
+                >
+                  Start a conversation <ArrowRight aria-hidden="true" className="h-4 w-4" />
+                </a>
+                <a
+                  href="mailto:info@quorisx.com"
+                  className="inline-flex items-center gap-2 rounded-lg border border-ink-border px-5 py-3 text-sm font-semibold text-ink-foreground transition-colors hover:border-accent/50 hover:bg-ink-foreground/[0.04] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+                >
+                  <Mail aria-hidden="true" className="h-4 w-4 text-accent" />
+                  Email us
+                </a>
+              </div>
+            </div>
+            <div className="hidden justify-end lg:flex">
+              <div className="relative w-full max-w-md overflow-hidden rounded-2xl border border-ink-border bg-ink-foreground/[0.035] p-7 shadow-2xl shadow-black/10">
+                <div
+                  aria-hidden="true"
+                  className="absolute -right-12 -top-14 h-44 w-44 rounded-full border border-accent/20"
+                />
+                <div
+                  aria-hidden="true"
+                  className="absolute -right-6 -top-8 h-32 w-32 rounded-full border border-accent/15"
+                />
+                <div className="relative flex items-center justify-between">
+                  <span className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-accent text-accent-foreground shadow-lg shadow-accent/20">
+                    <Mail aria-hidden="true" className="h-6 w-6" />
+                  </span>
+                  <span className="inline-flex items-center gap-2 rounded-full border border-ink-border bg-ink px-3 py-1.5 text-[0.68rem] font-semibold uppercase tracking-[0.14em] text-ink-muted">
+                    <span className="h-1.5 w-1.5 rounded-full bg-accent" />
+                    Let’s connect
+                  </span>
+                </div>
+                <p className="relative mt-7 font-display text-3xl text-ink-foreground">
+                  We’re ready to listen.
+                </p>
+                <p className="relative mt-3 max-w-sm text-sm leading-relaxed text-ink-muted">
+                  Share a little about your goals, timelines, and the kind of support you’re looking
+                  for.
+                </p>
+                <div className="relative mt-7 grid gap-3 border-t border-ink-border pt-5 sm:grid-cols-2">
+                  <div className="flex items-center gap-2.5 text-xs text-ink-muted">
+                    <MapPin aria-hidden="true" className="h-4 w-4 shrink-0 text-accent" />
+                    Canton, Georgia
+                  </div>
+                  <div className="flex items-center gap-2.5 text-xs text-ink-muted">
+                    <Globe2 aria-hidden="true" className="h-4 w-4 shrink-0 text-accent" />
+                    Global capabilities
+                  </div>
+                  <div className="flex items-center gap-2.5 text-xs text-ink-muted sm:col-span-2">
+                    <Clock3 aria-hidden="true" className="h-4 w-4 shrink-0 text-accent" />
+                    Start a conversation with our team
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="contact-details" className="scroll-mt-28 px-6 py-12 md:py-16">
+          <div className="mx-auto max-w-7xl">
+            <div className="mb-7 flex flex-col gap-2 sm:mb-9 sm:flex-row sm:items-end sm:justify-between">
+              <div>
+                <p className="eyebrow mb-2">Get in touch</p>
+                <h2 className="font-display text-3xl leading-tight text-foreground md:text-4xl">
+                  Choose how to reach us.
+                </h2>
+              </div>
+              <p className="max-w-md text-sm leading-relaxed text-muted-foreground">
+                Reach out directly or use the inquiry form below—we’ll help you find the right next
+                step.
+              </p>
+            </div>
+            <div className="grid gap-3 lg:grid-cols-3">
+              {contactDetails.map(({ icon: Icon, label, value, href, action }) => (
+                <a
+                  key={label}
+                  href={href}
+                  target={label === "Visit" ? "_blank" : undefined}
+                  rel={label === "Visit" ? "noreferrer" : undefined}
+                  className="group flex min-h-0 min-w-0 items-start gap-3 rounded-xl border bg-card p-4 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-accent/60 hover:shadow-md sm:gap-3.5 sm:p-4"
+                >
+                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-accent/10 text-accent transition-colors group-hover:bg-accent group-hover:text-accent-foreground">
+                    <Icon aria-hidden="true" className="h-[1.125rem] w-[1.125rem]" />
+                  </span>
+                  <span className="min-w-0 flex-1">
+                    <span className="block text-[0.65rem] font-bold uppercase tracking-[0.18em] text-muted-foreground">
+                      {label}
+                    </span>
+                    <span className="mt-1.5 block break-words text-sm font-semibold leading-snug text-foreground sm:text-base">
+                      {value}
+                    </span>
+                    <span className="mt-2 inline-flex items-center gap-1 text-xs font-semibold text-accent sm:text-sm">
+                      {action}{" "}
+                      <ArrowUpRight
+                        aria-hidden="true"
+                        className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                      />
+                    </span>
+                  </span>
+                </a>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section className="px-6 pb-16 md:pb-24">
+          <div className="mx-auto grid max-w-7xl gap-8 lg:grid-cols-[0.8fr_1.2fr] lg:gap-12">
+            <aside className="relative isolate overflow-hidden rounded-2xl bg-gradient-to-br from-primary via-ink to-ink p-7 text-ink-foreground md:p-9">
+              <div
+                aria-hidden="true"
+                className="absolute -bottom-16 -right-12 -z-10 h-64 w-64 rounded-full border border-ink-border"
+              />
+              <p className="eyebrow mb-3">A good place to start</p>
+              <h2 className="font-display text-3xl leading-tight md:text-4xl">
+                A little context goes a long way.
+              </h2>
+              <p className="mt-4 text-sm leading-relaxed text-ink-muted">
+                Let us know what you’re trying to accomplish. We can discuss team extensions,
+                managed business functions, software, IT, marketing, or a project tailored to your
+                needs.
+              </p>
+              <div className="mt-8 space-y-4 border-t border-ink-border pt-6">
+                <div className="flex items-center gap-3">
+                  <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-ink-foreground/10 text-accent">
+                    <Building2 aria-hidden="true" className="h-4 w-4" />
+                  </span>
+                  <span className="text-sm text-ink-muted">
+                    U.S. headquartered in Canton, Georgia
+                  </span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-ink-foreground/10 text-accent">
+                    <MapPin aria-hidden="true" className="h-4 w-4" />
+                  </span>
+                  <span className="text-sm text-ink-muted">
+                    Offshore delivery centered in Bangkok, Thailand
+                  </span>
+                </div>
+              </div>
+              <a
+                href="/about"
+                className="mt-8 inline-flex items-center gap-2 text-sm font-semibold text-ink-foreground transition-colors hover:text-accent"
+              >
+                Learn about our operating model{" "}
+                <ArrowRight aria-hidden="true" className="h-4 w-4" />
+              </a>
+            </aside>
+
+            <div
+              id="inquiry"
+              className="scroll-mt-24 rounded-2xl border bg-card p-6 shadow-sm sm:p-8 md:p-10"
+            >
+              <div className="mb-7">
+                <p className="eyebrow mb-2">Send an inquiry</p>
+                <h2 className="font-display text-3xl">Tell us what you have in mind.</h2>
+                <p className="mt-2 text-sm text-muted-foreground">
+                  Complete the form and your email app will open with your message ready to send.
+                </p>
+              </div>
+              <form onSubmit={handleSubmit} className="grid gap-5 sm:grid-cols-2">
+                <label className="text-sm font-semibold">
+                  Your name <span className="text-accent">*</span>
+                  <input
+                    required
+                    autoComplete="name"
+                    name="name"
+                    type="text"
+                    placeholder="Jane Smith"
+                    className="mt-2 w-full rounded-lg border bg-background px-4 py-3 font-normal outline-none transition-shadow placeholder:text-muted-foreground/70 focus:ring-2 focus:ring-accent/50"
+                  />
+                </label>
+                <label className="text-sm font-semibold">
+                  Work email <span className="text-accent">*</span>
+                  <input
+                    required
+                    autoComplete="email"
+                    name="email"
+                    type="email"
+                    placeholder="jane@company.com"
+                    className="mt-2 w-full rounded-lg border bg-background px-4 py-3 font-normal outline-none transition-shadow placeholder:text-muted-foreground/70 focus:ring-2 focus:ring-accent/50"
+                  />
+                </label>
+                <label className="text-sm font-semibold">
+                  Company
+                  <input
+                    autoComplete="organization"
+                    name="company"
+                    type="text"
+                    placeholder="Your company"
+                    className="mt-2 w-full rounded-lg border bg-background px-4 py-3 font-normal outline-none transition-shadow placeholder:text-muted-foreground/70 focus:ring-2 focus:ring-accent/50"
+                  />
+                </label>
+                <label className="text-sm font-semibold">
+                  What can we help with?
+                  <select
+                    name="service"
+                    defaultValue="Team extension"
+                    className="mt-2 w-full rounded-lg border bg-background px-4 py-3 font-normal outline-none transition-shadow focus:ring-2 focus:ring-accent/50"
+                  >
+                    <option>Team extension</option>
+                    <option>Managed business function</option>
+                    <option>Software or IT services</option>
+                    <option>Website or digital marketing</option>
+                    <option>Other project</option>
+                  </select>
+                </label>
+                <label className="text-sm font-semibold sm:col-span-2">
+                  How can we help? <span className="text-accent">*</span>
+                  <textarea
+                    required
+                    name="message"
+                    rows={5}
+                    placeholder="Tell us about your goals, timeline, or the kind of support you need..."
+                    className="mt-2 w-full resize-y rounded-lg border bg-background px-4 py-3 font-normal outline-none transition-shadow placeholder:text-muted-foreground/70 focus:ring-2 focus:ring-accent/50"
+                  />
+                </label>
+                <button
+                  type="submit"
+                  className="inline-flex items-center justify-center gap-2 rounded-lg bg-accent px-6 py-3.5 text-sm font-semibold text-accent-foreground transition-all hover:gap-3 hover:opacity-90 sm:col-span-2 sm:justify-self-start"
+                >
+                  Prepare your email <ArrowRight aria-hidden="true" className="h-4 w-4" />
+                </button>
+                <p className="text-xs leading-relaxed text-muted-foreground sm:col-span-2">
+                  This form opens your email application and does not send or store information on
+                  this website.
+                </p>
+              </form>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <footer className="border-t border-ink-border bg-ink px-6 py-8">
+        <div className="mx-auto flex max-w-7xl flex-col justify-between gap-4 text-sm text-ink-muted sm:flex-row sm:items-center">
+          <a href="/" className="font-display text-2xl text-ink-foreground">
+            Quorisx<span className="text-accent">.</span>
+          </a>
+          <div className="flex flex-wrap gap-x-5 gap-y-2">
+            <a className="transition-colors hover:text-ink-foreground" href="/">
+              Home
+            </a>
+            <a className="transition-colors hover:text-ink-foreground" href="/about">
+              About
+            </a>
+            <a className="transition-colors hover:text-ink-foreground" href="/resources/faqs">
+              FAQs
+            </a>
+          </div>
+          <span>© {new Date().getFullYear()} Quorisx. All rights reserved.</span>
+        </div>
+      </footer>
+    </div>
+  );
+}
