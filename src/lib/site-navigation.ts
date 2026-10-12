@@ -15,15 +15,14 @@ const page = (category: string, slug: string, label: string): NavigationItem => 
 
 export const navigationGroups: NavigationGroup[] = [
   {
-    label: "Outsourcing",
+    label: "Our Expertise",
     items: [
-      page("outsourcing", "offshore-staffing", "Offshore Staffing"),
-      page("outsourcing", "dedicated-remote-teams", "Dedicated Remote Teams"),
-      page("outsourcing", "bpo", "BPO"),
-      page("outsourcing", "managed-operations", "Managed Operations"),
-      page("outsourcing", "customer-support", "Customer Support"),
-      page("outsourcing", "back-office-support", "Back-Office Support"),
-      page("outsourcing", "24-7-dispatch", "24/7 Dispatch"),
+      page("expertise", "admin-executive", "Admin & Executive"),
+      page("expertise", "sales-development", "Sales & Development"),
+      page("expertise", "marketing-creative", "Marketing & Creative"),
+      page("expertise", "finance-accounting", "Finance & Accounting"),
+      page("expertise", "software-dev", "Software & Dev"),
+      page("expertise", "customer-service", "Customer Service"),
     ],
   },
   {

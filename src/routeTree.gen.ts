@@ -14,6 +14,7 @@ import { Route as AboutRouteImport } from './routes/about'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as CategorySlugRouteImport } from './routes/$category/$slug'
 import { Route as ResourcesFaqsRouteImport } from './routes/resources/faqs'
+import { Route as ExpertiseCategoryRoleRouteImport } from './routes/expertise.$category.$role'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -40,6 +41,11 @@ const ResourcesFaqsRoute = ResourcesFaqsRouteImport.update({
   path: '/resources/faqs',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ExpertiseCategoryRoleRoute = ExpertiseCategoryRoleRouteImport.update({
+  id: '/expertise/$category/$role',
+  path: '/expertise/$category/$role',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -47,6 +53,7 @@ export interface FileRoutesByFullPath {
   '/contact': typeof ContactRoute
   '/$category/$slug': typeof CategorySlugRoute
   '/resources/faqs': typeof ResourcesFaqsRoute
+  '/expertise/$category/$role': typeof ExpertiseCategoryRoleRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -54,6 +61,7 @@ export interface FileRoutesByTo {
   '/contact': typeof ContactRoute
   '/$category/$slug': typeof CategorySlugRoute
   '/resources/faqs': typeof ResourcesFaqsRoute
+  '/expertise/$category/$role': typeof ExpertiseCategoryRoleRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -62,13 +70,25 @@ export interface FileRoutesById {
   '/contact': typeof ContactRoute
   '/$category/$slug': typeof CategorySlugRoute
   '/resources/faqs': typeof ResourcesFaqsRoute
+  '/expertise/$category/$role': typeof ExpertiseCategoryRoleRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    '/' | '/about' | '/contact' | '/$category/$slug' | '/resources/faqs'
+    | '/'
+    | '/about'
+    | '/contact'
+    | '/$category/$slug'
+    | '/resources/faqs'
+    | '/expertise/$category/$role'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about' | '/contact' | '/$category/$slug' | '/resources/faqs'
+  to:
+    | '/'
+    | '/about'
+    | '/contact'
+    | '/$category/$slug'
+    | '/resources/faqs'
+    | '/expertise/$category/$role'
   id:
     | '__root__'
     | '/'
@@ -76,6 +96,7 @@ export interface FileRouteTypes {
     | '/contact'
     | '/$category/$slug'
     | '/resources/faqs'
+    | '/expertise/$category/$role'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -84,6 +105,7 @@ export interface RootRouteChildren {
   ContactRoute: typeof ContactRoute
   CategorySlugRoute: typeof CategorySlugRoute
   ResourcesFaqsRoute: typeof ResourcesFaqsRoute
+  ExpertiseCategoryRoleRoute: typeof ExpertiseCategoryRoleRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -123,6 +145,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ResourcesFaqsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/expertise/$category/$role': {
+      id: '/expertise/$category/$role'
+      path: '/expertise/$category/$role'
+      fullPath: '/expertise/$category/$role'
+      preLoaderRoute: typeof ExpertiseCategoryRoleRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -132,6 +161,7 @@ const rootRouteChildren: RootRouteChildren = {
   ContactRoute: ContactRoute,
   CategorySlugRoute: CategorySlugRoute,
   ResourcesFaqsRoute: ResourcesFaqsRoute,
+  ExpertiseCategoryRoleRoute: ExpertiseCategoryRoleRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

@@ -1,19 +1,71 @@
 import { createFileRoute, notFound } from "@tanstack/react-router";
 
 import { SiteHeader } from "@/components/site-header";
+import {
+  AdminExecutiveRolesPage,
+  CustomerServiceRolesPage,
+  FinanceAccountingRolesPage,
+  HrPeopleOperationsRolesPage,
+  MarketingCreativeRolesPage,
+  SalesGrowthRolesPage,
+  SoftwareDevelopmentRolesPage,
+} from "@/components/expertise/admin-executive-roles-page";
 import { comingSoonPage } from "@/lib/site-navigation";
 
 export const Route = createFileRoute("/$category/$slug")({
   head: ({ params }) => {
     const page = comingSoonPage(params.category, params.slug);
+    const isAdminRoles = params.category === "expertise" && params.slug === "admin-executive";
+    const isSalesGrowthRoles =
+      params.category === "expertise" &&
+      (params.slug === "sales-growth" || params.slug === "sales-development");
+    const isMarketingCreativeRoles =
+      params.category === "expertise" && params.slug === "marketing-creative";
+    const isFinanceAccountingRoles =
+      params.category === "expertise" && params.slug === "finance-accounting";
+    const isHrPeopleRoles =
+      params.category === "expertise" && params.slug === "hr-people-operations";
+    const isCustomerServiceRoles =
+      params.category === "expertise" && params.slug === "customer-service";
+    const isSoftwareDevelopmentRoles =
+      params.category === "expertise" && params.slug === "software-dev";
+    const expertiseTitle = isAdminRoles
+      ? "Admin & Executive"
+      : isSalesGrowthRoles
+        ? "Sales & Growth"
+        : isMarketingCreativeRoles
+          ? "Marketing & Creative"
+          : isFinanceAccountingRoles
+            ? "Finance & Accounting"
+            : isHrPeopleRoles
+              ? "HR & People Operations"
+              : isCustomerServiceRoles
+                ? "Customer Service"
+                : "Software & Development";
+    const isDedicatedExpertisePage =
+      isAdminRoles ||
+      isSalesGrowthRoles ||
+      isMarketingCreativeRoles ||
+      isFinanceAccountingRoles ||
+      isHrPeopleRoles ||
+      isCustomerServiceRoles ||
+      isSoftwareDevelopmentRoles;
     return {
       meta: [
-        { title: page ? `${page.label} — Quorisx` : "Page Not Found — Quorisx" },
+        {
+          title: isDedicatedExpertisePage
+            ? `${expertiseTitle} Roles — Quorisx`
+            : page
+              ? `${page.label} — Quorisx`
+              : "Page Not Found — Quorisx",
+        },
         {
           name: "description",
-          content: page
-            ? `${page.label}: dedicated information from Quorisx is coming soon.`
-            : "The requested page could not be found.",
+          content: isDedicatedExpertisePage
+            ? `Explore ${expertiseTitle} roles from Quorisx, with dedicated professionals matched to your team's requirements.`
+            : page
+              ? `${page.label}: dedicated information from Quorisx is coming soon.`
+              : "The requested page could not be found.",
         },
       ],
     };
@@ -24,6 +76,34 @@ export const Route = createFileRoute("/$category/$slug")({
 function ComingSoonPage() {
   const { category, slug } = Route.useParams();
   const page = comingSoonPage(category, slug);
+
+  if (category === "expertise" && slug === "admin-executive") {
+    return <AdminExecutiveRolesPage />;
+  }
+
+  if (category === "expertise" && (slug === "sales-growth" || slug === "sales-development")) {
+    return <SalesGrowthRolesPage />;
+  }
+
+  if (category === "expertise" && slug === "marketing-creative") {
+    return <MarketingCreativeRolesPage />;
+  }
+
+  if (category === "expertise" && slug === "finance-accounting") {
+    return <FinanceAccountingRolesPage />;
+  }
+
+  if (category === "expertise" && slug === "hr-people-operations") {
+    return <HrPeopleOperationsRolesPage />;
+  }
+
+  if (category === "expertise" && slug === "customer-service") {
+    return <CustomerServiceRolesPage />;
+  }
+
+  if (category === "expertise" && slug === "software-dev") {
+    return <SoftwareDevelopmentRolesPage />;
+  }
 
   if (!page) {
     throw notFound();

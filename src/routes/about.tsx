@@ -632,7 +632,7 @@ function AboutPage() {
               <a className="hover:text-accent" href="/#outsourcing">
                 Outsourcing
               </a>
-              <a className="hover:text-accent" href="/#solutions">
+              <a className="hover:text-accent" href="/solutions/software-development">
                 Solutions
               </a>
               <a className="hover:text-accent" href="/resources/faqs">

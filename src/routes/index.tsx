@@ -89,61 +89,48 @@ const ways: [LucideIcon, string, string][] = [
   ],
 ];
 
-const services: [LucideIcon, string, string, string][] = [
-  [
-    Headset,
-    "Customer Support & Contact Centers",
-    "Inbound/outbound calls, chat, email, appointments and escalation.",
-    "24/7 coverage · Multilingual support · Full quality monitoring",
-  ],
-  [
-    UsersRound,
-    "Offshore Staffing",
-    "Screened, interviewed professionals onboarded into your team.",
-    "Fully managed hiring · Your tools & culture · Quick scale-up",
-  ],
+const services: [LucideIcon, string, string, string, string][] = [
   [
     ClipboardList,
-    "Back-Office & Admin",
-    "Data entry, CRM upkeep, documentation and order processing.",
-    "Accuracy-focused · Process-driven",
-  ],
-  [
-    TrendingUp,
-    "Sales Support",
-    "Lead qualification, CRM hygiene, follow-ups and scheduling.",
-    "More pipeline, less admin",
-  ],
-  [
-    Truck,
-    "24/7 Dispatch & Coordination",
-    "Emergency intake, scheduling and driver/technician coordination.",
-    "Always-on operations",
-  ],
-  [
-    LifeBuoy,
-    "Technical Support",
-    "Helpdesk triage, troubleshooting and tiered escalation.",
-    "Faster resolution · Tiered support",
-  ],
-];
-
-const solutions: [LucideIcon, string, string][] = [
-  [Code2, "Software Development", "Discovery, architecture, engineering, QA and deployment."],
-  [Globe, "Website Development", "Business sites, e-commerce and ongoing maintenance."],
-  [ShieldCheck, "IT Services", "Helpdesk, system support and managed service scope."],
-  [TrendingUp, "Digital Marketing & SEO", "Search visibility, content, local SEO and reporting."],
-  [Megaphone, "Paid Ads & Lead Gen", "Google/Meta campaigns, landing pages and tracking."],
-  [Workflow, "AI & Automation", "Process mapping, CRM integration and measurable efficiency."],
-  [
-    BriefcaseBusiness,
-    "Admin & Executive Support",
-    "Calendar coordination, inbox support, documentation and day-to-day administrative tasks.",
+    "Admin & Executive",
+    "Seamless management of calendars, inboxes, documentation, and day-to-day operations.",
+    "/expertise/admin-executive",
+    "/images/image2.jpg",
   ],
   [
     Target,
-    "Sales & Growth",
-    "Lead generation, CRM follow-ups, appointment setting and sales pipeline support.",
+    "Sales & Development",
+    "Lead research, qualification, CRM updates, and appointment setting that accelerate your sales pipeline.",
+    "/expertise/sales-development",
+    "/images/imag%204.jpg",
+  ],
+  [
+    Megaphone,
+    "Marketing & Creative",
+    "Campaign coordination, content production, and creative support that make your brand stand out.",
+    "/expertise/marketing-creative",
+    "/images/img3.jpg",
+  ],
+  [
+    CircleDollarSign,
+    "Finance & Accounting",
+    "Accurate bookkeeping, invoice processing, and financial administration that keep your numbers clean and compliant.",
+    "/expertise/finance-accounting",
+    "/images/image2.jpg",
+  ],
+  [
+    Code2,
+    "Software & Dev",
+    "Reliable software engineering, quality assurance, and ongoing product support that keep your systems running smoothly.",
+    "/expertise/software-dev",
+    "/images/img.jpg",
+  ],
+  [
+    Headset,
+    "Customer Service",
+    "Responsive support across calls, email, and chat that turns every customer interaction into a positive experience.",
+    "/expertise/customer-service",
+    "/images/imag%204.jpg",
   ],
 ];
 
@@ -563,8 +550,6 @@ function Heading({
 function Index() {
   const [activeWay, setActiveWay] = useState(0);
   const [activeIndustry, setActiveIndustry] = useState(0);
-  const [openService, setOpenService] = useState<number | null>(null);
-  const [hoveredService, setHoveredService] = useState<number | null>(null);
   const [openBenefit, setOpenBenefit] = useState<number | null>(null);
   const [activeModel, setActiveModel] = useState(0);
   const [openQuality, setOpenQuality] = useState<number | null>(null);
@@ -739,168 +724,63 @@ function Index() {
       {/* Core outsourcing */}
       <Section id="outsourcing" className="bg-secondary">
         <Heading
-          eyebrow="Core outsourcing services"
-          title="Business Functions We Help You Run."
-          sub="Each function comes with defined roles, responsibilities, a delivery model and measurable outcomes."
+          eyebrow="Explore the roles"
+          title="Every Function. Available Offshore Through Quorisx."
+          sub="Quorisx provides dedicated offshore professionals across business functions. Start with one role, then grow your support as your business needs evolve."
         />
-        <div className="grid min-w-0 gap-4 md:grid-cols-2 xl:grid-cols-4">
-          {services.map(([Icon, title, description, extra], index) => {
-            const featured = index < 2;
-            const expanded = openService === index || hoveredService === index;
-            const detailId = `service-extra-${index}`;
-            return (
-              <article
-                key={title}
-                onMouseEnter={() => setHoveredService(index)}
-                onMouseLeave={() => setHoveredService(null)}
-                className={`group relative isolate flex min-w-0 flex-col overflow-hidden rounded-2xl p-6 transition-all duration-300 ease-out md:p-7 ${
-                  featured
-                    ? index === 0
-                      ? "min-h-[21rem] border border-ink-border bg-ink text-ink-foreground md:col-span-2 xl:min-h-[24rem]"
-                      : "min-h-[21rem] border border-accent/20 bg-[#e9e2d7] text-foreground md:col-span-2 xl:min-h-[24rem]"
-                    : "min-h-56 border border-border/70 bg-background/75 text-foreground hover:-translate-y-1 hover:border-accent/35 hover:shadow-lg hover:shadow-ink/5"
-                }`}
-              >
-                {featured && (
-                  <span
-                    aria-hidden="true"
-                    className={`pointer-events-none absolute -right-10 -top-12 -z-10 h-64 w-64 rounded-full border ${
-                      index === 0 ? "border-white/10" : "border-accent/15"
-                    }`}
-                  />
-                )}
-                <div className="flex items-start justify-between gap-4">
-                  <span
-                    className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-full transition-all duration-300 group-hover:scale-110 ${
-                      index === 0
-                        ? "bg-accent/15 text-accent group-hover:bg-accent group-hover:text-accent-foreground"
-                        : "bg-accent/10 text-accent group-hover:bg-accent group-hover:text-accent-foreground"
-                    }`}
-                  >
-                    <Icon aria-hidden="true" className="h-5 w-5" strokeWidth={1.7} />
+        <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
+          {services.map(([Icon, title, description, href, image], index) => (
+            <article
+              key={title}
+              className="group relative isolate flex min-h-[27rem] flex-col overflow-hidden border border-ink-border bg-ink text-ink-foreground transition-all duration-300 ease-out hover:-translate-y-1 hover:border-accent/50 hover:shadow-xl hover:shadow-ink/20"
+            >
+              <div className="relative h-40 overflow-hidden sm:h-44">
+                <img
+                  src={image}
+                  alt=""
+                  loading="lazy"
+                  decoding="async"
+                  className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                />
+                <div
+                  aria-hidden="true"
+                  className="absolute inset-0 bg-gradient-to-t from-ink via-ink/20 to-ink/5"
+                />
+                <div className="absolute inset-x-5 bottom-4 flex items-end justify-between sm:inset-x-6">
+                  <span className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-ink/70 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.14em] text-white backdrop-blur-sm">
+                    <span className="h-1.5 w-1.5 rounded-full bg-accent" />
+                    Quorisx expertise
                   </span>
-                  <span
-                    className={`text-xs font-semibold tracking-[0.18em] ${
-                      index === 0 ? "text-ink-muted" : "text-muted-foreground"
-                    }`}
-                  >
+                  <span className="font-display text-3xl leading-none text-white/80">
                     0{index + 1}
                   </span>
                 </div>
-                <h3
-                  className={`mt-8 max-w-lg font-display leading-tight ${
-                    featured ? "text-2xl md:text-3xl" : "text-xl"
-                  }`}
-                >
+              </div>
+              <div className="flex flex-1 flex-col p-5 sm:p-6">
+                <span className="flex h-11 w-11 items-center justify-center rounded-full bg-accent/15 text-accent transition-all duration-300 group-hover:rotate-[-4deg] group-hover:bg-accent group-hover:text-accent-foreground">
+                  <Icon aria-hidden="true" className="h-5 w-5" strokeWidth={1.8} />
+                </span>
+                <h3 className="mt-5 font-display text-2xl leading-tight text-ink-foreground">
                   {title}
                 </h3>
-                <p
-                  className={`mt-3 max-w-xl text-sm leading-relaxed ${
-                    index === 0 ? "text-ink-muted" : "text-muted-foreground"
-                  }`}
-                >
-                  {description}
-                </p>
-                <div
-                  id={detailId}
-                  aria-hidden={!expanded}
-                  className={`grid transition-[grid-template-rows,opacity] duration-300 ease-out ${
-                    expanded ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
-                  }`}
-                >
-                  <div className="overflow-hidden">
-                    <p
-                      className={`pt-4 text-sm font-medium leading-relaxed ${
-                        index === 0 ? "text-ink-foreground" : "text-foreground"
-                      }`}
-                    >
-                      {extra}
-                    </p>
-                  </div>
+                <p className="mt-3 flex-1 text-sm leading-relaxed text-ink-muted">{description}</p>
+                <div className="mt-5 border-t border-ink-border pt-4">
+                  <a
+                    href={href}
+                    className="inline-flex min-h-11 items-center justify-center gap-2 bg-accent px-4 py-2.5 text-sm font-bold text-accent-foreground transition-all duration-300 hover:-translate-y-0.5 hover:bg-accent/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-ink"
+                  >
+                    Explore Roles
+                    <ArrowUpRight
+                      aria-hidden="true"
+                      className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5"
+                    />
+                  </a>
                 </div>
-                <button
-                  type="button"
-                  aria-controls={detailId}
-                  aria-expanded={openService === index}
-                  onClick={() => {
-                    setHoveredService(null);
-                    setOpenService((current) => (current === index ? null : index));
-                  }}
-                  className={`mt-auto inline-flex min-h-11 w-fit items-center gap-2 pt-5 text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-4 ${
-                    index === 0
-                      ? "text-accent hover:text-ink-foreground"
-                      : "text-accent hover:text-foreground"
-                  }`}
-                >
-                  {openService === index ? "Show less" : "Learn more"}
-                  <ArrowUpRight
-                    aria-hidden="true"
-                    className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-                  />
-                </button>
-              </article>
-            );
-          })}
+              </div>
+            </article>
+          ))}
         </div>
       </Section>
-
-      {/* Solutions */}
-      <section id="solutions" className="relative overflow-hidden bg-ink px-6 py-14 md:py-16">
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute -right-48 -top-52 h-[34rem] w-[34rem] rounded-full border border-ink-border/70"
-        />
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute -right-28 -top-32 h-[25rem] w-[25rem] rounded-full border border-accent/10"
-        />
-        <div className="relative mx-auto max-w-7xl">
-          <div className="grid gap-8 lg:grid-cols-[1fr_auto] lg:items-end">
-            <div className="max-w-4xl">
-              <p className="eyebrow mb-4">Specialist business solutions</p>
-              <h2 className="font-display text-4xl leading-[1.04] text-ink-foreground sm:text-5xl md:text-6xl">
-                Beyond Staffing.
-                <br className="hidden sm:block" /> Solutions That Move Your Business Forward.
-              </h2>
-              <p className="mt-5 text-base text-ink-muted md:text-lg">
-                Available as scoped projects or ongoing retainers.
-              </p>
-            </div>
-            <p className="hidden pb-1 text-right text-xs font-semibold uppercase leading-relaxed tracking-[0.18em] text-ink-muted lg:block">
-              Six specialist
-              <br />
-              capabilities
-            </p>
-          </div>
-
-          <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:mt-16 lg:grid-cols-3">
-            {solutions.map(([Icon, title, description], index) => (
-              <article
-                key={title}
-                className="group overflow-hidden rounded-2xl border border-white/10 bg-[#f7f5f0] p-2.5 shadow-lg shadow-black/10 transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-2xl hover:shadow-black/25 sm:p-3"
-              >
-                <SolutionArtwork index={index} />
-                <div className="px-4 pb-4 pt-5 sm:px-5 sm:pb-5">
-                  <div className="mb-3 flex items-center gap-2.5">
-                    <span className="flex h-8 w-8 items-center justify-center rounded-full bg-accent/10 text-accent">
-                      <Icon aria-hidden="true" className="h-4 w-4" strokeWidth={1.7} />
-                    </span>
-                    <span className="text-[10px] font-semibold uppercase tracking-[0.18em] text-accent">
-                      Capability 0{index + 1}
-                    </span>
-                  </div>
-                  <h3 className="font-display text-2xl leading-tight text-ink md:text-[1.7rem]">
-                    {title}
-                  </h3>
-                  <p className="mt-2 text-sm leading-relaxed text-foreground/70 md:text-[0.95rem]">
-                    {description}
-                  </p>
-                </div>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
 
       {/* Industries */}
       <Section id="industries" className="bg-ink">
@@ -1371,7 +1251,10 @@ function Index() {
                 <a className="transition-colors hover:text-accent" href="#outsourcing">
                   Outsourcing
                 </a>
-                <a className="transition-colors hover:text-accent" href="#solutions">
+                <a
+                  className="transition-colors hover:text-accent"
+                  href="/solutions/software-development"
+                >
                   Solutions
                 </a>
                 <a className="transition-colors hover:text-accent" href="#industries">
