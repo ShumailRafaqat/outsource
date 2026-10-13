@@ -67,9 +67,11 @@ export function SiteHeader() {
         <div className="flex shrink-0 items-center gap-2">
           <a
             href="/contact"
+            aria-label="Talk to Our Team"
             className="group inline-flex items-center gap-2 rounded-lg bg-accent px-3.5 py-2.5 text-xs font-bold text-accent-foreground shadow-sm shadow-accent/20 transition-all hover:-translate-y-0.5 hover:shadow-md hover:shadow-accent/25 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-ink sm:px-4 sm:text-sm"
           >
-            Talk to Our Team
+            <span className="hidden sm:inline">Talk to Our Team</span>
+            <span className="sm:hidden">Talk</span>
             <ArrowUpRight
               aria-hidden="true"
               className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"

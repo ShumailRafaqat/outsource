@@ -41,6 +41,7 @@ export const navigationGroups: NavigationGroup[] = [
   {
     label: "Industries",
     items: [
+      { label: "All Industries", href: "/industries" },
       page("industries", "healthcare", "Healthcare"),
       page("industries", "logistics-fleet", "Logistics & Fleet"),
       page("industries", "home-services", "Home Services"),

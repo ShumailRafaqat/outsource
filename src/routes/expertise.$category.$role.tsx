@@ -2,7 +2,18 @@ import { createFileRoute, notFound } from "@tanstack/react-router";
 import { ArrowLeft, ArrowUpRight } from "lucide-react";
 
 import { SiteHeader } from "@/components/site-header";
-import { expertiseFunctions, toRoleSlug } from "@/components/expertise/admin-executive-roles-page";
+import { expertiseFunctions, toRoleSlug } from "@/components/expertise/data";
+import { AdministrativeAssistantPage } from "@/components/expertise/pages/administrative-assistant";
+import { CorporateTravelCoordinatorPage } from "@/components/expertise/pages/corporate-travel-coordinator";
+import { DataEntryAssistantPage } from "@/components/expertise/pages/data-entry-assistant";
+import { EventCoordinatorPage } from "@/components/expertise/pages/event-coordinator";
+import { ExecutiveAssistantPage } from "@/components/expertise/pages/executive-assistant";
+import { GeneralVirtualAssistantPage } from "@/components/expertise/pages/general-virtual-assistant";
+import { ItSdrPage } from "@/components/expertise/pages/it-sdr";
+import { OutboundCallingAgentPage } from "@/components/expertise/pages/outbound-calling-agent";
+import { PersonalAssistantPage } from "@/components/expertise/pages/personal-assistant";
+import { ProjectManagerPage } from "@/components/expertise/pages/project-manager";
+import { SalesDevelopmentRepresentativePage } from "@/components/expertise/pages/sales-development-representative";
 
 export const Route = createFileRoute("/expertise/$category/$role")({
   head: ({ params }) => {
@@ -40,6 +51,50 @@ function RoleComingSoonPage() {
   }
 
   const { group, role } = result;
+
+  if (role.title === "General Virtual Assistant") {
+    return <GeneralVirtualAssistantPage />;
+  }
+
+  if (role.title === "Administrative Assistant") {
+    return <AdministrativeAssistantPage />;
+  }
+
+  if (role.title === "Personal Assistant") {
+    return <PersonalAssistantPage />;
+  }
+
+  if (role.title === "Executive Assistant") {
+    return <ExecutiveAssistantPage />;
+  }
+
+  if (role.title === "Corporate Travel Coordinator") {
+    return <CorporateTravelCoordinatorPage />;
+  }
+
+  if (role.title === "Data Entry Assistant") {
+    return <DataEntryAssistantPage />;
+  }
+
+  if (role.title === "Project Manager") {
+    return <ProjectManagerPage />;
+  }
+
+  if (role.title === "Event Coordinator") {
+    return <EventCoordinatorPage />;
+  }
+
+  if (role.title === "Sales Development Representative") {
+    return <SalesDevelopmentRepresentativePage />;
+  }
+
+  if (role.title === "Outbound Calling Agent") {
+    return <OutboundCallingAgentPage />;
+  }
+
+  if (role.title === "IT SDR") {
+    return <ItSdrPage />;
+  }
 
   return (
     <div className="min-h-screen bg-background">

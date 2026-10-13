@@ -1,19 +1,20 @@
 import { createFileRoute, notFound } from "@tanstack/react-router";
 
 import { SiteHeader } from "@/components/site-header";
-import {
-  AdminExecutiveRolesPage,
-  CustomerServiceRolesPage,
-  FinanceAccountingRolesPage,
-  HrPeopleOperationsRolesPage,
-  MarketingCreativeRolesPage,
-  SalesGrowthRolesPage,
-  SoftwareDevelopmentRolesPage,
-} from "@/components/expertise/admin-executive-roles-page";
+import { AdminExecutivePage } from "@/components/expertise/pages/admin-executive";
+import { CustomerServicePage } from "@/components/expertise/pages/customer-service";
+import { FinanceAccountingPage } from "@/components/expertise/pages/finance-accounting";
+import { HrPeopleOperationsPage } from "@/components/expertise/pages/hr-people-operations";
+import { MarketingCreativePage } from "@/components/expertise/pages/marketing-creative";
+import { SalesGrowthPage } from "@/components/expertise/pages/sales-growth";
+import { SoftwareDevelopmentPage } from "@/components/expertise/pages/software-development";
+import { IndustryDetailPage } from "@/components/industries/industry-detail-page";
+import { getIndustryPage } from "@/components/industries/industry-data";
 import { comingSoonPage } from "@/lib/site-navigation";
 
 export const Route = createFileRoute("/$category/$slug")({
   head: ({ params }) => {
+    const industry = params.category === "industries" ? getIndustryPage(params.slug) : undefined;
     const page = comingSoonPage(params.category, params.slug);
     const isAdminRoles = params.category === "expertise" && params.slug === "admin-executive";
     const isSalesGrowthRoles =
@@ -53,19 +54,23 @@ export const Route = createFileRoute("/$category/$slug")({
     return {
       meta: [
         {
-          title: isDedicatedExpertisePage
-            ? `${expertiseTitle} Roles — Quorisx`
-            : page
-              ? `${page.label} — Quorisx`
-              : "Page Not Found — Quorisx",
+          title: industry
+            ? `${industry.name} Support — Quorisx`
+            : isDedicatedExpertisePage
+              ? `${expertiseTitle} Roles — Quorisx`
+              : page
+                ? `${page.label} — Quorisx`
+                : "Page Not Found — Quorisx",
         },
         {
           name: "description",
-          content: isDedicatedExpertisePage
-            ? `Explore ${expertiseTitle} roles from Quorisx, with dedicated professionals matched to your team's requirements.`
-            : page
-              ? `${page.label}: dedicated information from Quorisx is coming soon.`
-              : "The requested page could not be found.",
+          content: industry
+            ? industry.intro
+            : isDedicatedExpertisePage
+              ? `Explore ${expertiseTitle} roles from Quorisx, with dedicated professionals matched to your team's requirements.`
+              : page
+                ? `${page.label}: dedicated information from Quorisx is coming soon.`
+                : "The requested page could not be found.",
         },
       ],
     };
@@ -76,33 +81,42 @@ export const Route = createFileRoute("/$category/$slug")({
 function ComingSoonPage() {
   const { category, slug } = Route.useParams();
   const page = comingSoonPage(category, slug);
+  const industry = category === "industries" ? getIndustryPage(slug) : undefined;
+
+  if (category === "industries") {
+    if (!industry) {
+      throw notFound();
+    }
+
+    return <IndustryDetailPage industry={industry} />;
+  }
 
   if (category === "expertise" && slug === "admin-executive") {
-    return <AdminExecutiveRolesPage />;
+    return <AdminExecutivePage />;
   }
 
   if (category === "expertise" && (slug === "sales-growth" || slug === "sales-development")) {
-    return <SalesGrowthRolesPage />;
+    return <SalesGrowthPage />;
   }
 
   if (category === "expertise" && slug === "marketing-creative") {
-    return <MarketingCreativeRolesPage />;
+    return <MarketingCreativePage />;
   }
 
   if (category === "expertise" && slug === "finance-accounting") {
-    return <FinanceAccountingRolesPage />;
+    return <FinanceAccountingPage />;
   }
 
   if (category === "expertise" && slug === "hr-people-operations") {
-    return <HrPeopleOperationsRolesPage />;
+    return <HrPeopleOperationsPage />;
   }
 
   if (category === "expertise" && slug === "customer-service") {
-    return <CustomerServiceRolesPage />;
+    return <CustomerServicePage />;
   }
 
   if (category === "expertise" && slug === "software-dev") {
-    return <SoftwareDevelopmentRolesPage />;
+    return <SoftwareDevelopmentPage />;
   }
 
   if (!page) {
