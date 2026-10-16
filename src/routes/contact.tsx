@@ -1,3 +1,5 @@
+import { useRef, useState } from "react";
+import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@/components/ui/dialog";
 import { createFileRoute } from "@tanstack/react-router";
 import {
   ArrowRight,
@@ -6,6 +8,7 @@ import {
   Clock3,
   Globe2,
   Mail,
+  MessageCircle,
   MapPin,
   Phone,
 } from "lucide-react";
@@ -50,25 +53,123 @@ const contactDetails = [
 ];
 
 function ContactPage() {
-  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    const formData = new FormData(event.currentTarget);
-    const name = String(formData.get("name") ?? "");
-    const email = String(formData.get("email") ?? "");
-    const company = String(formData.get("company") ?? "");
-    const service = String(formData.get("service") ?? "");
-    const message = String(formData.get("message") ?? "");
-    const subject = encodeURIComponent(`Website inquiry: ${service}`);
-    const body = encodeURIComponent(
-      `Name: ${name}\nWork email: ${email}\nCompany: ${company || "Not provided"}\nInterested in: ${service}\n\nMessage:\n${message}`,
-    );
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState("");
+  const [submitted, setSubmitted] = useState(false);
+  const [popupOpen, setPopupOpen] = useState(false);
+  const [whatsappUrl, setWhatsappUrl] = useState("");
+  const busy = useRef(false);
+  const pending = useRef<{ key: string; id: string } | null>(null);
+  const formRef = useRef<HTMLFormElement>(null);
 
-    window.location.href = `mailto:info@quorisx.com?subject=${subject}&body=${body}`;
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    if (busy.current || submitted) return;
+    const form = event.currentTarget;
+    if (!form.reportValidity()) return;
+    const data = new FormData(form);
+    const fields = {
+      name: String(data.get("name") ?? "").trim(),
+      email: String(data.get("email") ?? "").trim(),
+      company: String(data.get("company") ?? "").trim(),
+      service: String(data.get("service") ?? "").trim(),
+      message: String(data.get("message") ?? "").trim(),
+      website: String(data.get("website") ?? ""),
+    };
+    if (!fields.name || !fields.email || !fields.message) {
+      setError("Please complete your name, work email, and message.");
+      return;
+    }
+    const key = JSON.stringify(fields);
+    if (pending.current?.key !== key) pending.current = { key, id: crypto.randomUUID() };
+    busy.current = true;
+    setSubmitting(true);
+    setError("");
+    const controller = new AbortController();
+    const timeout = window.setTimeout(() => controller.abort(), 45000);
+    try {
+      const response = await fetch("https://script.google.com/macros/s/AKfycbxddV5XXdvEN0eEFzRX28cGdkV-lyPL4GVg2OiOaJS9AHAHZmMbmzCi6lIF3MrmB2as/exec", {
+        method: "POST",
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body: JSON.stringify({ ...fields, requestId: pending.current.id }),
+        signal: controller.signal,
+        credentials: "omit",
+        redirect: "follow",
+      });
+      if (!response.ok) throw new Error("We could not confirm your submission. Please try again.");
+      const result = await response.json();
+      if (result.saved !== true) {
+        throw new Error(result.code === "RATE_LIMIT"
+          ? "You have submitted several enquiries recently. Please wait ten minutes before trying again."
+          : result.code === "VALIDATION"
+            ? "Please check your form details and try again."
+            : "We could not confirm your submission. Please try again.");
+      }
+      const text = ["*New Website Enquiry — Quorisx*", "", `*Name:* ${fields.name}`, `*Work email:* ${fields.email}`, `*Company:* ${fields.company || "Not provided"}`, `*Interested in:* ${fields.service}`, "", "*Message:*", fields.message].join("\n");
+      setWhatsappUrl(`https://wa.me/12402882006?text=${encodeURIComponent(text)}`);
+      setSubmitted(true);
+      setPopupOpen(true);
+    } catch (err) {
+      setError(err instanceof Error && err.name !== "AbortError" && err.name !== "TypeError"
+        ? err.message
+        : "We could not confirm your submission. Please check your connection and try again.");
+    } finally {
+      window.clearTimeout(timeout);
+      busy.current = false;
+      setSubmitting(false);
+    }
+  }
+
+  function sendAnother() {
+    setPopupOpen(false);
+    setSubmitted(false);
+    setError("");
+    setWhatsappUrl("");
+    pending.current = null;
+    formRef.current?.reset();
+    window.setTimeout(() => formRef.current?.querySelector<HTMLInputElement>('input[name="name"]')?.focus(), 0);
   }
 
   return (
     <div className="min-h-screen bg-background">
       <SiteHeader />
+      <Dialog open={popupOpen} onOpenChange={setPopupOpen}>
+        <DialogContent className="w-[calc(100%-2rem)] max-h-[90dvh] overflow-y-auto rounded-2xl border border-accent/25 bg-card p-7 text-foreground sm:max-w-md sm:p-9">
+          <div
+            aria-hidden="true"
+            className="mb-2 flex h-12 w-12 items-center justify-center rounded-full bg-accent/15 text-2xl text-accent"
+          >
+            ✓
+          </div>
+          <DialogTitle className="font-display text-3xl">Thank you for reaching out.</DialogTitle>
+          <DialogDescription className="text-base leading-relaxed text-muted-foreground">
+            Your enquiry has been submitted successfully. Our team will get back to you.
+          </DialogDescription>
+          <div className="mt-3 rounded-xl border border-accent/20 bg-accent/5 p-5">
+            <p className="font-semibold">Need an immediate response?</p>
+            <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+              Contact us on WhatsApp. Your enquiry will be ready to send.
+            </p>
+            <a
+              href={whatsappUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-lg bg-accent px-4 py-3 font-semibold text-accent-foreground hover:opacity-90"
+            >
+              <MessageCircle aria-hidden="true" className="h-5 w-5" />
+              Open WhatsApp <ArrowUpRight aria-hidden="true" className="h-4 w-4" />
+            </a>
+            <p className="mt-2 text-center text-xs text-muted-foreground">+1 240-288-2006</p>
+          </div>
+          <button
+            type="button"
+            onClick={sendAnother}
+            className="mt-2 text-sm font-semibold text-muted-foreground underline underline-offset-4"
+          >
+            Send another enquiry
+          </button>
+        </DialogContent>
+      </Dialog>
 
       <main>
         <section className="relative isolate overflow-hidden bg-ink px-6 py-14 md:py-20">
@@ -173,7 +274,7 @@ function ContactPage() {
                 step.
               </p>
             </div>
-            <div className="grid gap-3 lg:grid-cols-3">
+            <div className="grid gap-3 lg:grid-cols-[0.85fr_0.85fr_1.3fr]">
               {contactDetails.map(({ icon: Icon, label, value, href, action }) => (
                 <a
                   key={label}
@@ -257,16 +358,21 @@ function ContactPage() {
                 <p className="eyebrow mb-2">Send an inquiry</p>
                 <h2 className="font-display text-3xl">Tell us what you have in mind.</h2>
                 <p className="mt-2 text-sm text-muted-foreground">
-                  Complete the form and your email app will open with your message ready to send.
+                  Complete the form and our team will get back to you.
                 </p>
               </div>
-              <form onSubmit={handleSubmit} className="grid gap-5 sm:grid-cols-2">
+              <form ref={formRef} onSubmit={handleSubmit} className="grid gap-5 sm:grid-cols-2">
+                <div aria-hidden="true" className="hidden">
+                  <label>Leave this field empty<input name="website" tabIndex={-1} autoComplete="off" /></label>
+                </div>
                 <label className="text-sm font-semibold">
                   Your name <span className="text-accent">*</span>
                   <input
                     required
                     autoComplete="name"
                     name="name"
+                    maxLength={100}
+                    readOnly={submitting || submitted}
                     type="text"
                     placeholder="Jane Smith"
                     className="mt-2 w-full rounded-lg border bg-background px-4 py-3 font-normal outline-none transition-shadow placeholder:text-muted-foreground/70 focus:ring-2 focus:ring-accent/50"
@@ -278,6 +384,8 @@ function ContactPage() {
                     required
                     autoComplete="email"
                     name="email"
+                    maxLength={254}
+                    readOnly={submitting || submitted}
                     type="email"
                     placeholder="jane@company.com"
                     className="mt-2 w-full rounded-lg border bg-background px-4 py-3 font-normal outline-none transition-shadow placeholder:text-muted-foreground/70 focus:ring-2 focus:ring-accent/50"
@@ -288,6 +396,8 @@ function ContactPage() {
                   <input
                     autoComplete="organization"
                     name="company"
+                    maxLength={200}
+                    readOnly={submitting || submitted}
                     type="text"
                     placeholder="Your company"
                     className="mt-2 w-full rounded-lg border bg-background px-4 py-3 font-normal outline-none transition-shadow placeholder:text-muted-foreground/70 focus:ring-2 focus:ring-accent/50"
@@ -297,6 +407,7 @@ function ContactPage() {
                   What can we help with?
                   <select
                     name="service"
+                    disabled={submitting || submitted}
                     defaultValue="Team extension"
                     className="mt-2 w-full rounded-lg border bg-background px-4 py-3 font-normal outline-none transition-shadow focus:ring-2 focus:ring-accent/50"
                   >
@@ -312,6 +423,8 @@ function ContactPage() {
                   <textarea
                     required
                     name="message"
+                    maxLength={5000}
+                    readOnly={submitting || submitted}
                     rows={5}
                     placeholder="Tell us about your goals, timeline, or the kind of support you need..."
                     className="mt-2 w-full resize-y rounded-lg border bg-background px-4 py-3 font-normal outline-none transition-shadow placeholder:text-muted-foreground/70 focus:ring-2 focus:ring-accent/50"
@@ -319,14 +432,20 @@ function ContactPage() {
                 </label>
                 <button
                   type="submit"
+                  disabled={submitting || submitted}
                   className="inline-flex items-center justify-center gap-2 rounded-lg bg-accent px-6 py-3.5 text-sm font-semibold text-accent-foreground transition-all hover:gap-3 hover:opacity-90 sm:col-span-2 sm:justify-self-start"
                 >
-                  Prepare your email <ArrowRight aria-hidden="true" className="h-4 w-4" />
+                  {submitting ? "Submitting…" : submitted ? "Enquiry submitted" : "Send enquiry"} <ArrowRight aria-hidden="true" className="h-4 w-4" />
                 </button>
                 <p className="text-xs leading-relaxed text-muted-foreground sm:col-span-2">
-                  This form opens your email application and does not send or store information on
-                  this website.
+                  Your details will be sent to our team to respond to your enquiry.
                 </p>
+                {error && <p role="alert" className="text-sm text-destructive sm:col-span-2">{error}</p>}
+                {submitted && <div role="status" className="space-y-3 text-sm sm:col-span-2">
+                  <p>Your enquiry has been submitted successfully.</p>
+                  <button type="button" onClick={() => setPopupOpen(true)} className="font-semibold text-accent underline">View confirmation / WhatsApp</button>
+                  <button type="button" onClick={sendAnother} className="ml-4 underline">Send another enquiry</button>
+                </div>}
               </form>
             </div>
           </div>

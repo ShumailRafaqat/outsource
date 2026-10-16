@@ -294,7 +294,7 @@ export function DataEntryAssistantPage() {
                   {service.featured && (
                     <img
                       className="dea-service-photo"
-                      src="/images/img3.jpg"
+                      src="/images/img.jpg"
                       alt="A team member working with digital records in a bright office"
                       loading="lazy"
                       decoding="async"

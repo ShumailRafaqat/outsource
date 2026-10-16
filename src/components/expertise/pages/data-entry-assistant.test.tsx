@@ -51,6 +51,6 @@ describe("DataEntryAssistantPage", () => {
     expect(screen.getByText("Update payment records")).toBeInTheDocument();
     expect(
       screen.getByRole("img", { name: /team member working with digital records/i }),
-    ).toHaveAttribute("src", "/images/img3.jpg");
+    ).toHaveAttribute("src", "/images/img.jpg");
   });
 });

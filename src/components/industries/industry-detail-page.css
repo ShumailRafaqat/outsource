@@ -206,7 +206,6 @@
 .industry-detail-expertise-heading h2 em,
 .industry-detail-close h2 em {
   color: var(--accent);
-  font-style: normal;
 }
 
 .industry-detail-steps {

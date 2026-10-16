@@ -39,7 +39,6 @@ import {
   LifeBuoy,
   type LucideIcon,
 } from "lucide-react";
-import hero from "@/assets/hero-team.jpg";
 import { SiteHeader } from "@/components/site-header";
 
 export const Route = createFileRoute("/")({
@@ -69,6 +68,44 @@ const socialLinks: [LucideIcon, string][] = [
   [Facebook, "Facebook"],
   [Instagram, "Instagram"],
   [Mail, "Email"],
+];
+
+const heroSlides = [
+  {
+    src: "/images/img.jpg",
+    alt: "Colleagues working together in a bright modern office",
+    label: "OUR PEOPLE",
+  },
+  {
+    src: "/images/image2.jpg",
+    alt: "Business professionals reviewing a project together",
+    label: "YOUR BUSINESS",
+  },
+  {
+    src: "/images/imag%204.jpg",
+    alt: "A team collaborating in a modern office",
+    label: "COLLABORATION",
+  },
+  {
+    src: "/mar.png",
+    alt: "A digital team planning campaigns around a shared analytics dashboard",
+    label: "STRATEGY IN ACTION",
+  },
+];
+
+const trustSteps: [LucideIcon, string, string][] = [
+  [Building2, "U.S. engagement", "You contract and work directly with our U.S. company."],
+  [UsersRound, "Dedicated team setup", "We build or assign your offshore team in Bangkok."],
+  [
+    Workflow,
+    "Managed delivery",
+    "U.S. client managers and the Bangkok team deliver with clear ownership.",
+  ],
+  [
+    ShieldCheck,
+    "Ongoing accountability",
+    "Communication, reporting, and support stay connected to your U.S. point of contact.",
+  ],
 ];
 
 const ways: [LucideIcon, string, string][] = [
@@ -109,14 +146,7 @@ const services: [LucideIcon, string, string, string, string][] = [
     "Marketing & Creative",
     "Campaign coordination, content production, and creative support that make your brand stand out.",
     "/expertise/marketing-creative",
-    "/images/img3.jpg",
-  ],
-  [
-    CircleDollarSign,
-    "Finance & Accounting",
-    "Accurate bookkeeping, invoice processing, and financial administration that keep your numbers clean and compliant.",
-    "/expertise/finance-accounting",
-    "/images/image2.jpg",
+    "/images/imag%204.jpg",
   ],
   [
     Code2,
@@ -274,18 +304,6 @@ const quality: [LucideIcon, string, string, string][] = [
   ],
 ];
 
-const bangkok = [
-  [
-    "International talent",
-    "Thai professionals and international residents with diverse experience.",
-  ],
-  ["Cultural diversity", "Business, education, hospitality and tech communities."],
-  ["Competitive structure", "Potential cost advantages, dependent on role and requirements."],
-  ["Business infrastructure", "Established districts, offices and telecommunications."],
-  ["Travel connectivity", "International air links make planned client visits practical."],
-  ["On-site collaboration", "Meet teams or join training, by advance arrangement."],
-];
-
 function SolutionArtwork({ index }: { index: number }) {
   return (
     <div
@@ -303,8 +321,8 @@ function SolutionArtwork({ index }: { index: number }) {
           <g>
             <rect x="45" y="28" width="270" height="134" rx="10" fill="#102238" stroke="#496176" />
             <path d="M45 54h270" stroke="#496176" />
-            <circle cx="62" cy="41" r="3" fill="#db7545" />
-            <circle cx="74" cy="41" r="3" fill="#e7b66a" />
+            <circle cx="62" cy="41" r="3" fill="var(--accent)" />
+            <circle cx="74" cy="41" r="3" fill="var(--accent-bright)" />
             <circle cx="86" cy="41" r="3" fill="#7599a5" />
             <path
               d="M62 72h34M62 86h22M62 100h28M62 114h18"
@@ -320,7 +338,7 @@ function SolutionArtwork({ index }: { index: number }) {
             />
             <path
               d="M117 73h12M169 88h11M151 103h8M163 118h11"
-              stroke="#e88953"
+              stroke="var(--accent)"
               strokeWidth="4"
               strokeLinecap="round"
             />
@@ -330,16 +348,16 @@ function SolutionArtwork({ index }: { index: number }) {
           <g>
             <rect x="52" y="25" width="256" height="140" rx="10" fill="#f5f2eb" />
             <path d="M52 49h256" stroke="#d8d4cb" />
-            <circle cx="67" cy="37" r="3" fill="#d47a4b" />
-            <circle cx="79" cy="37" r="3" fill="#dfb866" />
+            <circle cx="67" cy="37" r="3" fill="var(--accent)" />
+            <circle cx="79" cy="37" r="3" fill="var(--accent-bright)" />
             <circle cx="91" cy="37" r="3" fill="#94a7a1" />
             <rect x="69" y="62" width="95" height="8" rx="4" fill="#183149" />
             <rect x="69" y="77" width="73" height="5" rx="2.5" fill="#a5abb0" />
             <rect x="69" y="87" width="62" height="5" rx="2.5" fill="#a5abb0" />
-            <rect x="69" y="102" width="39" height="13" rx="4" fill="#d87949" />
+            <rect x="69" y="102" width="39" height="13" rx="4" fill="var(--accent)" />
             <rect x="187" y="61" width="101" height="70" rx="7" fill="#d9e3df" />
             <path d="m197 117 25-26 19 18 15-14 27 27h-86Z" fill="#8aafa7" />
-            <circle cx="264" cy="77" r="7" fill="#e7b66a" />
+            <circle cx="264" cy="77" r="7" fill="var(--accent-bright)" />
             <rect x="69" y="139" width="65" height="6" rx="3" fill="#d3d0c9" />
             <rect x="143" y="139" width="65" height="6" rx="3" fill="#d3d0c9" />
             <rect x="217" y="139" width="65" height="6" rx="3" fill="#d3d0c9" />
@@ -361,7 +379,7 @@ function SolutionArtwork({ index }: { index: number }) {
             />
             <circle cx="271" cy="47" r="5" fill="#8ec5a1" />
             <circle cx="271" cy="95" r="5" fill="#8ec5a1" />
-            <circle cx="271" cy="143" r="5" fill="#e7b66a" />
+            <circle cx="271" cy="143" r="5" fill="var(--accent-bright)" />
           </g>
         )}
         {index === 3 && (
@@ -370,17 +388,17 @@ function SolutionArtwork({ index }: { index: number }) {
             <path d="M77 133h204M77 60v73" stroke="#496176" />
             <path
               d="M90 118V99h23v19M132 118V84h23v34M174 118V96h23v22M216 118V70h23v48M258 118V55h12v63"
-              fill="#d87949"
+              fill="var(--accent)"
               fillOpacity=".82"
             />
             <path
               d="m90 86 44-19 42 10 39-23 45-13"
-              stroke="#f1bd74"
+              stroke="var(--accent-bright)"
               strokeWidth="3"
               strokeLinecap="round"
               strokeLinejoin="round"
             />
-            <circle cx="260" cy="41" r="5" fill="#f1bd74" />
+            <circle cx="260" cy="41" r="5" fill="var(--accent-bright)" />
             <path d="M77 145h70" stroke="#607b91" strokeWidth="4" strokeLinecap="round" />
           </g>
         )}
@@ -388,15 +406,15 @@ function SolutionArtwork({ index }: { index: number }) {
           <g>
             <rect x="43" y="28" width="177" height="135" rx="10" fill="#f5f2eb" />
             <path d="M43 53h177" stroke="#d8d4cb" />
-            <circle cx="58" cy="41" r="3" fill="#d47a4b" />
-            <circle cx="70" cy="41" r="3" fill="#dfb866" />
+            <circle cx="58" cy="41" r="3" fill="var(--accent)" />
+            <circle cx="70" cy="41" r="3" fill="var(--accent-bright)" />
             <rect x="57" y="68" width="149" height="45" rx="6" fill="#d9e3df" />
             <path d="m67 105 24-25 21 17 17-14 28 30H67Z" fill="#8aafa7" />
             <rect x="57" y="122" width="90" height="5" rx="2.5" fill="#89949b" />
             <rect x="57" y="133" width="59" height="5" rx="2.5" fill="#b6b9b7" />
-            <rect x="158" y="122" width="48" height="16" rx="5" fill="#d87949" />
+            <rect x="158" y="122" width="48" height="16" rx="5" fill="var(--accent)" />
             <rect x="238" y="48" width="76" height="92" rx="10" fill="#142c42" stroke="#496176" />
-            <path d="M252 112V94h9v18M267 112V80h9v32M282 112V68h9v44" fill="#d87949" />
+            <path d="M252 112V94h9v18M267 112V80h9v32M282 112V68h9v44" fill="var(--accent)" />
             <path d="M251 122h39" stroke="#90a8b9" strokeWidth="4" strokeLinecap="round" />
           </g>
         )}
@@ -404,7 +422,7 @@ function SolutionArtwork({ index }: { index: number }) {
           <g>
             <path
               d="M91 95h54M215 95h54M173 61v23M173 107v26"
-              stroke="#d87949"
+              stroke="var(--accent)"
               strokeWidth="2.5"
               strokeLinecap="round"
             />
@@ -412,9 +430,9 @@ function SolutionArtwork({ index }: { index: number }) {
             <rect x="145" y="33" width="67" height="54" rx="10" fill="#f5f2eb" />
             <rect x="145" y="108" width="67" height="54" rx="10" fill="#f5f2eb" />
             <rect x="251" y="68" width="67" height="54" rx="10" fill="#f5f2eb" />
-            <circle cx="75" cy="87" r="8" fill="#d87949" />
+            <circle cx="75" cy="87" r="8" fill="var(--accent)" />
             <path d="M64 105h22" stroke="#8b9ca5" strokeWidth="4" strokeLinecap="round" />
-            <path d="m173 48 4 9 9 4-9 4-4 9-4-9-9-4 9-4 4-9Z" fill="#d87949" />
+            <path d="m173 48 4 9 9 4-9 4-4 9-4-9-9-4 9-4 4-9Z" fill="var(--accent)" />
             <path
               d="M160 128h26M160 139h18"
               stroke="#8b9ca5"
@@ -427,19 +445,24 @@ function SolutionArtwork({ index }: { index: number }) {
               strokeWidth="4"
               strokeLinecap="round"
             />
-            <circle cx="110" cy="95" r="3" fill="#e7b66a" />
-            <circle cx="249" cy="95" r="3" fill="#e7b66a" />
+            <circle cx="110" cy="95" r="3" fill="var(--accent-bright)" />
+            <circle cx="249" cy="95" r="3" fill="var(--accent-bright)" />
           </g>
         )}
         {index === 6 && (
           <g>
             <rect x="57" y="26" width="246" height="138" rx="10" fill="#f5f2eb" />
             <path d="M57 53h246" stroke="#d8d4cb" />
-            <circle cx="73" cy="40" r="3" fill="#d47a4b" />
-            <circle cx="85" cy="40" r="3" fill="#dfb866" />
+            <circle cx="73" cy="40" r="3" fill="var(--accent)" />
+            <circle cx="85" cy="40" r="3" fill="var(--accent-bright)" />
             <rect x="75" y="68" width="103" height="78" rx="6" fill="#fffefa" stroke="#d8d4cb" />
             <path d="M75 86h103" stroke="#d8d4cb" />
-            <path d="M93 62v12M159 62v12" stroke="#d87949" strokeWidth="4" strokeLinecap="round" />
+            <path
+              d="M93 62v12M159 62v12"
+              stroke="var(--accent)"
+              strokeWidth="4"
+              strokeLinecap="round"
+            />
             <path
               d="M91 99h12M113 99h12M135 99h12M91 118h12M113 118h12M135 118h12"
               stroke="#8b9ca5"
@@ -447,7 +470,7 @@ function SolutionArtwork({ index }: { index: number }) {
               strokeLinecap="round"
             />
             <rect x="191" y="69" width="91" height="31" rx="6" fill="#d9e3df" />
-            <circle cx="207" cy="84" r="8" fill="#d87949" />
+            <circle cx="207" cy="84" r="8" fill="var(--accent)" />
             <path d="M223 80h44M223 88h32" stroke="#79929a" strokeWidth="3" strokeLinecap="round" />
             <rect x="191" y="109" width="91" height="37" rx="6" fill="#e9e4d9" />
             <path
@@ -462,13 +485,13 @@ function SolutionArtwork({ index }: { index: number }) {
           <g>
             <rect x="48" y="27" width="264" height="137" rx="10" fill="#f5f2eb" />
             <path d="M48 52h264" stroke="#d8d4cb" />
-            <circle cx="64" cy="40" r="3" fill="#d47a4b" />
-            <circle cx="76" cy="40" r="3" fill="#dfb866" />
+            <circle cx="64" cy="40" r="3" fill="var(--accent)" />
+            <circle cx="76" cy="40" r="3" fill="var(--accent-bright)" />
             <rect x="65" y="67" width="66" height="79" rx="7" fill="#e8ece8" />
             <rect x="147" y="67" width="66" height="79" rx="7" fill="#e8ece8" />
             <rect x="229" y="67" width="66" height="79" rx="7" fill="#e8ece8" />
-            <circle cx="80" cy="84" r="6" fill="#d87949" />
-            <circle cx="162" cy="84" r="6" fill="#e7b66a" />
+            <circle cx="80" cy="84" r="6" fill="var(--accent)" />
+            <circle cx="162" cy="84" r="6" fill="var(--accent-bright)" />
             <circle cx="244" cy="84" r="6" fill="#86aa9d" />
             <path
               d="M92 82h26M174 82h26M256 82h26"
@@ -484,7 +507,7 @@ function SolutionArtwork({ index }: { index: number }) {
             <rect x="240" y="110" width="36" height="5" rx="2.5" fill="#b8bfbd" />
             <path
               d="m92 132 12-8 12 4 11-12M174 132l12-7 11 2 12-13M256 132l11-9 11 3 11-15"
-              stroke="#d87949"
+              stroke="var(--accent)"
               strokeWidth="2.5"
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -548,6 +571,7 @@ function Heading({
 }
 
 function Index() {
+  const [activeHeroSlide, setActiveHeroSlide] = useState(0);
   const [activeWay, setActiveWay] = useState(0);
   const [activeIndustry, setActiveIndustry] = useState(0);
   const [openBenefit, setOpenBenefit] = useState<number | null>(null);
@@ -556,6 +580,18 @@ function Index() {
   const [hoveredQuality, setHoveredQuality] = useState<number | null>(null);
   const [qualityVisible, setQualityVisible] = useState(false);
   const qualitySectionRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    const interval = window.setInterval(() => {
+      if (document.visibilityState === "visible") {
+        setActiveHeroSlide((current) => (current + 1) % heroSlides.length);
+      }
+    }, 5200);
+
+    return () => window.clearInterval(interval);
+  }, [activeHeroSlide]);
 
   useEffect(() => {
     const section = qualitySectionRef.current;
@@ -580,70 +616,179 @@ function Index() {
       <SiteHeader />
 
       {/* Hero */}
-      <section className="relative overflow-hidden bg-ink">
-        <img
-          src={hero}
-          alt="Quorisx operations team at work in Bangkok"
-          width={1600}
-          height={1104}
-          className="absolute inset-0 h-full w-full object-cover opacity-40"
+      <section className="group/hero relative isolate min-h-[590px] overflow-hidden bg-ink md:min-h-[min(760px,calc(100svh-6.5rem))]">
+        {heroSlides.map((slide, index) => (
+          <img
+            key={`${slide.src}-${activeHeroSlide === index ? activeHeroSlide : "hidden"}`}
+            src={slide.src}
+            alt=""
+            aria-hidden="true"
+            width={1600}
+            height={1104}
+            className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-700 motion-reduce:transition-none ${
+              activeHeroSlide === index
+                ? "animate-[hero-image-reveal_5.2s_ease-out_both] opacity-55 motion-reduce:animate-none"
+                : "opacity-0"
+            }`}
+          />
+        ))}
+        <div
+          className="absolute inset-0 bg-gradient-to-r from-ink/95 via-ink/65 to-ink/15"
+          aria-hidden="true"
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-ink via-ink/85 to-ink/20" />
-        <div className="relative mx-auto max-w-7xl px-6 pb-16 pt-16 md:pb-20 md:pt-20">
-          <p className="eyebrow mb-6">
-            Global Outsourcing & Business Solutions · Canton, Georgia, USA
-          </p>
-          <h1 className="max-w-4xl text-3xl leading-[1.08] text-ink-foreground md:text-5xl">
-            Extend Your Team.
-            <br />
-            Streamline Operations.
-            <br />
-            <em className="text-accent">Accelerate Growth.</em>
-          </h1>
-          <p className="mt-8 max-w-2xl text-lg text-ink-muted">
-            From individual offshore professionals to fully managed business functions, Quorisx
-            helps organizations scale through flexible staffing, operational support, and
-            specialized technology and digital solutions.
-          </p>
-          <div className="mt-10 flex flex-wrap gap-4">
-            <a
-              href="#outsourcing"
-              className="rounded-md bg-accent px-6 py-3.5 font-semibold text-accent-foreground hover:opacity-90"
-            >
-              Explore Outsourcing
-            </a>
-            <a
-              href="/contact"
-              className="rounded-md border border-ink-border px-6 py-3.5 font-semibold text-ink-foreground hover:bg-ink-foreground/10"
-            >
-              Talk to Our Team
-            </a>
+        <div className="relative mx-auto flex min-h-[590px] max-w-7xl items-center px-6 py-20 md:min-h-[min(760px,calc(100svh-6.5rem))] md:py-24">
+          <div className="relative max-w-4xl border-y border-accent/45 py-6 pl-5 sm:pl-8 md:border-y-0 md:border-l-2 md:py-3">
+            <span
+              aria-hidden="true"
+              className="absolute -left-px top-0 hidden h-16 w-16 border-l-2 border-t-2 border-accent md:block"
+            />
+            <span
+              aria-hidden="true"
+              className="absolute -bottom-px right-0 hidden h-16 w-16 border-b-2 border-r-2 border-accent md:block"
+            />
+            <p className="eyebrow mb-5 text-[0.625rem]">
+              Global Outsourcing & Business Solutions · Canton, Georgia, USA
+            </p>
+            <h1 className="max-w-5xl font-display text-[1.7rem] font-bold uppercase leading-[1.02] tracking-[-0.045em] text-ink-foreground sm:text-[2.1rem] md:text-[2.7rem] lg:text-[3.35rem]">
+              Extend Your Team.
+              <br />
+              Streamline Operations.
+              <br />
+              <span className="text-accent">Accelerate Growth.</span>
+            </h1>
+            <p className="mt-6 max-w-xl text-sm leading-relaxed text-ink-muted sm:text-base">
+              From individual offshore professionals to fully managed business functions, Quorisx
+              helps organizations scale through flexible staffing, operational support, and
+              specialized technology and digital solutions.
+            </p>
+            <div className="mt-8 flex flex-wrap gap-3 sm:gap-4">
+              <a
+                href="#outsourcing"
+                className="group inline-flex h-12 items-center justify-between gap-4 rounded-md bg-accent py-1.5 pl-5 pr-2 text-sm font-semibold text-accent-foreground shadow-lg shadow-accent/20 transition-all duration-300 hover:-translate-y-1 hover:bg-accent/90 hover:shadow-xl hover:shadow-accent/25 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-ink motion-reduce:transition-none sm:h-14 sm:pl-6"
+              >
+                Explore Outsourcing
+                <span className="grid size-9 place-items-center rounded-md bg-white/15 transition-transform duration-300 group-hover:translate-x-0.5 motion-reduce:transition-none sm:size-10">
+                  <ArrowUpRight aria-hidden="true" className="size-5" />
+                </span>
+              </a>
+              <a
+                href="/contact"
+                className="group inline-flex h-12 items-center justify-between gap-4 rounded-md border border-white/30 bg-white/[0.04] py-1.5 pl-5 pr-2 text-sm font-semibold text-ink-foreground shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-white/50 hover:bg-white/[0.09] hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-ink motion-reduce:transition-none sm:h-14 sm:pl-6"
+              >
+                Talk to Our Team
+                <span className="grid size-9 place-items-center rounded-md border border-white/20 bg-white/[0.06] transition-all duration-300 group-hover:border-accent/50 group-hover:bg-accent/15 motion-reduce:transition-none sm:size-10">
+                  <ArrowUpRight
+                    aria-hidden="true"
+                    className="size-5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 motion-reduce:transition-none"
+                  />
+                </span>
+              </a>
+            </div>
+            <p className="mt-10 text-[9px] font-semibold uppercase tracking-[0.2em] text-ink-muted sm:mt-12">
+              U.S. Headquartered · Globally Delivered
+            </p>
           </div>
-          <p className="mt-16 text-xs font-semibold uppercase tracking-[0.2em] text-ink-muted">
-            U.S. Headquartered · Globally Delivered
-          </p>
         </div>
+        <div
+          className="absolute bottom-5 right-4 z-10 flex items-center gap-2.5 sm:bottom-8 sm:right-8 md:right-10"
+          role="group"
+          aria-label="Choose a hero background"
+        >
+          <span className="text-[8px] font-semibold uppercase tracking-[0.14em] text-white/70 sm:text-[9px]">
+            {heroSlides[activeHeroSlide].label}
+          </span>
+          <span aria-hidden="true" className="text-[8px] text-white/40">
+            {String(activeHeroSlide + 1).padStart(2, "0")} /{" "}
+            {String(heroSlides.length).padStart(2, "0")}
+          </span>
+          <div className="flex items-center gap-2">
+            {heroSlides.map((slide, index) => (
+              <button
+                key={slide.src}
+                type="button"
+                aria-label={`Show ${slide.label.toLowerCase()} background`}
+                aria-pressed={activeHeroSlide === index}
+                onClick={() => setActiveHeroSlide(index)}
+                className={`relative h-5 w-5 rounded-full focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent ${
+                  activeHeroSlide === index ? "w-7" : ""
+                }`}
+              >
+                <span
+                  className={`absolute left-1/2 top-1/2 h-1.5 -translate-x-1/2 -translate-y-1/2 rounded-full transition-all duration-300 motion-reduce:transition-none ${
+                    activeHeroSlide === index
+                      ? "w-6 bg-white/70"
+                      : "w-1.5 bg-white/40 group-hover/hero:bg-white"
+                  }`}
+                />
+                {activeHeroSlide === index && (
+                  <span className="absolute inset-x-1.5 bottom-1 h-0.5 overflow-hidden rounded-full bg-white/25">
+                    <span
+                      key={activeHeroSlide}
+                      aria-hidden="true"
+                      className="block h-full origin-left animate-[hero-slide-progress_5.2s_linear_forwards] rounded-full bg-accent motion-reduce:animate-none"
+                    />
+                  </span>
+                )}
+              </button>
+            ))}
+          </div>
+        </div>
+        <a
+          href="#about"
+          aria-label="Scroll down to learn about Quorisx"
+          className="group absolute bottom-4 left-1/2 z-10 flex -translate-x-1/2 flex-col items-center gap-1.5 text-[8px] font-semibold uppercase tracking-[0.18em] text-white/65 transition-colors hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent motion-reduce:transition-none sm:bottom-7"
+        >
+          <span>Scroll to explore</span>
+          <ChevronDown
+            aria-hidden="true"
+            className="size-5 animate-bounce text-accent motion-reduce:animate-none"
+          />
+        </a>
       </section>
 
       {/* Who we are */}
-      <Section className="bg-background pb-8 pt-8 md:pb-10 md:pt-10">
-        <div className="grid items-center gap-8 md:grid-cols-2 md:gap-12">
-          <div className="relative pl-3">
-            <span aria-hidden="true" className="absolute bottom-3 left-0 top-3 w-1.5 bg-accent" />
+      <Section id="about" className="bg-background pb-8 pt-8 md:pb-10 md:pt-10">
+        <div className="grid items-center gap-10 md:grid-cols-2 md:gap-16">
+          <div className="relative mx-auto aspect-[1.1/1] w-full max-w-xl">
+            <span
+              aria-hidden="true"
+              className="absolute bottom-[8%] right-[4%] h-[72%] w-[72%] border-b-2 border-r-2 border-accent/60"
+            />
             <img
-              src={hero}
-              alt="Quorisx operations team collaborating in Bangkok"
+              src="/images/image2.jpg"
+              alt="Colleagues collaborating around a table in a bright office"
               width={1600}
               height={1104}
-              className="aspect-[1.55/1] w-full object-cover shadow-md"
+              loading="lazy"
+              className="absolute right-0 top-[17%] z-10 h-[62%] w-[75%] object-cover shadow-lg"
+            />
+            <img
+              src="/images/imag%204.jpg"
+              alt="Colleagues collaborating in a bright modern office"
+              width={900}
+              height={900}
+              loading="lazy"
+              className="absolute left-0 top-[3%] z-20 h-[35%] w-[43%] border-4 border-background object-cover shadow-xl"
+            />
+            <img
+              src="/images/img.jpg"
+              alt="Colleagues discussing work in a bright modern office"
+              width={1080}
+              height={720}
+              loading="lazy"
+              className="absolute bottom-0 left-[7%] z-20 h-[40%] w-[47%] border-4 border-background object-cover shadow-xl"
+            />
+            <span
+              aria-hidden="true"
+              className="absolute -left-3 top-[12%] z-0 h-20 w-20 border-l-2 border-t-2 border-accent/50 sm:-left-5 sm:h-28 sm:w-28"
             />
           </div>
           <div className="max-w-xl">
-            <p className="eyebrow mb-2">About Quorisx</p>
-            <h2 className="text-3xl leading-[1.08] md:text-4xl">
+            <p className="eyebrow mb-3">Our story · About Quorisx</p>
+            <h2 className="text-3xl leading-[1.08] md:text-5xl">
               A Business Partner Built Around Your Needs
             </h2>
-            <div className="mt-4 space-y-3 text-sm leading-relaxed text-muted-foreground">
+            <div className="mt-5 space-y-4 text-sm leading-relaxed text-muted-foreground md:text-base">
               <p>
                 Quorisx supports businesses through offshore talent, managed processes, and
                 specialized solutions. Our approach is designed to fit your existing teams, tools,
@@ -664,15 +809,18 @@ function Index() {
       </Section>
 
       {/* Three ways */}
-      <Section className="bg-background pb-10 pt-8 md:pb-14 md:pt-10">
-        <div className="mb-10 text-center">
-          <p className="eyebrow mb-2">How we can help you</p>
-          <h2 className="text-3xl leading-[1.05] md:text-4xl">Three Ways to Work With Us</h2>
+      <Section className="bg-background pb-12 pt-12 md:pb-20 md:pt-16">
+        <div className="mx-auto mb-12 max-w-3xl text-center md:mb-16">
+          <p className="eyebrow mb-3">Our services</p>
+          <h2 className="text-3xl leading-[1.05] md:text-5xl">Three Ways to Work With Us</h2>
+          <p className="mx-auto mt-4 max-w-2xl text-sm leading-relaxed text-muted-foreground sm:text-base">
+            Flexible ways to add expertise, support operations, and move important work forward.
+          </p>
         </div>
-        <ol className="relative grid gap-6 before:absolute before:bottom-8 before:left-6 before:top-8 before:w-px before:bg-accent/30 sm:grid-cols-3 sm:gap-5 sm:before:hidden">
+        <ol className="relative grid gap-8 sm:grid-cols-3 sm:gap-5">
           <span
             aria-hidden="true"
-            className="pointer-events-none absolute left-[16.666%] right-[16.666%] top-7 hidden h-px bg-accent/30 sm:block"
+            className="pointer-events-none absolute left-[16.666%] right-[16.666%] top-12 hidden h-px bg-accent/25 sm:block"
           />
           {ways.map(([Icon, title, description], index) => {
             const selected = activeWay === index;
@@ -682,37 +830,40 @@ function Index() {
                   type="button"
                   aria-pressed={selected}
                   onClick={() => setActiveWay(index)}
-                  className={`group relative flex w-full items-center gap-4 rounded-lg p-3 text-left transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 sm:flex-col sm:gap-4 sm:px-4 sm:pb-3 sm:pt-0 sm:text-center ${
-                    selected
-                      ? "bg-accent/5 sm:bg-transparent"
-                      : "hover:bg-accent/5 sm:hover:bg-transparent"
+                  className={`group relative flex w-full flex-col items-center rounded-lg px-4 py-3 text-center transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 ${
+                    selected ? "bg-accent/[0.035]" : "hover:bg-accent/[0.035]"
                   }`}
                 >
                   <span
-                    className={`relative z-10 flex h-12 w-12 shrink-0 items-center justify-center rounded-full border transition-colors sm:h-14 sm:w-14 ${
+                    className={`relative z-10 flex h-24 w-24 shrink-0 items-center justify-center rounded-full border-2 transition-all duration-300 ${
                       selected
-                        ? "border-accent/50 bg-card text-accent shadow-sm"
-                        : "border-border bg-card text-primary group-hover:border-accent/40 group-hover:text-accent"
+                        ? "border-accent bg-sky-50 text-accent shadow-lg shadow-accent/10"
+                        : "border-accent/35 bg-card text-primary group-hover:-translate-y-1 group-hover:border-accent group-hover:text-accent"
                     }`}
                   >
-                    <Icon aria-hidden="true" className="h-5 w-5" strokeWidth={1.7} />
+                    <span
+                      aria-hidden="true"
+                      className="absolute -right-1 top-3 h-2.5 w-2.5 rounded-full border-2 border-background bg-accent"
+                    />
+                    <span
+                      aria-hidden="true"
+                      className="absolute -bottom-0.5 left-3 h-2 w-2 rounded-full bg-accent/60"
+                    />
+                    <Icon aria-hidden="true" className="h-8 w-8" strokeWidth={1.6} />
                   </span>
-                  <span className="min-w-0 flex-1 sm:flex-none">
+                  <span className="mt-5 block max-w-sm">
                     <span className="block text-[10px] font-semibold uppercase tracking-[0.18em] text-accent">
                       0{index + 1}
                     </span>
-                    <span className="mt-1 block font-display text-lg leading-tight text-foreground">
+                    <span className="mt-2 block font-display text-xl leading-tight text-foreground">
                       {title}
                     </span>
-                    <span className="mx-auto mt-2 block max-w-xs text-sm leading-relaxed text-muted-foreground">
+                    <span className="mx-auto mt-3 block max-w-xs text-sm leading-relaxed text-muted-foreground">
                       {description}
                     </span>
                   </span>
                   {selected && (
-                    <Check
-                      aria-label="Selected"
-                      className="h-4 w-4 shrink-0 text-accent sm:hidden"
-                    />
+                    <Check aria-label="Selected" className="mt-3 h-4 w-4 shrink-0 text-accent" />
                   )}
                 </button>
               </li>
@@ -722,7 +873,7 @@ function Index() {
       </Section>
 
       {/* Core outsourcing */}
-      <Section id="outsourcing" className="bg-secondary">
+      <Section id="outsourcing" className="bg-background">
         <Heading
           eyebrow="Explore the roles"
           title="Every Function. Available Offshore Through Quorisx."
@@ -732,7 +883,7 @@ function Index() {
           {services.map(([Icon, title, description, href, image], index) => (
             <article
               key={title}
-              className="group relative isolate flex min-h-[27rem] flex-col overflow-hidden border border-ink-border bg-ink text-ink-foreground transition-all duration-300 ease-out hover:-translate-y-1 hover:border-accent/50 hover:shadow-xl hover:shadow-ink/20"
+              className="group relative isolate flex min-h-[27rem] flex-col overflow-hidden border border-border bg-card text-foreground shadow-sm transition-all duration-300 ease-out hover:-translate-y-1 hover:border-accent/50 hover:shadow-xl"
             >
               <div className="relative h-40 overflow-hidden sm:h-44">
                 <img
@@ -760,20 +911,29 @@ function Index() {
                 <span className="flex h-11 w-11 items-center justify-center rounded-full bg-accent/15 text-accent transition-all duration-300 group-hover:rotate-[-4deg] group-hover:bg-accent group-hover:text-accent-foreground">
                   <Icon aria-hidden="true" className="h-5 w-5" strokeWidth={1.8} />
                 </span>
-                <h3 className="mt-5 font-display text-2xl leading-tight text-ink-foreground">
+                <h3 className="mt-5 font-display text-2xl leading-tight text-foreground">
                   {title}
                 </h3>
-                <p className="mt-3 flex-1 text-sm leading-relaxed text-ink-muted">{description}</p>
-                <div className="mt-5 border-t border-ink-border pt-4">
+                <p className="mt-3 flex-1 text-sm leading-relaxed text-muted-foreground">
+                  {description}
+                </p>
+                <div className="mt-5 flex flex-wrap gap-2 border-t border-border pt-4">
                   <a
                     href={href}
-                    className="inline-flex min-h-11 items-center justify-center gap-2 bg-accent px-4 py-2.5 text-sm font-bold text-accent-foreground transition-all duration-300 hover:-translate-y-0.5 hover:bg-accent/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-ink"
+                    className="inline-flex min-h-11 items-center justify-center gap-2 bg-accent px-4 py-2.5 text-xs font-bold text-accent-foreground transition-all duration-300 hover:-translate-y-0.5 hover:bg-accent/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-ink sm:text-sm"
                   >
                     Explore Roles
                     <ArrowUpRight
                       aria-hidden="true"
                       className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5"
                     />
+                  </a>
+                  <a
+                    href="#benefits"
+                    className="inline-flex min-h-11 items-center justify-center gap-2 border border-border px-3 py-2.5 text-xs font-bold text-foreground transition-all duration-300 hover:-translate-y-0.5 hover:border-accent/60 hover:bg-accent/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 sm:px-4 sm:text-sm"
+                  >
+                    Get the Full Picture
+                    <ArrowUpRight aria-hidden="true" className="h-4 w-4" />
                   </a>
                 </div>
               </div>
@@ -858,7 +1018,7 @@ function Index() {
       </Section>
 
       {/* Benefits of outsourcing */}
-      <Section className="bg-secondary">
+      <Section id="benefits" className="bg-secondary">
         <div className="mx-auto max-w-3xl text-center">
           <p className="eyebrow mb-3">Benefits of outsourcing</p>
           <h2 className="font-display text-3xl leading-[1.08] md:text-5xl">
@@ -1051,6 +1211,128 @@ function Index() {
         })()}
       </Section>
 
+      {/* Trust and dual presence */}
+      <Section id="presence" className="overflow-hidden bg-ink">
+        <div className="mx-auto max-w-7xl">
+          <div className="grid items-center gap-12 lg:grid-cols-[1.05fr_0.95fr] lg:gap-16">
+            <div id="why" className="max-w-2xl">
+              <p className="eyebrow mb-4">Contract locally. Operate globally.</p>
+              <h2 className="font-display text-4xl leading-[1.04] text-ink-foreground sm:text-5xl md:text-6xl">
+                U.S. Company.
+                <br />
+                <em className="text-accent">Global Teams.</em>
+              </h2>
+              <div className="mt-6 space-y-4 text-sm leading-relaxed text-ink-muted sm:text-base">
+                <p>
+                  Headquartered in Canton, Georgia, every client relationship with Quorisx is
+                  structured through our U.S. entity. Contracts, billing, and primary accountability
+                  remain with us in the United States.
+                </p>
+                <p>
+                  Our Bangkok operations center powers dedicated offshore teams and specialized
+                  delivery. U.S.-based client managers and on-the-ground representatives keep
+                  communication direct, oversight clear, and ownership unambiguous at every stage.
+                </p>
+              </div>
+              <p className="mt-6 border-l-2 border-accent pl-4 font-display text-xl leading-snug text-ink-foreground sm:text-2xl">
+                One partner. Local accountability. International capability.
+              </p>
+            </div>
+
+            <div className="relative mx-auto w-full max-w-xl">
+              <div
+                aria-hidden="true"
+                className="absolute left-1/2 top-1/2 h-64 w-64 -translate-x-1/2 -translate-y-1/2 rounded-full border border-white/[0.06] sm:h-80 sm:w-80"
+              />
+              <div
+                aria-hidden="true"
+                className="absolute left-1/2 top-1/2 h-48 w-48 -translate-x-1/2 -translate-y-1/2 rounded-full border border-accent/10 sm:h-64 sm:w-64"
+              />
+              <div className="relative grid gap-4 sm:grid-cols-[1fr_auto_1fr] sm:items-center sm:gap-3">
+                <article className="relative rounded-xl border border-white/15 bg-white/[0.06] p-5 shadow-xl shadow-black/10 backdrop-blur-sm sm:p-6">
+                  <div className="flex items-start justify-between gap-3">
+                    <span className="grid size-11 place-items-center rounded-full bg-accent/15 text-accent">
+                      <Building2 aria-hidden="true" className="size-5" />
+                    </span>
+                    <span className="rounded-full border border-white/10 px-2.5 py-1 text-[8px] font-bold uppercase tracking-[0.14em] text-ink-muted">
+                      U.S. headquarters
+                    </span>
+                  </div>
+                  <h3 className="mt-5 font-display text-2xl text-ink-foreground">
+                    Canton, Georgia
+                  </h3>
+                  <p className="mt-1 text-xs leading-relaxed text-ink-muted">
+                    Contracts · Billing · Client accountability
+                  </p>
+                </article>
+
+                <div className="relative flex h-10 items-center justify-center sm:h-auto sm:w-16">
+                  <span className="absolute h-full w-px border-l border-dashed border-accent/60 sm:h-px sm:w-full sm:border-l-0 sm:border-t" />
+                  <span className="relative grid size-8 place-items-center rounded-full border border-accent/40 bg-ink text-accent shadow-[0_0_24px_rgba(216,121,73,0.2)]">
+                    <Globe aria-hidden="true" className="size-4" />
+                  </span>
+                </div>
+
+                <article className="relative rounded-xl border border-white/15 bg-white/[0.06] p-5 shadow-xl shadow-black/10 backdrop-blur-sm sm:p-6">
+                  <div className="flex items-start justify-between gap-3">
+                    <span className="grid size-11 place-items-center rounded-full bg-sky-300/10 text-sky-200">
+                      <UsersRound aria-hidden="true" className="size-5" />
+                    </span>
+                    <span className="rounded-full border border-white/10 px-2.5 py-1 text-[8px] font-bold uppercase tracking-[0.14em] text-ink-muted">
+                      Operations center
+                    </span>
+                  </div>
+                  <h3 className="mt-5 font-display text-2xl text-ink-foreground">
+                    Bangkok, Thailand
+                  </h3>
+                  <p className="mt-1 text-xs leading-relaxed text-ink-muted">
+                    Dedicated teams · Specialized delivery · On-the-ground support
+                  </p>
+                </article>
+              </div>
+              <p className="relative mt-5 text-center text-[10px] font-semibold uppercase tracking-[0.14em] text-ink-muted">
+                One connected team · Clear ownership at every step
+              </p>
+            </div>
+          </div>
+
+          <div className="mt-14 border-t border-white/10 pt-8 sm:mt-16 sm:pt-10">
+            <div className="mb-7 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+              <div>
+                <p className="text-[9px] font-bold uppercase tracking-[0.18em] text-accent">
+                  A clear path from day one
+                </p>
+                <h3 className="mt-2 font-display text-2xl text-ink-foreground sm:text-3xl">
+                  How your partnership works
+                </h3>
+              </div>
+              <p className="max-w-md text-xs leading-relaxed text-ink-muted sm:text-right">
+                Your primary relationship stays with our U.S. team.
+              </p>
+            </div>
+            <ol className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+              {trustSteps.map(([Icon, title, description], index) => (
+                <li
+                  key={title}
+                  className="group relative rounded-lg border border-white/10 bg-white/[0.035] p-4 transition-colors duration-200 hover:border-accent/35 hover:bg-white/[0.06] sm:p-5"
+                >
+                  <div className="flex items-center justify-between">
+                    <span className="grid size-10 place-items-center rounded-full border border-accent/25 bg-accent/10 text-accent transition-colors group-hover:bg-accent group-hover:text-accent-foreground">
+                      <Icon aria-hidden="true" className="size-[18px]" strokeWidth={1.8} />
+                    </span>
+                    <span className="font-display text-2xl text-white/25">0{index + 1}</span>
+                  </div>
+                  <h4 className="mt-5 font-display text-lg leading-tight text-ink-foreground">
+                    {title}
+                  </h4>
+                  <p className="mt-2 text-xs leading-relaxed text-ink-muted">{description}</p>
+                </li>
+              ))}
+            </ol>
+          </div>
+        </div>
+      </Section>
+
       {/* Quality */}
       <Section className="bg-background">
         <section
@@ -1058,22 +1340,58 @@ function Index() {
           aria-labelledby="quality-heading"
           data-quality-visible={qualityVisible}
         >
-          <div className="mb-12 max-w-3xl">
-            <p className="eyebrow mb-4">Quality, security & accountability</p>
-            <h2 id="quality-heading" className="text-4xl leading-[1.05] md:text-5xl">
-              Oversight built into every engagement.
-            </h2>
+          <div className="mb-10 grid gap-8 lg:mb-14 lg:grid-cols-[1fr_auto] lg:items-end">
+            <div className="max-w-3xl">
+              <p className="eyebrow mb-4">Quality, security & accountability</p>
+              <h2 id="quality-heading" className="text-4xl leading-[1.05] md:text-5xl">
+                Oversight built into
+                <br className="hidden sm:block" /> every engagement.
+              </h2>
+              <p className="mt-5 max-w-2xl text-base leading-relaxed text-muted-foreground md:text-lg">
+                Good work needs more than a great hire. Every engagement is supported by clear
+                ownership, practical safeguards, and a plan to keep moving forward.
+              </p>
+            </div>
+            <div className="flex max-w-sm items-center gap-4 border-l-2 border-accent bg-card px-5 py-4 shadow-sm sm:px-6">
+              <span className="grid size-12 shrink-0 place-items-center rounded-full bg-accent/10 text-accent">
+                <ShieldCheck aria-hidden="true" className="size-6" strokeWidth={1.7} />
+              </span>
+              <div>
+                <p className="text-[9px] font-bold uppercase tracking-[0.16em] text-accent">
+                  Built into every model
+                </p>
+                <p className="mt-1 font-display text-lg leading-tight text-foreground">
+                  People. Process. Protection.
+                </p>
+              </div>
+            </div>
           </div>
-          <div className="grid gap-x-12 gap-y-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-x-16 lg:gap-y-6">
+          <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
             {quality.map(([Icon, title, description, extra], index) => {
               const expanded = openQuality === index || hoveredQuality === index;
               return (
                 <article
                   key={title}
-                  className="quality-feature group border-b border-border/70 py-5 sm:border-0 sm:py-4"
+                  className={`quality-feature group relative isolate overflow-hidden rounded-xl border bg-card p-5 shadow-sm transition-all duration-300 sm:p-6 ${
+                    expanded
+                      ? "border-accent/50 shadow-lg shadow-accent/[0.07]"
+                      : "border-border/80 hover:-translate-y-1 hover:border-accent/35 hover:shadow-md"
+                  }`}
                   onMouseEnter={() => setHoveredQuality(index)}
                   onMouseLeave={() => setHoveredQuality(null)}
                 >
+                  <span
+                    aria-hidden="true"
+                    className={`pointer-events-none absolute -right-12 -top-14 size-36 rounded-full border transition-colors duration-300 ${
+                      expanded ? "border-accent/15" : "border-border/50"
+                    }`}
+                  />
+                  <span
+                    aria-hidden="true"
+                    className={`pointer-events-none absolute -right-5 -top-7 size-24 rounded-full border transition-colors duration-300 ${
+                      expanded ? "border-accent/10" : "border-border/40"
+                    }`}
+                  />
                   <button
                     type="button"
                     aria-expanded={expanded}
@@ -1081,16 +1399,35 @@ function Index() {
                     onClick={() => setOpenQuality((current) => (current === index ? null : index))}
                     onFocus={() => setHoveredQuality(index)}
                     onBlur={() => setHoveredQuality(null)}
-                    className="flex w-full items-start gap-4 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-4"
+                    className="relative z-10 flex w-full items-start gap-4 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-4"
                   >
-                    <span className="mt-0.5 flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-accent/10 text-accent transition-all duration-300 group-hover:scale-105 group-hover:bg-accent group-hover:text-accent-foreground">
-                      <Icon aria-hidden="true" className="h-5 w-5" strokeWidth={1.7} />
+                    <span
+                      className={`mt-0.5 grid size-12 shrink-0 place-items-center rounded-xl border transition-all duration-300 ${
+                        expanded
+                          ? "rotate-[-3deg] border-accent bg-accent text-accent-foreground shadow-md shadow-accent/20"
+                          : "border-accent/15 bg-accent/10 text-accent group-hover:border-accent/40 group-hover:bg-accent/15"
+                      }`}
+                    >
+                      <Icon aria-hidden="true" className="size-5" strokeWidth={1.7} />
                     </span>
-                    <span className="min-w-0">
-                      <span className="block font-sans text-lg font-semibold text-foreground">
+                    <span className="min-w-0 flex-1">
+                      <span className="flex items-center justify-between gap-2">
+                        <span className="text-[8px] font-bold uppercase tracking-[0.16em] text-accent">
+                          CONTROL 0{index + 1}
+                        </span>
+                        <span className="grid size-7 shrink-0 place-items-center rounded-full border border-border/80 text-muted-foreground transition-all duration-300 group-hover:border-accent/40 group-hover:text-accent">
+                          <ChevronDown
+                            aria-hidden="true"
+                            className={`size-3.5 transition-transform duration-300 ${
+                              expanded ? "rotate-180" : ""
+                            }`}
+                          />
+                        </span>
+                      </span>
+                      <span className="mt-2 block font-display text-xl leading-tight text-foreground">
                         {title}
                       </span>
-                      <span className="mt-1 block text-sm leading-relaxed text-muted-foreground">
+                      <span className="mt-2 block text-xs leading-relaxed text-muted-foreground sm:text-sm">
                         {description}
                       </span>
                     </span>
@@ -1098,14 +1435,19 @@ function Index() {
                   <div
                     id={`quality-detail-${index}`}
                     aria-hidden={!expanded}
-                    className={`grid transition-[grid-template-rows,opacity] duration-300 ease-out ${
+                    className={`relative z-10 grid transition-[grid-template-rows,opacity] duration-300 ease-out ${
                       expanded ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
                     }`}
                   >
                     <div className="overflow-hidden">
-                      <p className="pl-[3.75rem] pt-3 text-sm leading-relaxed text-foreground/75">
-                        {extra}
-                      </p>
+                      <div className="mt-4 border-t border-border/80 pt-3">
+                        <p className="text-[8px] font-bold uppercase tracking-[0.15em] text-accent">
+                          How we put it into practice
+                        </p>
+                        <p className="mt-1.5 text-xs leading-relaxed text-foreground/75 sm:text-sm">
+                          {extra}
+                        </p>
+                      </div>
                     </div>
                   </div>
                 </article>
@@ -1113,46 +1455,6 @@ function Index() {
             })}
           </div>
         </section>
-      </Section>
-
-      {/* Presence */}
-      <Section id="presence" className="bg-ink">
-        <div id="why" className="grid gap-16 lg:grid-cols-2">
-          <div>
-            <p className="eyebrow mb-4">Contract locally. Operate globally.</p>
-            <h2 className="text-4xl leading-[1.05] text-ink-foreground md:text-5xl">
-              American Headquarters. International Capabilities.
-            </h2>
-            <p className="mt-6 text-lg text-ink-muted">
-              Headquartered in Canton, Georgia, Quorisx combines the commercial convenience and
-              accountability of working with a U.S.-based company with the flexibility of offshore
-              delivery centered in Bangkok, Thailand.
-            </p>
-            <div className="mt-10 grid grid-cols-2 gap-6">
-              <div className="rounded-lg border border-ink-border p-6">
-                <p className="eyebrow">Headquarters</p>
-                <p className="mt-2 font-display text-2xl text-ink-foreground">Canton, Georgia</p>
-                <p className="text-sm text-ink-muted">Client relationships & contracting</p>
-              </div>
-              <div className="rounded-lg border border-ink-border p-6">
-                <p className="eyebrow">Operations</p>
-                <p className="mt-2 font-display text-2xl text-ink-foreground">Bangkok, Thailand</p>
-                <p className="text-sm text-ink-muted">Recruitment, training & delivery</p>
-              </div>
-            </div>
-          </div>
-          <div>
-            <h3 className="mb-6 text-2xl text-ink-foreground">Why Bangkok?</h3>
-            <div className="grid gap-px overflow-hidden rounded-lg bg-ink-border sm:grid-cols-2">
-              {bangkok.map(([t, d]) => (
-                <div key={t} className="bg-ink p-6">
-                  <h4 className="font-semibold text-ink-foreground">{t}</h4>
-                  <p className="mt-2 text-sm text-ink-muted">{d}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
       </Section>
 
       {/* One partner */}
@@ -1170,46 +1472,58 @@ function Index() {
         </div>
       </Section>
 
-      <footer className="relative overflow-hidden border-t border-ink-border bg-ink px-6 pb-6 pt-10 md:pt-14">
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute -right-36 -top-36 h-96 w-96 rounded-full border border-ink-border/70"
-        />
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute -right-20 -top-20 h-64 w-64 rounded-full border border-accent/10"
-        />
-        <div className="relative mx-auto max-w-7xl">
-          <section className="mb-12 flex flex-col gap-6 rounded-2xl border border-ink-border bg-gradient-to-r from-primary/55 via-ink to-ink p-6 sm:p-8 md:flex-row md:items-center md:justify-between md:p-10">
-            <div className="max-w-2xl">
-              <p className="eyebrow mb-3">Let’s move your business forward</p>
-              <h2 className="font-display text-3xl leading-tight text-ink-foreground sm:text-4xl">
-                Find the right support for your next step.
-              </h2>
+      <footer className="bg-background px-6 pb-5 pt-8 md:pt-12">
+        <div className="mx-auto max-w-7xl">
+          <section className="mb-0 grid overflow-hidden bg-ink md:grid-cols-[0.95fr_1.05fr]">
+            <div className="relative min-h-52 md:min-h-64">
+              <img
+                src="/images/imag%204.jpg"
+                alt="Quorisx team members collaborating around a table"
+                loading="lazy"
+                className="absolute inset-0 h-full w-full object-cover"
+              />
+              <div
+                aria-hidden="true"
+                className="absolute inset-0 bg-gradient-to-r from-ink/35 via-ink/55 to-ink/90 md:bg-gradient-to-l"
+              />
             </div>
-            <a
-              href="/contact"
-              className="inline-flex shrink-0 items-center justify-center gap-2 rounded-lg bg-accent px-5 py-3 text-sm font-bold text-accent-foreground transition-all hover:-translate-y-0.5 hover:shadow-lg hover:shadow-accent/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-ink"
-            >
-              Talk to our team <ArrowUpRight aria-hidden="true" className="h-4 w-4" />
-            </a>
+            <div className="flex flex-col items-start justify-center gap-5 p-6 sm:p-8 md:p-10">
+              <div className="max-w-2xl">
+                <p className="text-[9px] font-bold uppercase tracking-[0.18em] text-accent">
+                  Quorisx · Global business solutions
+                </p>
+                <h2 className="mt-2 font-sans text-2xl font-bold uppercase leading-tight text-ink-foreground sm:text-3xl">
+                  Contact us <span className="font-normal text-white/60">today!</span>
+                </h2>
+                <p className="mt-3 max-w-lg text-xs leading-relaxed text-ink-muted sm:text-sm">
+                  Tell us what your business needs. We’ll help you find the right people, support,
+                  or solution to move forward.
+                </p>
+              </div>
+              <a
+                href="/contact"
+                className="inline-flex shrink-0 items-center justify-center gap-2 rounded-full bg-accent px-4 py-2 text-xs font-semibold text-accent-foreground transition-all hover:-translate-y-0.5 hover:shadow-lg hover:shadow-accent/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-ink"
+              >
+                Contact us now <ArrowUpRight aria-hidden="true" className="h-3.5 w-3.5" />
+              </a>
+            </div>
           </section>
 
-          <div className="grid gap-10 border-b border-ink-border pb-10 sm:grid-cols-2 lg:grid-cols-[1.35fr_0.8fr_0.8fr_1fr] lg:gap-8">
+          <div className="grid gap-8 border-b border-border py-8 sm:grid-cols-2 lg:grid-cols-[1.25fr_0.65fr_0.8fr_0.85fr_1fr] lg:gap-7 lg:py-10">
             <div>
-              <a href="/" className="inline-flex font-display text-3xl text-ink-foreground">
+              <a href="/" className="inline-flex font-display text-3xl text-foreground">
                 Quorisx<span className="text-accent">.</span>
               </a>
-              <p className="mt-4 max-w-sm text-sm leading-relaxed text-ink-muted">
+              <p className="mt-3 max-w-sm text-xs leading-relaxed text-muted-foreground">
                 People, processes, and digital expertise to help your business grow—with U.S.
                 headquarters and global delivery.
               </p>
-              <div className="mt-5 flex items-start gap-2 text-xs leading-relaxed text-ink-muted">
+              <div className="mt-4 flex items-start gap-2 text-xs leading-relaxed text-muted-foreground">
                 <MapPin aria-hidden="true" className="mt-0.5 h-4 w-4 shrink-0 text-accent" />
                 Canton, Georgia · Bangkok, Thailand
               </div>
               <div className="mt-6">
-                <p className="mb-3 text-[0.68rem] font-bold uppercase tracking-[0.18em] text-ink-muted">
+                <p className="mb-3 text-[0.65rem] font-bold uppercase tracking-[0.18em] text-foreground">
                   Connect with us
                 </p>
                 <div className="flex gap-2">
@@ -1220,7 +1534,7 @@ function Index() {
                         href="mailto:info@quorisx.com"
                         aria-label={label}
                         title={label}
-                        className="group flex h-10 w-10 items-center justify-center rounded-xl border border-ink-border bg-ink-foreground/[0.03] text-ink-muted transition-all hover:-translate-y-0.5 hover:border-accent/70 hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+                        className="group flex h-8 w-8 items-center justify-center rounded-full border border-border bg-card text-muted-foreground transition-all hover:-translate-y-0.5 hover:border-accent/70 hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
                       >
                         <Icon aria-hidden="true" className="h-4 w-4" />
                       </a>
@@ -1230,7 +1544,7 @@ function Index() {
                         role="img"
                         aria-label={label}
                         title={`${label} profile link has not been provided`}
-                        className="flex h-10 w-10 items-center justify-center rounded-xl border border-ink-border bg-ink-foreground/[0.03] text-ink-muted"
+                        className="flex h-8 w-8 items-center justify-center rounded-full border border-border bg-card text-muted-foreground"
                       >
                         <Icon aria-hidden="true" className="h-4 w-4" />
                       </span>
@@ -1241,12 +1555,31 @@ function Index() {
             </div>
 
             <div>
-              <h2 className="text-xs font-bold uppercase tracking-[0.18em] text-ink-foreground">
-                Explore
-              </h2>
+              <h2 className="text-xs font-bold text-foreground">Home</h2>
               <nav
-                aria-label="Footer explore links"
-                className="mt-5 flex flex-col gap-3 text-sm text-ink-muted"
+                aria-label="Footer home links"
+                className="mt-4 flex flex-col gap-2.5 text-xs text-muted-foreground"
+              >
+                <a className="transition-colors hover:text-accent" href="/">
+                  Home
+                </a>
+                <a className="transition-colors hover:text-accent" href="#about">
+                  About us
+                </a>
+                <a className="transition-colors hover:text-accent" href="#industries">
+                  Industries
+                </a>
+                <a className="transition-colors hover:text-accent" href="/contact">
+                  Contact us
+                </a>
+              </nav>
+            </div>
+
+            <div>
+              <h2 className="text-xs font-bold text-foreground">Services</h2>
+              <nav
+                aria-label="Footer service links"
+                className="mt-4 flex flex-col gap-2.5 text-xs text-muted-foreground"
               >
                 <a className="transition-colors hover:text-accent" href="#outsourcing">
                   Outsourcing
@@ -1255,33 +1588,25 @@ function Index() {
                   className="transition-colors hover:text-accent"
                   href="/solutions/software-development"
                 >
-                  Solutions
+                  Digital solutions
                 </a>
                 <a className="transition-colors hover:text-accent" href="#industries">
                   Industries
-                </a>
-                <a className="transition-colors hover:text-accent" href="#why">
-                  Why Quorisx
                 </a>
               </nav>
             </div>
 
             <div>
-              <h2 className="text-xs font-bold uppercase tracking-[0.18em] text-ink-foreground">
-                Company
-              </h2>
+              <h2 className="text-xs font-bold text-foreground">Quick Links</h2>
               <nav
-                aria-label="Footer company links"
-                className="mt-5 flex flex-col gap-3 text-sm text-ink-muted"
+                aria-label="Footer quick links"
+                className="mt-4 flex flex-col gap-2.5 text-xs text-muted-foreground"
               >
+                <a className="transition-colors hover:text-accent" href="#why">
+                  Why Quorisx
+                </a>
                 <a className="transition-colors hover:text-accent" href="/about">
                   About Quorisx
-                </a>
-                <a className="transition-colors hover:text-accent" href="/about#why-bangkok">
-                  Why Bangkok
-                </a>
-                <a className="transition-colors hover:text-accent" href="/about#transparency">
-                  Our operating model
                 </a>
                 <a className="transition-colors hover:text-accent" href="/resources/faqs">
                   FAQs
@@ -1290,10 +1615,8 @@ function Index() {
             </div>
 
             <div>
-              <h2 className="text-xs font-bold uppercase tracking-[0.18em] text-ink-foreground">
-                Get in touch
-              </h2>
-              <div className="mt-5 flex flex-col gap-4 text-sm text-ink-muted">
+              <h2 className="text-xs font-bold text-foreground">Contact Us</h2>
+              <div className="mt-4 flex flex-col gap-3 text-xs text-muted-foreground">
                 <a
                   className="flex items-center gap-3 transition-colors hover:text-accent"
                   href="mailto:info@quorisx.com"
@@ -1325,7 +1648,7 @@ function Index() {
             </div>
           </div>
 
-          <div className="flex flex-col gap-3 pt-5 text-xs text-ink-muted sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex flex-col gap-3 pt-4 text-[10px] text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
             <span>© {new Date().getFullYear()} Quorisx. All rights reserved.</span>
             <span className="inline-flex items-center gap-2">
               <span className="h-1.5 w-1.5 rounded-full bg-accent" />

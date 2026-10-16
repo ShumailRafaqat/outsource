@@ -481,7 +481,7 @@ function AboutPage() {
           <div className="mx-auto grid max-w-7xl items-center gap-8 lg:grid-cols-2 lg:gap-14">
             <div className="relative overflow-hidden rounded-lg">
               <img
-                src="/images/img3.jpg"
+                src="/images/imag%204.jpg"
                 alt="Colleagues meeting around a table in a modern office"
                 width={2000}
                 height={2000}

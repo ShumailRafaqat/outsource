@@ -20,6 +20,22 @@ export function SiteHeader() {
 
   return (
     <header className="sticky top-0 z-50 border-b border-ink-border bg-ink/95 shadow-[0_8px_28px_-22px_rgba(0,0,0,0.8)] backdrop-blur-xl">
+      <div className="hidden border-b border-white/10 bg-black/15 lg:block">
+        <div className="mx-auto flex h-8 max-w-7xl items-center justify-between px-6 text-[0.65rem] font-medium tracking-wide text-ink-muted">
+          <span>U.S. headquarters · Canton, Georgia</span>
+          <div className="flex items-center gap-5">
+            <a
+              className="transition-colors hover:text-ink-foreground"
+              href="mailto:info@quorisx.com"
+            >
+              info@quorisx.com
+            </a>
+            <a className="transition-colors hover:text-ink-foreground" href="tel:+12018129584">
+              201-812-9584
+            </a>
+          </div>
+        </div>
+      </div>
       <div className="relative mx-auto flex h-[4.5rem] max-w-7xl items-center justify-between gap-4 px-4 sm:px-6">
         <a
           href="/"

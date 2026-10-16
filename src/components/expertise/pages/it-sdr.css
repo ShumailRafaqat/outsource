@@ -184,7 +184,7 @@
 .it-sdr-visual-mark svg {
   width: 17px;
   height: 17px;
-  color: #e6bd92;
+  color: var(--accent-bright);
 }
 
 .it-sdr-hero-visual figcaption strong,

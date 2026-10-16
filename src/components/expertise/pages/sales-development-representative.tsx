@@ -83,7 +83,7 @@ export function SalesDevelopmentRepresentativePage() {
         <section className="sdr-hero" aria-labelledby="sdr-heading">
           <img
             className="sdr-hero-image"
-            src="/images/img3.jpg"
+            src="/images/img.jpg"
             alt=""
             fetchPriority="high"
             aria-hidden="true"

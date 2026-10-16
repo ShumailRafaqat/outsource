@@ -40,7 +40,6 @@
 
 .industries-directory-intro h1 em {
   color: var(--accent);
-  font-style: normal;
 }
 
 .industries-directory-intro > p:not(.industries-directory-eyebrow) {

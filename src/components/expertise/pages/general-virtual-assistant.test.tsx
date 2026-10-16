@@ -44,7 +44,7 @@ describe("GeneralVirtualAssistantPage", () => {
     ).toBeInTheDocument();
     expect(
       screen.getByRole("img", { name: /Professionals reviewing priorities together/ }),
-    ).toHaveAttribute("src", "/images/img3.jpg");
+    ).toHaveAttribute("src", "/images/image2.jpg");
     expect(
       screen.getByRole("img", { name: /Two colleagues coordinating their work/ }),
     ).toHaveAttribute("src", "/images/imag%204.jpg");

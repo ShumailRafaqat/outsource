@@ -159,7 +159,7 @@ function getRoleIcon(title: string): LucideIcon {
 }
 const heroPhotos = [
   {
-    src: "/images/img3.jpg",
+    src: "/images/img.jpg",
     alt: "Team members collaborating around a meeting table",
   },
   {

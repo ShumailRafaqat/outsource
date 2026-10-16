@@ -1,6 +1,11 @@
-import { createFileRoute, notFound } from "@tanstack/react-router";
+import { createFileRoute, notFound, redirect } from "@tanstack/react-router";
 
 import { SiteHeader } from "@/components/site-header";
+import { EngagementModelsPage } from "@/components/why-quorisx/engagement-models-page";
+import { QualitySecurityPage } from "@/components/why-quorisx/quality-security-page";
+import { DigitalMarketingSeoPage } from "@/components/solutions/pages/digital-marketing-seo";
+import { AiAutomationPage } from "@/components/solutions/pages/ai-automation";
+import { WebsiteDevelopmentPage } from "@/components/solutions/pages/website-development";
 import { AdminExecutivePage } from "@/components/expertise/pages/admin-executive";
 import { CustomerServicePage } from "@/components/expertise/pages/customer-service";
 import { FinanceAccountingPage } from "@/components/expertise/pages/finance-accounting";
@@ -13,9 +18,27 @@ import { getIndustryPage } from "@/components/industries/industry-data";
 import { comingSoonPage } from "@/lib/site-navigation";
 
 export const Route = createFileRoute("/$category/$slug")({
+  beforeLoad: ({ params }) => {
+    if (params.category === "why-quorisx" && params.slug === "global-operating-model") {
+      throw redirect({
+        to: "/",
+        hash: "presence",
+        replace: true,
+      });
+    }
+  },
   head: ({ params }) => {
     const industry = params.category === "industries" ? getIndustryPage(params.slug) : undefined;
     const page = comingSoonPage(params.category, params.slug);
+    const isWebsiteDevelopment =
+      params.category === "solutions" && params.slug === "website-development";
+    const isDigitalMarketingSeo =
+      params.category === "solutions" && params.slug === "digital-marketing-seo";
+    const isAiAutomation = params.category === "solutions" && params.slug === "ai-automation";
+    const isEngagementModels =
+      params.category === "why-quorisx" && params.slug === "engagement-models";
+    const isQualitySecurity =
+      params.category === "why-quorisx" && params.slug === "quality-security";
     const isAdminRoles = params.category === "expertise" && params.slug === "admin-executive";
     const isSalesGrowthRoles =
       params.category === "expertise" &&
@@ -56,21 +79,41 @@ export const Route = createFileRoute("/$category/$slug")({
         {
           title: industry
             ? `${industry.name} Support — Quorisx`
-            : isDedicatedExpertisePage
-              ? `${expertiseTitle} Roles — Quorisx`
-              : page
-                ? `${page.label} — Quorisx`
-                : "Page Not Found — Quorisx",
+            : isWebsiteDevelopment
+              ? "Website Development & Search Visibility — Quorisx"
+              : isDigitalMarketingSeo
+                ? "Digital Marketing & SEO — Quorisx"
+                : isAiAutomation
+                  ? "AI & Automation — Quorisx"
+                  : isEngagementModels
+                    ? "Engagement Models — Quorisx"
+                    : isQualitySecurity
+                      ? "Quality & Security — Quorisx"
+                      : isDedicatedExpertisePage
+                        ? `${expertiseTitle} Roles — Quorisx`
+                        : page
+                          ? `${page.label} — Quorisx`
+                          : "Page Not Found — Quorisx",
         },
         {
           name: "description",
           content: industry
             ? industry.intro
-            : isDedicatedExpertisePage
-              ? `Explore ${expertiseTitle} roles from Quorisx, with dedicated professionals matched to your team's requirements.`
-              : page
-                ? `${page.label}: dedicated information from Quorisx is coming soon.`
-                : "The requested page could not be found.",
+            : isWebsiteDevelopment
+              ? "Build a fast, mobile-friendly website with SEO foundations, local search support, integrations, and ongoing improvements."
+              : isDigitalMarketingSeo
+                ? "SEO, local search, paid campaigns, and useful content to help customers discover your business and take the next step."
+                : isAiAutomation
+                  ? "Practical AI and automation to streamline customer support, lead follow-up, admin tasks, and business workflows."
+                  : isEngagementModels
+                    ? "Explore dedicated team, managed function, and project-based engagement models with Quorisx."
+                    : isQualitySecurity
+                      ? "Learn how Quorisx approaches quality assurance, clear ownership, confidentiality, client access, and delivery oversight."
+                      : isDedicatedExpertisePage
+                        ? `Explore ${expertiseTitle} roles from Quorisx, with dedicated professionals matched to your team's requirements.`
+                        : page
+                          ? `${page.label}: dedicated information from Quorisx is coming soon.`
+                          : "The requested page could not be found.",
         },
       ],
     };
@@ -82,6 +125,26 @@ function ComingSoonPage() {
   const { category, slug } = Route.useParams();
   const page = comingSoonPage(category, slug);
   const industry = category === "industries" ? getIndustryPage(slug) : undefined;
+
+  if (category === "solutions" && slug === "website-development") {
+    return <WebsiteDevelopmentPage />;
+  }
+
+  if (category === "solutions" && slug === "digital-marketing-seo") {
+    return <DigitalMarketingSeoPage />;
+  }
+
+  if (category === "solutions" && slug === "ai-automation") {
+    return <AiAutomationPage />;
+  }
+
+  if (category === "why-quorisx" && slug === "engagement-models") {
+    return <EngagementModelsPage />;
+  }
+
+  if (category === "why-quorisx" && slug === "quality-security") {
+    return <QualitySecurityPage />;
+  }
 
   if (category === "industries") {
     if (!industry) {

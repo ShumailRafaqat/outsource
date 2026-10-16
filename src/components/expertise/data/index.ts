@@ -27,7 +27,6 @@ export const expertiseFunctions = [
   adminExecutiveFunction,
   salesGrowthFunction,
   marketingCreativeFunction,
-  financeAccountingFunction,
   hrPeopleOperationsFunction,
   customerServiceFunction,
   softwareDevelopmentFunction,

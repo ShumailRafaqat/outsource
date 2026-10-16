@@ -333,7 +333,7 @@ const generalAssistantContent: AssistantPageContent = {
       "A dedicated assistant brings the human attention behind every clear inbox, organized plan, and thoughtful follow-through.",
     photos: [
       {
-        src: "/images/img3.jpg",
+        src: "/images/image2.jpg",
         alt: "Professionals reviewing priorities together in a bright office meeting",
         label: "COMMUNICATION & COORDINATION",
         title: "People and priorities, kept in sync.",

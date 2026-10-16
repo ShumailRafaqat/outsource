@@ -227,7 +227,7 @@
 .outbound-visual-caption svg {
   width: 16px;
   height: 16px;
-  color: #f2c096;
+  color: var(--accent-bright);
 }
 
 .outbound-self-check {

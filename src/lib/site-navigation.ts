@@ -20,7 +20,6 @@ export const navigationGroups: NavigationGroup[] = [
       page("expertise", "admin-executive", "Admin & Executive"),
       page("expertise", "sales-development", "Sales & Development"),
       page("expertise", "marketing-creative", "Marketing & Creative"),
-      page("expertise", "finance-accounting", "Finance & Accounting"),
       page("expertise", "software-dev", "Software & Dev"),
       page("expertise", "customer-service", "Customer Service"),
     ],
@@ -28,14 +27,12 @@ export const navigationGroups: NavigationGroup[] = [
   {
     label: "Solutions",
     items: [
-      page("solutions", "software-development", "Software Development"),
       page("solutions", "website-development", "Website Development"),
-      page("solutions", "it-services", "IT Services"),
       page("solutions", "digital-marketing-seo", "Digital Marketing & SEO"),
       page("solutions", "paid-ads-lead-generation", "Paid Ads & Lead Generation"),
       page("solutions", "ai-automation", "AI & Automation"),
-      page("solutions", "admin-executive-support", "Admin & Executive Support"),
-      page("solutions", "sales-growth", "Sales & Growth"),
+      { label: "Admin & Executive Support", href: "/expertise/admin-executive" },
+      { label: "Sales & Growth", href: "/expertise/sales-growth" },
     ],
   },
   {
@@ -55,10 +52,10 @@ export const navigationGroups: NavigationGroup[] = [
   {
     label: "Why Quorisx",
     items: [
-      page("why-quorisx", "our-approach", "Our Approach"),
+      { label: "Global Operating Model", href: "/#presence" },
+      page("why-quorisx", "our-approach", "Recruitment Methodology"),
       page("why-quorisx", "engagement-models", "Engagement Models"),
       page("why-quorisx", "quality-security", "Quality & Security"),
-      page("why-quorisx", "global-operating-model", "Global Operating Model"),
     ],
   },
   {
@@ -74,9 +71,9 @@ export const navigationGroups: NavigationGroup[] = [
     label: "About",
     items: [
       { label: "Company", href: "/about" },
-      page("about", "leadership", "Leadership"),
-      page("about", "careers", "Careers"),
-      page("about", "locations", "Locations"),
+      { label: "Why Bangkok", href: "/about#why-bangkok" },
+      { label: "Offshore Through Quorisx", href: "/#outsourcing" },
+      { label: "Benefits of Outsourcing", href: "/#benefits" },
     ],
   },
   {
