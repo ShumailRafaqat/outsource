@@ -74,4 +74,15 @@ describe("DigitalMarketingSeoPage", () => {
     expect(screen.getByText(/without promising a specific ranking or result/i)).toBeInTheDocument();
     expect(screen.getByText(/Appear when people search/i)).toBeInTheDocument();
   });
+
+  it("marks the SEO and marketing sections and cards for staggered scroll reveals", () => {
+    render(<DigitalMarketingSeoPage />);
+
+    expect(document.querySelectorAll(".dm-hero-copy [data-dm-hero-entry]")).toHaveLength(5);
+    expect(document.querySelector(".dm-hero-panel")).toHaveAttribute("data-dm-hero-panel");
+    expect(document.querySelectorAll(".dm-benefits-grid [data-dm-reveal]")).toHaveLength(6);
+    expect(document.querySelectorAll(".dm-approach-grid [data-dm-reveal]")).toHaveLength(6);
+    expect(document.querySelectorAll(".dm-services-grid [data-dm-reveal]")).toHaveLength(3);
+    expect(document.querySelectorAll(".dm-page [data-dm-reveal]").length).toBeGreaterThan(20);
+  });
 });

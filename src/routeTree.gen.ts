@@ -14,6 +14,7 @@ import { Route as AboutRouteImport } from './routes/about'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as ContactDetailsRouteImport } from './routes/contact-details'
 import { Route as IndustriesRouteImport } from './routes/industries'
+import { Route as InsightsRouteImport } from './routes/insights'
 import { Route as CategorySlugRouteImport } from './routes/$category/$slug'
 import { Route as ContactDetailsTestRouteImport } from './routes/contact-details.test'
 import { Route as ResourcesFaqsRouteImport } from './routes/resources/faqs'
@@ -44,6 +45,11 @@ const IndustriesRoute = IndustriesRouteImport.update({
   path: '/industries',
   getParentRoute: () => rootRouteImport,
 } as any)
+const InsightsRoute = InsightsRouteImport.update({
+  id: '/insights',
+  path: '/insights',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CategorySlugRoute = CategorySlugRouteImport.update({
   id: '/$category/$slug',
   path: '/$category/$slug',
@@ -71,6 +77,7 @@ export interface FileRoutesByFullPath {
   '/contact': typeof ContactRoute
   '/contact-details': typeof ContactDetailsRouteWithChildren
   '/industries': typeof IndustriesRoute
+  '/insights': typeof InsightsRoute
   '/$category/$slug': typeof CategorySlugRoute
   '/contact-details/test': typeof ContactDetailsTestRoute
   '/resources/faqs': typeof ResourcesFaqsRoute
@@ -82,6 +89,7 @@ export interface FileRoutesByTo {
   '/contact': typeof ContactRoute
   '/contact-details': typeof ContactDetailsRouteWithChildren
   '/industries': typeof IndustriesRoute
+  '/insights': typeof InsightsRoute
   '/$category/$slug': typeof CategorySlugRoute
   '/contact-details/test': typeof ContactDetailsTestRoute
   '/resources/faqs': typeof ResourcesFaqsRoute
@@ -94,6 +102,7 @@ export interface FileRoutesById {
   '/contact': typeof ContactRoute
   '/contact-details': typeof ContactDetailsRouteWithChildren
   '/industries': typeof IndustriesRoute
+  '/insights': typeof InsightsRoute
   '/$category/$slug': typeof CategorySlugRoute
   '/contact-details/test': typeof ContactDetailsTestRoute
   '/resources/faqs': typeof ResourcesFaqsRoute
@@ -107,6 +116,7 @@ export interface FileRouteTypes {
     | '/contact'
     | '/contact-details'
     | '/industries'
+    | '/insights'
     | '/$category/$slug'
     | '/contact-details/test'
     | '/resources/faqs'
@@ -118,6 +128,7 @@ export interface FileRouteTypes {
     | '/contact'
     | '/contact-details'
     | '/industries'
+    | '/insights'
     | '/$category/$slug'
     | '/contact-details/test'
     | '/resources/faqs'
@@ -129,6 +140,7 @@ export interface FileRouteTypes {
     | '/contact'
     | '/contact-details'
     | '/industries'
+    | '/insights'
     | '/$category/$slug'
     | '/contact-details/test'
     | '/resources/faqs'
@@ -141,6 +153,7 @@ export interface RootRouteChildren {
   ContactRoute: typeof ContactRoute
   ContactDetailsRoute: typeof ContactDetailsRouteWithChildren
   IndustriesRoute: typeof IndustriesRoute
+  InsightsRoute: typeof InsightsRoute
   CategorySlugRoute: typeof CategorySlugRoute
   ResourcesFaqsRoute: typeof ResourcesFaqsRoute
   ExpertiseCategoryRoleRoute: typeof ExpertiseCategoryRoleRoute
@@ -181,6 +194,13 @@ declare module '@tanstack/react-router' {
       path: '/industries'
       fullPath: '/industries'
       preLoaderRoute: typeof IndustriesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/insights': {
+      id: '/insights'
+      path: '/insights'
+      fullPath: '/insights'
+      preLoaderRoute: typeof InsightsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/$category/$slug': {
@@ -232,6 +252,7 @@ const rootRouteChildren: RootRouteChildren = {
   ContactRoute: ContactRoute,
   ContactDetailsRoute: ContactDetailsRouteWithChildren,
   IndustriesRoute: IndustriesRoute,
+  InsightsRoute: InsightsRoute,
   CategorySlugRoute: CategorySlugRoute,
   ResourcesFaqsRoute: ResourcesFaqsRoute,
   ExpertiseCategoryRoleRoute: ExpertiseCategoryRoleRoute,

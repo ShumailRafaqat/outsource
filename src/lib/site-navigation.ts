@@ -52,7 +52,7 @@ export const navigationGroups: NavigationGroup[] = [
   {
     label: "Why Quorisx",
     items: [
-      { label: "Global Operating Model", href: "/#presence" },
+      { label: "Global Operating Model", href: "/" },
       page("why-quorisx", "our-approach", "Recruitment Methodology"),
       page("why-quorisx", "engagement-models", "Engagement Models"),
       page("why-quorisx", "quality-security", "Quality & Security"),

@@ -70,7 +70,14 @@ const socialLinks: [LucideIcon, string][] = [
   [Mail, "Email"],
 ];
 
+const initialHeroSlide = {
+  src: "/us.png",
+  alt: "",
+  label: "QUORISX",
+};
+
 const heroSlides = [
+  initialHeroSlide,
   {
     src: "/images/img.jpg",
     alt: "Colleagues working together in a bright modern office",
@@ -108,21 +115,24 @@ const trustSteps: [LucideIcon, string, string][] = [
   ],
 ];
 
-const ways: [LucideIcon, string, string][] = [
+const ways: [LucideIcon, string, string, string][] = [
   [
     UsersRound,
     "Extend Your Team",
     "Dedicated professionals working within the client’s direction and systems.",
+    "team-extension",
   ],
   [
     Workflow,
     "Outsource a Function",
     "Managed workflows or departments with clear responsibilities, reporting, and performance expectations.",
+    "managed-function",
   ],
   [
     Rocket,
     "Deliver a Solution",
     "Outcome-focused projects such as websites, software, digital marketing, or automation.",
+    "project-solution",
   ],
 ];
 
@@ -580,6 +590,7 @@ function Index() {
   const [hoveredQuality, setHoveredQuality] = useState<number | null>(null);
   const [qualityVisible, setQualityVisible] = useState(false);
   const qualitySectionRef = useRef<HTMLElement>(null);
+  const activeHeroSlideData = heroSlides[activeHeroSlide] ?? initialHeroSlide;
 
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
@@ -617,26 +628,21 @@ function Index() {
 
       {/* Hero */}
       <section className="group/hero relative isolate min-h-[590px] overflow-hidden bg-ink md:min-h-[min(760px,calc(100svh-6.5rem))]">
-        {heroSlides.map((slide, index) => (
-          <img
-            key={`${slide.src}-${activeHeroSlide === index ? activeHeroSlide : "hidden"}`}
-            src={slide.src}
-            alt=""
-            aria-hidden="true"
-            width={1600}
-            height={1104}
-            className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-700 motion-reduce:transition-none ${
-              activeHeroSlide === index
-                ? "animate-[hero-image-reveal_5.2s_ease-out_both] opacity-55 motion-reduce:animate-none"
-                : "opacity-0"
-            }`}
-          />
-        ))}
+        <img
+          key={activeHeroSlideData.src}
+          src={activeHeroSlideData.src}
+          alt=""
+          aria-hidden="true"
+          width={1600}
+          height={1104}
+          fetchPriority="high"
+          className="absolute inset-0 z-[1] h-full w-full animate-[hero-image-reveal_5.2s_ease-out_both] object-cover opacity-55 motion-reduce:animate-none"
+        />
         <div
-          className="absolute inset-0 bg-gradient-to-r from-ink/95 via-ink/65 to-ink/15"
+          className="absolute inset-0 z-[2] bg-gradient-to-r from-ink/95 via-ink/65 to-ink/15"
           aria-hidden="true"
         />
-        <div className="relative mx-auto flex min-h-[590px] max-w-7xl items-center px-6 py-20 md:min-h-[min(760px,calc(100svh-6.5rem))] md:py-24">
+        <div className="relative z-[3] mx-auto flex min-h-[590px] max-w-7xl items-center px-6 py-20 md:min-h-[min(760px,calc(100svh-6.5rem))] md:py-24">
           <div className="relative max-w-4xl border-y border-accent/45 py-6 pl-5 sm:pl-8 md:border-y-0 md:border-l-2 md:py-3">
             <span
               aria-hidden="true"
@@ -695,7 +701,7 @@ function Index() {
           aria-label="Choose a hero background"
         >
           <span className="text-[8px] font-semibold uppercase tracking-[0.14em] text-white/70 sm:text-[9px]">
-            {heroSlides[activeHeroSlide].label}
+            {activeHeroSlideData.label}
           </span>
           <span aria-hidden="true" className="text-[8px] text-white/40">
             {String(activeHeroSlide + 1).padStart(2, "0")} /{" "}
@@ -809,7 +815,7 @@ function Index() {
       </Section>
 
       {/* Three ways */}
-      <Section className="bg-background pb-12 pt-12 md:pb-20 md:pt-16">
+      <Section id="ways" className="bg-background pb-12 pt-12 md:pb-20 md:pt-16">
         <div className="mx-auto mb-12 max-w-3xl text-center md:mb-16">
           <p className="eyebrow mb-3">Our services</p>
           <h2 className="text-3xl leading-[1.05] md:text-5xl">Three Ways to Work With Us</h2>
@@ -817,12 +823,8 @@ function Index() {
             Flexible ways to add expertise, support operations, and move important work forward.
           </p>
         </div>
-        <ol className="relative grid gap-8 sm:grid-cols-3 sm:gap-5">
-          <span
-            aria-hidden="true"
-            className="pointer-events-none absolute left-[16.666%] right-[16.666%] top-12 hidden h-px bg-accent/25 sm:block"
-          />
-          {ways.map(([Icon, title, description], index) => {
+        <ol className="relative grid gap-8 sm:grid-cols-2 sm:gap-8 lg:grid-cols-3">
+          {ways.map(([Icon, title, description, slug], index) => {
             const selected = activeWay === index;
             return (
               <li key={title} className="relative">
@@ -866,6 +868,18 @@ function Index() {
                     <Check aria-label="Selected" className="mt-3 h-4 w-4 shrink-0 text-accent" />
                   )}
                 </button>
+                <div className="mt-1 flex justify-center">
+                  <a
+                    href={`/ways-to-work/${slug}`}
+                    className="group/link inline-flex min-h-11 items-center justify-center gap-2 rounded-full border border-accent bg-accent px-5 text-[10px] font-bold uppercase tracking-[0.15em] text-accent-foreground shadow-md shadow-accent/15 transition-all duration-300 hover:-translate-y-1 hover:border-accent hover:bg-accent/90 hover:text-accent-foreground hover:shadow-lg hover:shadow-accent/25 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
+                  >
+                    Learn more
+                    <ArrowUpRight
+                      aria-hidden="true"
+                      className="h-4 w-4 transition-transform duration-300 group-hover/link:translate-x-0.5 group-hover/link:-translate-y-0.5"
+                    />
+                  </a>
+                </div>
               </li>
             );
           })}

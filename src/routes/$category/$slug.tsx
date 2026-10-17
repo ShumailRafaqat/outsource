@@ -16,6 +16,8 @@ import { SoftwareDevelopmentPage } from "@/components/expertise/pages/software-d
 import { IndustryDetailPage } from "@/components/industries/industry-detail-page";
 import { getIndustryPage } from "@/components/industries/industry-data";
 import { comingSoonPage } from "@/lib/site-navigation";
+import { getWaysToWorkPage } from "@/lib/ways-to-work";
+import { WaysToWorkPage } from "@/components/ways-to-work/ways-to-work-page";
 
 export const Route = createFileRoute("/$category/$slug")({
   beforeLoad: ({ params }) => {
@@ -39,6 +41,8 @@ export const Route = createFileRoute("/$category/$slug")({
       params.category === "why-quorisx" && params.slug === "engagement-models";
     const isQualitySecurity =
       params.category === "why-quorisx" && params.slug === "quality-security";
+    const waysToWorkPage =
+      params.category === "ways-to-work" ? getWaysToWorkPage(params.slug) : undefined;
     const isAdminRoles = params.category === "expertise" && params.slug === "admin-executive";
     const isSalesGrowthRoles =
       params.category === "expertise" &&
@@ -89,11 +93,13 @@ export const Route = createFileRoute("/$category/$slug")({
                     ? "Engagement Models — Quorisx"
                     : isQualitySecurity
                       ? "Quality & Security — Quorisx"
-                      : isDedicatedExpertisePage
-                        ? `${expertiseTitle} Roles — Quorisx`
-                        : page
-                          ? `${page.label} — Quorisx`
-                          : "Page Not Found — Quorisx",
+                      : waysToWorkPage
+                        ? `${waysToWorkPage.title} — How to Work With Quorisx`
+                        : isDedicatedExpertisePage
+                          ? `${expertiseTitle} Roles — Quorisx`
+                          : page
+                            ? `${page.label} — Quorisx`
+                            : "Page Not Found — Quorisx",
         },
         {
           name: "description",
@@ -109,11 +115,13 @@ export const Route = createFileRoute("/$category/$slug")({
                     ? "Explore dedicated team, managed function, and project-based engagement models with Quorisx."
                     : isQualitySecurity
                       ? "Learn how Quorisx approaches quality assurance, clear ownership, confidentiality, client access, and delivery oversight."
-                      : isDedicatedExpertisePage
-                        ? `Explore ${expertiseTitle} roles from Quorisx, with dedicated professionals matched to your team's requirements.`
-                        : page
-                          ? `${page.label}: dedicated information from Quorisx is coming soon.`
-                          : "The requested page could not be found.",
+                      : waysToWorkPage
+                        ? `${waysToWorkPage.title}: ${waysToWorkPage.summary}`
+                        : isDedicatedExpertisePage
+                          ? `Explore ${expertiseTitle} roles from Quorisx, with dedicated professionals matched to your team's requirements.`
+                          : page
+                            ? `${page.label}: dedicated information from Quorisx is coming soon.`
+                            : "The requested page could not be found.",
         },
       ],
     };
@@ -125,6 +133,11 @@ function ComingSoonPage() {
   const { category, slug } = Route.useParams();
   const page = comingSoonPage(category, slug);
   const industry = category === "industries" ? getIndustryPage(slug) : undefined;
+  const waysToWorkPage = category === "ways-to-work" ? getWaysToWorkPage(slug) : undefined;
+
+  if (waysToWorkPage) {
+    return <WaysToWorkPage slug={slug} />;
+  }
 
   if (category === "solutions" && slug === "website-development") {
     return <WebsiteDevelopmentPage />;

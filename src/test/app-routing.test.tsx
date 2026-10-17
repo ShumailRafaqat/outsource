@@ -5,10 +5,18 @@ import { describe, expect, it } from "vitest";
 import { routeTree } from "@/routeTree.gen";
 import { navigationGroups } from "@/lib/site-navigation";
 import { expertiseFunctions, toRoleSlug } from "@/components/expertise/data";
+import { shouldShowSplash } from "@/routes/__root";
 
 // Match routes without running loaders or rendering: loaders may need a server or
 // network the test run lacks, and jsdom never loads the stylesheets React waits on.
 describe("App routing", () => {
+  it("shows the intro splash only on the Website Development page", () => {
+    expect(shouldShowSplash("/")).toBe(false);
+    expect(shouldShowSplash("/solutions/website-development")).toBe(true);
+    expect(shouldShowSplash("/solutions/website-development/")).toBe(true);
+    expect(shouldShowSplash("/solutions/digital-marketing-seo")).toBe(false);
+  });
+
   it("keeps Finance & Accounting out of the advertised expertise and business functions", () => {
     const expertiseNavigation = navigationGroups.find((group) => group.label === "Our Expertise");
 
@@ -83,12 +91,12 @@ describe("App routing", () => {
     expect(matches.at(-1)?.routeId).not.toBe(rootRouteId);
   });
 
-  it("puts Global Operating Model first and links to the homepage section", () => {
+  it("puts Global Operating Model first and links to the homepage", () => {
     const whyNavigation = navigationGroups.find((group) => group.label === "Why Quorisx");
 
     expect(whyNavigation?.items[0]).toEqual({
       label: "Global Operating Model",
-      href: "/#presence",
+      href: "/",
     });
   });
 
