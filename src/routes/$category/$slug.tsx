@@ -5,8 +5,8 @@ import { EngagementModelsPage } from "@/components/why-quorisx/engagement-models
 import { QualitySecurityPage } from "@/components/why-quorisx/quality-security-page";
 import { RecruitmentMethodologyPage } from "@/components/why-quorisx/recruitment-methodology-page";
 import { DigitalMarketingSeoPage } from "@/components/solutions/pages/digital-marketing-seo";
-import { AiAutomationPage } from "@/components/solutions/pages/ai-automation";
 import { PaidAdsLeadGenerationPage } from "@/components/solutions/pages/paid-ads-lead-generation";
+import { AiAutomationPage } from "@/components/solutions/pages/ai-automation";
 import { WebsiteDevelopmentPage } from "@/components/solutions/pages/website-development";
 import { AdminExecutivePage } from "@/components/expertise/pages/admin-executive";
 import { CustomerServicePage } from "@/components/expertise/pages/customer-service";
@@ -94,7 +94,7 @@ export const Route = createFileRoute("/$category/$slug")({
               : isDigitalMarketingSeo
                 ? "Digital Marketing & SEO — Quorisx"
                 : isPaidAdsLeadGeneration
-                  ? "Paid Ads & Lead Generation Services | Quorisx"
+                  ? "Paid Ads & Lead Generation — Quorisx"
                   : isAiAutomation
                     ? "AI & Automation — Quorisx"
                     : isEngagementModels
@@ -120,7 +120,7 @@ export const Route = createFileRoute("/$category/$slug")({
               : isDigitalMarketingSeo
                 ? "SEO, local search, paid campaigns, and useful content to help customers discover your business and take the next step."
                 : isPaidAdsLeadGeneration
-                  ? "Explore paid advertising, conversion-focused landing pages, lead capture and campaign reporting support with Quorisx."
+                  ? "Reach the right audience, turn interest into meaningful enquiries, and build paid advertising campaigns around your business goals."
                   : isAiAutomation
                     ? "Practical AI and automation to streamline customer support, lead follow-up, admin tasks, and business workflows."
                     : isEngagementModels

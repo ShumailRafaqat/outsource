@@ -22,6 +22,7 @@ describe("SiteHeader expertise role links", () => {
 
     fireEvent.click(exploreButtons[0]);
 
+    expect(container.querySelector(".site-header-role-list")).toBeInTheDocument();
     const roleLink = expertiseMenu.getByRole("link", { name: "General Virtual Assistant" });
     expect(roleLink).toHaveAttribute(
       "href",
@@ -45,6 +46,7 @@ describe("SiteHeader expertise role links", () => {
 
     fireEvent.click(exploreButtons[0]);
 
+    expect(container.querySelector(".site-header-role-list")).toBeInTheDocument();
     const roleLink = mobileNavigation.getByRole("link", { name: "General Virtual Assistant" });
     expect(roleLink).toHaveAttribute(
       "href",

@@ -247,7 +247,7 @@ export function SiteHeader() {
                             {isRoleGroupOpen && (
                               <div
                                 id={rolesId}
-                                className="mt-1 grid max-h-48 gap-1 overflow-y-auto border-t border-ink-border/70 pt-2"
+                                className="site-header-role-list mt-1 grid max-h-48 gap-1 overflow-y-auto border-t border-ink-border/70 pt-2"
                               >
                                 {roleGroup.roles.map((role) => (
                                   <a
@@ -369,7 +369,7 @@ export function SiteHeader() {
                               {isRoleGroupOpen && (
                                 <div
                                   id={rolesId}
-                                  className="mt-1 grid max-h-48 gap-1 overflow-y-auto border-t border-ink-border/70 pt-2"
+                                  className="site-header-role-list mt-1 grid max-h-48 gap-1 overflow-y-auto border-t border-ink-border/70 pt-2"
                                 >
                                   {roleGroup.roles.map((role) => (
                                     <a

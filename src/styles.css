@@ -321,6 +321,29 @@
   }
 }
 
+.site-header-role-list {
+  scrollbar-color: color-mix(in srgb, var(--accent-bright) 72%, transparent) transparent;
+  scrollbar-width: thin;
+}
+
+.site-header-role-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.site-header-role-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.site-header-role-list::-webkit-scrollbar-thumb {
+  border: 1px solid var(--ink);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--accent-bright) 72%, transparent);
+}
+
+.site-header-role-list::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-bright);
+}
+
 /* Quorisx: white, dot, opening window, full green wordmark, upward exit. */
 .qx-splash {
   --qx-green: #092a36;
