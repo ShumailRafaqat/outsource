@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@/components/ui/dialog";
 import { createFileRoute } from "@tanstack/react-router";
 import {
@@ -13,6 +13,10 @@ import {
   Phone,
 } from "lucide-react";
 import { SiteHeader } from "@/components/site-header";
+import { customerServiceFunction } from "@/components/expertise/data/customer-service";
+import { marketingCreativeFunction } from "@/components/expertise/data/marketing-creative";
+import { softwareDevelopmentFunction } from "@/components/expertise/data/software-development";
+import { isMarketingPrototypeRole } from "@/components/expertise/marketing-role-prototype-content";
 
 export const Route = createFileRoute("/contact")({
   head: () => ({
@@ -58,9 +62,37 @@ function ContactPage() {
   const [submitted, setSubmitted] = useState(false);
   const [popupOpen, setPopupOpen] = useState(false);
   const [whatsappUrl, setWhatsappUrl] = useState("");
+  const [selectedRole, setSelectedRole] = useState("");
+  const [industry, setIndustry] = useState("");
+  const [supportChannels, setSupportChannels] = useState("");
+  const [coverageWindow, setCoverageWindow] = useState("");
+  const [currentSupportTools, setCurrentSupportTools] = useState("");
+  const [agentCount, setAgentCount] = useState("");
+  const [marketingTools, setMarketingTools] = useState("");
+  const [marketingHours, setMarketingHours] = useState("");
+  const [service, setService] = useState("Team extension");
+  const [staffingModel, setStaffingModel] = useState("");
   const busy = useRef(false);
   const pending = useRef<{ key: string; id: string } | null>(null);
   const formRef = useRef<HTMLFormElement>(null);
+
+  useEffect(() => {
+    const requestedRole = new URLSearchParams(window.location.search).get("role");
+    const role =
+      softwareDevelopmentFunction.roles.find((item) => item.title === requestedRole) ??
+      customerServiceFunction.roles.find((item) => item.title === requestedRole) ??
+      marketingCreativeFunction.roles.find((item) => item.title === requestedRole);
+    if (role) {
+      setSelectedRole(role.title);
+      if (softwareDevelopmentFunction.roles.some((item) => item.title === role.title)) {
+        setService("Software or IT services");
+      } else if (customerServiceFunction.roles.some((item) => item.title === role.title)) {
+        setService("Customer support");
+      } else {
+        setService("Website or digital marketing");
+      }
+    }
+  }, []);
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -68,16 +100,44 @@ function ContactPage() {
     const form = event.currentTarget;
     if (!form.reportValidity()) return;
     const data = new FormData(form);
+    const projectNeed = String(data.get("projectNeed") ?? "").trim();
+    const additionalMessage = String(data.get("additionalMessage") ?? "").trim();
+    const role = String(data.get("role") ?? "").trim();
+    const selectedStaffingModel = String(data.get("staffingModel") ?? "").trim();
+    const desiredHours = String(data.get("desiredHours") ?? "").trim();
+    const isLiveChatRole = role === "Live Chat Support Agent";
+    const isMarketingRole = isMarketingPrototypeRole(role);
+    const additionalDetails = [
+      (isLiveChatRole || isMarketingRole) && industry && `Industry: ${industry}`,
+      isLiveChatRole && agentCount && `Number of agents: ${agentCount}`,
+      isLiveChatRole && supportChannels && `Support channels: ${supportChannels}`,
+      isLiveChatRole && coverageWindow && `Preferred hours or time zone: ${coverageWindow}`,
+      isLiveChatRole && currentSupportTools && `Current support tools: ${currentSupportTools}`,
+      isMarketingRole && marketingTools && `Current marketing platforms: ${marketingTools}`,
+      isMarketingRole && marketingHours && `Preferred hours or time zone: ${marketingHours}`,
+    ]
+      .filter(Boolean)
+      .join("\n");
+    const message = [
+      role && `Role of interest: ${role}`,
+      selectedStaffingModel && `Staffing model: ${selectedStaffingModel}`,
+      desiredHours && `Desired weekly hours: ${desiredHours}`,
+      `Project need: ${projectNeed}`,
+      additionalDetails,
+      additionalMessage && `Additional context: ${additionalMessage}`,
+    ]
+      .filter(Boolean)
+      .join("\n\n");
     const fields = {
       name: String(data.get("name") ?? "").trim(),
       email: String(data.get("email") ?? "").trim(),
       company: String(data.get("company") ?? "").trim(),
       service: String(data.get("service") ?? "").trim(),
-      message: String(data.get("message") ?? "").trim(),
+      message,
       website: String(data.get("website") ?? ""),
     };
-    if (!fields.name || !fields.email || !fields.message) {
-      setError("Please complete your name, work email, and message.");
+    if (!fields.name || !fields.email || !projectNeed) {
+      setError("Please complete your name, work email, and project need.");
       return;
     }
     const key = JSON.stringify(fields);
@@ -88,31 +148,48 @@ function ContactPage() {
     const controller = new AbortController();
     const timeout = window.setTimeout(() => controller.abort(), 45000);
     try {
-      const response = await fetch("https://script.google.com/macros/s/AKfycbxddV5XXdvEN0eEFzRX28cGdkV-lyPL4GVg2OiOaJS9AHAHZmMbmzCi6lIF3MrmB2as/exec", {
-        method: "POST",
-        headers: { "Content-Type": "text/plain;charset=utf-8" },
-        body: JSON.stringify({ ...fields, requestId: pending.current.id }),
-        signal: controller.signal,
-        credentials: "omit",
-        redirect: "follow",
-      });
+      const response = await fetch(
+        "https://script.google.com/macros/s/AKfycbxddV5XXdvEN0eEFzRX28cGdkV-lyPL4GVg2OiOaJS9AHAHZmMbmzCi6lIF3MrmB2as/exec",
+        {
+          method: "POST",
+          headers: { "Content-Type": "text/plain;charset=utf-8" },
+          body: JSON.stringify({ ...fields, requestId: pending.current.id }),
+          signal: controller.signal,
+          credentials: "omit",
+          redirect: "follow",
+        },
+      );
       if (!response.ok) throw new Error("We could not confirm your submission. Please try again.");
       const result = await response.json();
       if (result.saved !== true) {
-        throw new Error(result.code === "RATE_LIMIT"
-          ? "You have submitted several enquiries recently. Please wait ten minutes before trying again."
-          : result.code === "VALIDATION"
-            ? "Please check your form details and try again."
-            : "We could not confirm your submission. Please try again.");
+        throw new Error(
+          result.code === "RATE_LIMIT"
+            ? "You have submitted several enquiries recently. Please wait ten minutes before trying again."
+            : result.code === "VALIDATION"
+              ? "Please check your form details and try again."
+              : "We could not confirm your submission. Please try again.",
+        );
       }
-      const text = ["*New Website Enquiry — Quorisx*", "", `*Name:* ${fields.name}`, `*Work email:* ${fields.email}`, `*Company:* ${fields.company || "Not provided"}`, `*Interested in:* ${fields.service}`, "", "*Message:*", fields.message].join("\n");
+      const text = [
+        "*New Website Enquiry — Quorisx*",
+        "",
+        `*Name:* ${fields.name}`,
+        `*Work email:* ${fields.email}`,
+        `*Company:* ${fields.company || "Not provided"}`,
+        `*Interested in:* ${fields.service}`,
+        "",
+        "*Message:*",
+        fields.message,
+      ].join("\n");
       setWhatsappUrl(`https://wa.me/12402882006?text=${encodeURIComponent(text)}`);
       setSubmitted(true);
       setPopupOpen(true);
     } catch (err) {
-      setError(err instanceof Error && err.name !== "AbortError" && err.name !== "TypeError"
-        ? err.message
-        : "We could not confirm your submission. Please check your connection and try again.");
+      setError(
+        err instanceof Error && err.name !== "AbortError" && err.name !== "TypeError"
+          ? err.message
+          : "We could not confirm your submission. Please check your connection and try again.",
+      );
     } finally {
       window.clearTimeout(timeout);
       busy.current = false;
@@ -125,9 +202,20 @@ function ContactPage() {
     setSubmitted(false);
     setError("");
     setWhatsappUrl("");
+    setStaffingModel("");
+    setIndustry("");
+    setSupportChannels("");
+    setCoverageWindow("");
+    setCurrentSupportTools("");
+    setAgentCount("");
+    setMarketingTools("");
+    setMarketingHours("");
     pending.current = null;
     formRef.current?.reset();
-    window.setTimeout(() => formRef.current?.querySelector<HTMLInputElement>('input[name="name"]')?.focus(), 0);
+    window.setTimeout(
+      () => formRef.current?.querySelector<HTMLInputElement>('input[name="name"]')?.focus(),
+      0,
+    );
   }
 
   return (
@@ -171,7 +259,7 @@ function ContactPage() {
         </DialogContent>
       </Dialog>
 
-      <main>
+      <main data-disable-hero-reveal>
         <section className="relative isolate overflow-hidden bg-ink px-6 py-14 md:py-20">
           <div
             aria-hidden="true"
@@ -363,7 +451,10 @@ function ContactPage() {
               </div>
               <form ref={formRef} onSubmit={handleSubmit} className="grid gap-5 sm:grid-cols-2">
                 <div aria-hidden="true" className="hidden">
-                  <label>Leave this field empty<input name="website" tabIndex={-1} autoComplete="off" /></label>
+                  <label>
+                    Leave this field empty
+                    <input name="website" tabIndex={-1} autoComplete="off" />
+                  </label>
                 </div>
                 <label className="text-sm font-semibold">
                   Your name <span className="text-accent">*</span>
@@ -408,25 +499,207 @@ function ContactPage() {
                   <select
                     name="service"
                     disabled={submitting || submitted}
-                    defaultValue="Team extension"
+                    value={service}
+                    onChange={(event) => setService(event.target.value)}
                     className="mt-2 w-full rounded-lg border bg-background px-4 py-3 font-normal outline-none transition-shadow focus:ring-2 focus:ring-accent/50"
                   >
                     <option>Team extension</option>
                     <option>Managed business function</option>
                     <option>Software or IT services</option>
+                    <option>Customer support</option>
                     <option>Website or digital marketing</option>
                     <option>Other project</option>
                   </select>
                 </label>
+                <label className="text-sm font-semibold">
+                  Role of interest
+                  <select
+                    name="role"
+                    value={selectedRole}
+                    disabled={submitting || submitted}
+                    onChange={(event) => {
+                      const selectedTitle = event.target.value;
+                      setSelectedRole(selectedTitle);
+                      if (
+                        softwareDevelopmentFunction.roles.some(
+                          (role) => role.title === selectedTitle,
+                        )
+                      ) {
+                        setService("Software or IT services");
+                      } else if (
+                        customerServiceFunction.roles.some((role) => role.title === selectedTitle)
+                      ) {
+                        setService("Customer support");
+                      } else if (isMarketingPrototypeRole(selectedTitle)) {
+                        setService("Website or digital marketing");
+                      } else {
+                        setService("Team extension");
+                      }
+                    }}
+                    className="mt-2 w-full rounded-lg border bg-background px-4 py-3 font-normal outline-none transition-shadow focus:ring-2 focus:ring-accent/50"
+                  >
+                    <option value="">Choose a role (optional)</option>
+                    {[
+                      ...softwareDevelopmentFunction.roles,
+                      ...customerServiceFunction.roles,
+                      ...marketingCreativeFunction.roles,
+                    ].map((role) => (
+                      <option key={role.title} value={role.title}>
+                        {role.title}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+                <label className="text-sm font-semibold">
+                  Staffing model
+                  <select
+                    name="staffingModel"
+                    value={staffingModel}
+                    disabled={submitting || submitted}
+                    onChange={(event) => setStaffingModel(event.target.value)}
+                    className="mt-2 w-full rounded-lg border bg-background px-4 py-3 font-normal outline-none transition-shadow focus:ring-2 focus:ring-accent/50"
+                  >
+                    <option value="">Not sure yet</option>
+                    <option value="One specialist">One specialist</option>
+                    <option value="Dedicated team">Dedicated team</option>
+                  </select>
+                </label>
+                <label className="text-sm font-semibold">
+                  Desired hours per week
+                  <input
+                    name="desiredHours"
+                    type="number"
+                    min="1"
+                    max="168"
+                    disabled={submitting || submitted}
+                    placeholder="Optional"
+                    className="mt-2 w-full rounded-lg border bg-background px-4 py-3 font-normal outline-none transition-shadow placeholder:text-muted-foreground/70 focus:ring-2 focus:ring-accent/50"
+                  />
+                </label>
                 <label className="text-sm font-semibold sm:col-span-2">
-                  How can we help? <span className="text-accent">*</span>
+                  What work do you need help with? <span className="text-accent">*</span>
                   <textarea
                     required
-                    name="message"
-                    maxLength={5000}
+                    name="projectNeed"
+                    maxLength={3500}
                     readOnly={submitting || submitted}
                     rows={5}
-                    placeholder="Tell us about your goals, timeline, or the kind of support you need..."
+                    placeholder={
+                      selectedRole === "Live Chat Support Agent"
+                        ? "Describe your chat queue, common questions, approved policies, and where agents should escalate..."
+                        : "Describe the project, tasks, or skills you need..."
+                    }
+                    className="mt-2 w-full resize-y rounded-lg border bg-background px-4 py-3 font-normal outline-none transition-shadow placeholder:text-muted-foreground/70 focus:ring-2 focus:ring-accent/50"
+                  />
+                </label>
+                {selectedRole === "Live Chat Support Agent" && (
+                  <>
+                    <label className="text-sm font-semibold">
+                      Industry
+                      <input
+                        name="industry"
+                        value={industry}
+                        disabled={submitting || submitted}
+                        onChange={(event) => setIndustry(event.target.value)}
+                        placeholder="e.g. E-commerce or SaaS"
+                        className="mt-2 w-full rounded-lg border bg-background px-4 py-3 font-normal outline-none transition-shadow placeholder:text-muted-foreground/70 focus:ring-2 focus:ring-accent/50"
+                      />
+                    </label>
+                    <label className="text-sm font-semibold">
+                      Number of agents
+                      <input
+                        name="agentCount"
+                        type="number"
+                        min="1"
+                        max="500"
+                        value={agentCount}
+                        disabled={submitting || submitted}
+                        onChange={(event) => setAgentCount(event.target.value)}
+                        placeholder="Optional"
+                        className="mt-2 w-full rounded-lg border bg-background px-4 py-3 font-normal outline-none transition-shadow placeholder:text-muted-foreground/70 focus:ring-2 focus:ring-accent/50"
+                      />
+                    </label>
+                    <label className="text-sm font-semibold">
+                      Chat channels
+                      <input
+                        name="supportChannels"
+                        value={supportChannels}
+                        disabled={submitting || submitted}
+                        onChange={(event) => setSupportChannels(event.target.value)}
+                        placeholder="Website, in-app, or other"
+                        className="mt-2 w-full rounded-lg border bg-background px-4 py-3 font-normal outline-none transition-shadow placeholder:text-muted-foreground/70 focus:ring-2 focus:ring-accent/50"
+                      />
+                    </label>
+                    <label className="text-sm font-semibold">
+                      Preferred hours or time zone
+                      <input
+                        name="coverageWindow"
+                        value={coverageWindow}
+                        disabled={submitting || submitted}
+                        onChange={(event) => setCoverageWindow(event.target.value)}
+                        placeholder="Optional"
+                        className="mt-2 w-full rounded-lg border bg-background px-4 py-3 font-normal outline-none transition-shadow placeholder:text-muted-foreground/70 focus:ring-2 focus:ring-accent/50"
+                      />
+                    </label>
+                    <label className="text-sm font-semibold sm:col-span-2">
+                      Current support tools
+                      <input
+                        name="currentSupportTools"
+                        value={currentSupportTools}
+                        disabled={submitting || submitted}
+                        onChange={(event) => setCurrentSupportTools(event.target.value)}
+                        placeholder="Optional — name your chat, ticketing, or CRM platforms"
+                        className="mt-2 w-full rounded-lg border bg-background px-4 py-3 font-normal outline-none transition-shadow placeholder:text-muted-foreground/70 focus:ring-2 focus:ring-accent/50"
+                      />
+                    </label>
+                  </>
+                )}
+                {isMarketingPrototypeRole(selectedRole) && (
+                  <>
+                    <label className="text-sm font-semibold">
+                      Industry
+                      <input
+                        name="industry"
+                        value={industry}
+                        disabled={submitting || submitted}
+                        onChange={(event) => setIndustry(event.target.value)}
+                        placeholder="e.g. Retail, real estate, or B2B software"
+                        className="mt-2 w-full rounded-lg border bg-background px-4 py-3 font-normal outline-none transition-shadow placeholder:text-muted-foreground/70 focus:ring-2 focus:ring-accent/50"
+                      />
+                    </label>
+                    <label className="text-sm font-semibold">
+                      Preferred hours or time zone
+                      <input
+                        name="marketingHours"
+                        value={marketingHours}
+                        disabled={submitting || submitted}
+                        onChange={(event) => setMarketingHours(event.target.value)}
+                        placeholder="Optional"
+                        className="mt-2 w-full rounded-lg border bg-background px-4 py-3 font-normal outline-none transition-shadow placeholder:text-muted-foreground/70 focus:ring-2 focus:ring-accent/50"
+                      />
+                    </label>
+                    <label className="text-sm font-semibold sm:col-span-2">
+                      Current marketing tools or assets
+                      <input
+                        name="marketingTools"
+                        value={marketingTools}
+                        disabled={submitting || submitted}
+                        onChange={(event) => setMarketingTools(event.target.value)}
+                        placeholder="Optional — platforms, brand files, footage, or other relevant assets"
+                        className="mt-2 w-full rounded-lg border bg-background px-4 py-3 font-normal outline-none transition-shadow placeholder:text-muted-foreground/70 focus:ring-2 focus:ring-accent/50"
+                      />
+                    </label>
+                  </>
+                )}
+                <label className="text-sm font-semibold sm:col-span-2">
+                  Additional message{" "}
+                  <span className="font-normal text-muted-foreground">(optional)</span>
+                  <textarea
+                    name="additionalMessage"
+                    maxLength={1000}
+                    readOnly={submitting || submitted}
+                    rows={3}
+                    placeholder="Any context, timing, or questions you'd like to add?"
                     className="mt-2 w-full resize-y rounded-lg border bg-background px-4 py-3 font-normal outline-none transition-shadow placeholder:text-muted-foreground/70 focus:ring-2 focus:ring-accent/50"
                   />
                 </label>
@@ -435,17 +708,32 @@ function ContactPage() {
                   disabled={submitting || submitted}
                   className="inline-flex items-center justify-center gap-2 rounded-lg bg-accent px-6 py-3.5 text-sm font-semibold text-accent-foreground transition-all hover:gap-3 hover:opacity-90 sm:col-span-2 sm:justify-self-start"
                 >
-                  {submitting ? "Submitting…" : submitted ? "Enquiry submitted" : "Send enquiry"} <ArrowRight aria-hidden="true" className="h-4 w-4" />
+                  {submitting ? "Submitting…" : submitted ? "Enquiry submitted" : "Send enquiry"}{" "}
+                  <ArrowRight aria-hidden="true" className="h-4 w-4" />
                 </button>
                 <p className="text-xs leading-relaxed text-muted-foreground sm:col-span-2">
-                  Your details will be sent to our team to respond to your enquiry.
+                  Privacy notice: Your details will be sent to our team to respond to your enquiry.
                 </p>
-                {error && <p role="alert" className="text-sm text-destructive sm:col-span-2">{error}</p>}
-                {submitted && <div role="status" className="space-y-3 text-sm sm:col-span-2">
-                  <p>Your enquiry has been submitted successfully.</p>
-                  <button type="button" onClick={() => setPopupOpen(true)} className="font-semibold text-accent underline">View confirmation / WhatsApp</button>
-                  <button type="button" onClick={sendAnother} className="ml-4 underline">Send another enquiry</button>
-                </div>}
+                {error && (
+                  <p role="alert" className="text-sm text-destructive sm:col-span-2">
+                    {error}
+                  </p>
+                )}
+                {submitted && (
+                  <div role="status" className="space-y-3 text-sm sm:col-span-2">
+                    <p>Your enquiry has been submitted successfully.</p>
+                    <button
+                      type="button"
+                      onClick={() => setPopupOpen(true)}
+                      className="font-semibold text-accent underline"
+                    >
+                      View confirmation / WhatsApp
+                    </button>
+                    <button type="button" onClick={sendAnother} className="ml-4 underline">
+                      Send another enquiry
+                    </button>
+                  </div>
+                )}
               </form>
             </div>
           </div>

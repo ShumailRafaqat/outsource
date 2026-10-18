@@ -8,7 +8,7 @@ describe("DigitalMarketingSeoPage", () => {
     render(<DigitalMarketingSeoPage />);
 
     expect(
-      screen.getByRole("heading", { name: /Your Competitors Are Ranking\. Are You/i }),
+      screen.getByRole("heading", { name: /Be There When Customers Are Ready/i }),
     ).toBeVisible();
     expect(
       screen.getByRole("heading", { name: /Most Businesses Are Invisible Where It Matters/i }),
@@ -79,7 +79,14 @@ describe("DigitalMarketingSeoPage", () => {
     render(<DigitalMarketingSeoPage />);
 
     expect(document.querySelectorAll(".dm-hero-copy [data-dm-hero-entry]")).toHaveLength(5);
-    expect(document.querySelector(".dm-hero-panel")).toHaveAttribute("data-dm-hero-panel");
+    const heroImage = document.querySelector(".dm-hero-visual img");
+    expect(heroImage).toHaveAttribute("src", "/marketing.png");
+    expect(heroImage).toHaveAttribute(
+      "alt",
+      "A marketing team collaborating on brand and campaign ideas",
+    );
+    expect(document.querySelectorAll(".dm-hero-services article")).toHaveLength(3);
+    expect(document.querySelector(".dm-hero-journey")).not.toBeInTheDocument();
     expect(document.querySelectorAll(".dm-benefits-grid [data-dm-reveal]")).toHaveLength(6);
     expect(document.querySelectorAll(".dm-approach-grid [data-dm-reveal]")).toHaveLength(6);
     expect(document.querySelectorAll(".dm-services-grid [data-dm-reveal]")).toHaveLength(3);

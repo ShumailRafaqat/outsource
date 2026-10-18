@@ -1,0 +1,45 @@
+.expertise-scroll-motion-active
+  main
+  > .live-chat-hero.expertise-scroll-motion-visible
+  .live-chat-message {
+  opacity: 0;
+  animation: live-chat-message-arrive 520ms cubic-bezier(0.2, 0.7, 0.2, 1) forwards;
+}
+
+.expertise-scroll-motion-active
+  main
+  > .live-chat-hero.expertise-scroll-motion-visible
+  .live-chat-message--customer {
+  animation-delay: 600ms;
+}
+
+.expertise-scroll-motion-active
+  main
+  > .live-chat-hero.expertise-scroll-motion-visible
+  .live-chat-message--agent {
+  animation-delay: 1050ms;
+}
+
+@keyframes live-chat-message-arrive {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 8px, 0);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .live-chat-hero__heading,
+  .live-chat-hero__description,
+  .live-chat-hero__actions,
+  .live-chat-hero__note,
+  .live-chat-message {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}

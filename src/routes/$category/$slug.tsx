@@ -3,8 +3,10 @@ import { createFileRoute, notFound, redirect } from "@tanstack/react-router";
 import { SiteHeader } from "@/components/site-header";
 import { EngagementModelsPage } from "@/components/why-quorisx/engagement-models-page";
 import { QualitySecurityPage } from "@/components/why-quorisx/quality-security-page";
+import { RecruitmentMethodologyPage } from "@/components/why-quorisx/recruitment-methodology-page";
 import { DigitalMarketingSeoPage } from "@/components/solutions/pages/digital-marketing-seo";
 import { AiAutomationPage } from "@/components/solutions/pages/ai-automation";
+import { PaidAdsLeadGenerationPage } from "@/components/solutions/pages/paid-ads-lead-generation";
 import { WebsiteDevelopmentPage } from "@/components/solutions/pages/website-development";
 import { AdminExecutivePage } from "@/components/expertise/pages/admin-executive";
 import { CustomerServicePage } from "@/components/expertise/pages/customer-service";
@@ -36,11 +38,15 @@ export const Route = createFileRoute("/$category/$slug")({
       params.category === "solutions" && params.slug === "website-development";
     const isDigitalMarketingSeo =
       params.category === "solutions" && params.slug === "digital-marketing-seo";
+    const isPaidAdsLeadGeneration =
+      params.category === "solutions" && params.slug === "paid-ads-lead-generation";
     const isAiAutomation = params.category === "solutions" && params.slug === "ai-automation";
     const isEngagementModels =
       params.category === "why-quorisx" && params.slug === "engagement-models";
     const isQualitySecurity =
       params.category === "why-quorisx" && params.slug === "quality-security";
+    const isRecruitmentMethodology =
+      params.category === "why-quorisx" && params.slug === "our-approach";
     const waysToWorkPage =
       params.category === "ways-to-work" ? getWaysToWorkPage(params.slug) : undefined;
     const isAdminRoles = params.category === "expertise" && params.slug === "admin-executive";
@@ -87,19 +93,23 @@ export const Route = createFileRoute("/$category/$slug")({
               ? "Website Development & Search Visibility — Quorisx"
               : isDigitalMarketingSeo
                 ? "Digital Marketing & SEO — Quorisx"
-                : isAiAutomation
-                  ? "AI & Automation — Quorisx"
-                  : isEngagementModels
-                    ? "Engagement Models — Quorisx"
-                    : isQualitySecurity
-                      ? "Quality & Security — Quorisx"
-                      : waysToWorkPage
-                        ? `${waysToWorkPage.title} — How to Work With Quorisx`
-                        : isDedicatedExpertisePage
-                          ? `${expertiseTitle} Roles — Quorisx`
-                          : page
-                            ? `${page.label} — Quorisx`
-                            : "Page Not Found — Quorisx",
+                : isPaidAdsLeadGeneration
+                  ? "Paid Ads & Lead Generation Services | Quorisx"
+                  : isAiAutomation
+                    ? "AI & Automation — Quorisx"
+                    : isEngagementModels
+                      ? "Engagement Models — Quorisx"
+                      : isQualitySecurity
+                        ? "Quality & Security — Quorisx"
+                        : isRecruitmentMethodology
+                          ? "Our Recruitment Methodology — Quorisx"
+                          : waysToWorkPage
+                            ? `${waysToWorkPage.title} — How to Work With Quorisx`
+                            : isDedicatedExpertisePage
+                              ? `${expertiseTitle} Roles — Quorisx`
+                              : page
+                                ? `${page.label} — Quorisx`
+                                : "Page Not Found — Quorisx",
         },
         {
           name: "description",
@@ -109,19 +119,23 @@ export const Route = createFileRoute("/$category/$slug")({
               ? "Build a fast, mobile-friendly website with SEO foundations, local search support, integrations, and ongoing improvements."
               : isDigitalMarketingSeo
                 ? "SEO, local search, paid campaigns, and useful content to help customers discover your business and take the next step."
-                : isAiAutomation
-                  ? "Practical AI and automation to streamline customer support, lead follow-up, admin tasks, and business workflows."
-                  : isEngagementModels
-                    ? "Explore dedicated team, managed function, and project-based engagement models with Quorisx."
-                    : isQualitySecurity
-                      ? "Learn how Quorisx approaches quality assurance, clear ownership, confidentiality, client access, and delivery oversight."
-                      : waysToWorkPage
-                        ? `${waysToWorkPage.title}: ${waysToWorkPage.summary}`
-                        : isDedicatedExpertisePage
-                          ? `Explore ${expertiseTitle} roles from Quorisx, with dedicated professionals matched to your team's requirements.`
-                          : page
-                            ? `${page.label}: dedicated information from Quorisx is coming soon.`
-                            : "The requested page could not be found.",
+                : isPaidAdsLeadGeneration
+                  ? "Explore paid advertising, conversion-focused landing pages, lead capture and campaign reporting support with Quorisx."
+                  : isAiAutomation
+                    ? "Practical AI and automation to streamline customer support, lead follow-up, admin tasks, and business workflows."
+                    : isEngagementModels
+                      ? "Explore dedicated team, managed function, and project-based engagement models with Quorisx."
+                      : isQualitySecurity
+                        ? "Learn how Quorisx approaches quality assurance, clear ownership, confidentiality, client access, and delivery oversight."
+                        : isRecruitmentMethodology
+                          ? "We follow a structured, skills-based recruitment process to connect businesses with qualified professionals who align with their operational needs, company culture, and long-term goals."
+                          : waysToWorkPage
+                            ? `${waysToWorkPage.title}: ${waysToWorkPage.summary}`
+                            : isDedicatedExpertisePage
+                              ? `Explore ${expertiseTitle} roles from Quorisx, with dedicated professionals matched to your team's requirements.`
+                              : page
+                                ? `${page.label}: dedicated information from Quorisx is coming soon.`
+                                : "The requested page could not be found.",
         },
       ],
     };
@@ -147,6 +161,10 @@ function ComingSoonPage() {
     return <DigitalMarketingSeoPage />;
   }
 
+  if (category === "solutions" && slug === "paid-ads-lead-generation") {
+    return <PaidAdsLeadGenerationPage />;
+  }
+
   if (category === "solutions" && slug === "ai-automation") {
     return <AiAutomationPage />;
   }
@@ -157,6 +175,10 @@ function ComingSoonPage() {
 
   if (category === "why-quorisx" && slug === "quality-security") {
     return <QualitySecurityPage />;
+  }
+
+  if (category === "why-quorisx" && slug === "our-approach") {
+    return <RecruitmentMethodologyPage />;
   }
 
   if (category === "industries") {

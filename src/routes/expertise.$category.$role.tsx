@@ -1,8 +1,23 @@
 import { createFileRoute, notFound } from "@tanstack/react-router";
-import { ArrowLeft, ArrowUpRight } from "lucide-react";
+import type { ReactNode } from "react";
 
-import { SiteHeader } from "@/components/site-header";
-import { expertiseFunctions, toRoleSlug } from "@/components/expertise/data";
+import { ExpertiseScrollMotion } from "@/components/expertise/expertise-scroll-motion";
+import {
+  expertiseFunctions,
+  financeAccountingFunction,
+  toRoleSlug,
+} from "@/components/expertise/data";
+import { RoleDetailExperience } from "@/components/expertise/role-detail-experience";
+import { SoftwareRoleDetailPage } from "@/components/expertise/software-role-detail-page";
+import { softwareDevelopmentFunction } from "@/components/expertise/data/software-development";
+import { marketingCreativeFunction } from "@/components/expertise/data/marketing-creative";
+import { LiveChatSupportAgentPage } from "@/components/expertise/pages/live-chat-support-agent";
+import { MarketingRolePrototypePage } from "@/components/expertise/marketing-role-prototype-page";
+import {
+  getMarketingRolePrototype,
+  isMarketingPrototypeRole,
+} from "@/components/expertise/marketing-role-prototype-content";
+import { getSoftwareRoleContent } from "@/components/expertise/software-role-content";
 import { AdministrativeAssistantPage } from "@/components/expertise/pages/administrative-assistant";
 import { CorporateTravelCoordinatorPage } from "@/components/expertise/pages/corporate-travel-coordinator";
 import { DataEntryAssistantPage } from "@/components/expertise/pages/data-entry-assistant";
@@ -18,23 +33,57 @@ import { SalesDevelopmentRepresentativePage } from "@/components/expertise/pages
 export const Route = createFileRoute("/expertise/$category/$role")({
   head: ({ params }) => {
     const role = findRole(params.category, params.role);
+    const marketingPrototype =
+      role?.group.href === marketingCreativeFunction.href
+        ? getMarketingRolePrototype(role.role.title)
+        : undefined;
+    const roleDescription = role
+      ? ((role.group.href === softwareDevelopmentFunction.href
+          ? getSoftwareRoleContent(role.role.title)?.value
+          : marketingPrototype?.metaDescription) ??
+        `${role.role.description} Learn more about this ${role.group.label} role at Quorisx.`)
+      : "The requested role could not be found.";
+
     return {
       meta: [
-        { title: role ? `${role.role.title} — Quorisx` : "Role Not Found — Quorisx" },
+        {
+          title: role
+            ? (marketingPrototype?.metaTitle ??
+              `${role.role.title} — ${role.group.label} | Quorisx`)
+            : "Role Not Found — Quorisx",
+        },
         {
           name: "description",
+          content: roleDescription,
+        },
+        {
+          property: "og:title",
           content: role
-            ? `${role.role.description} Learn more about this ${role.group.label} role at Quorisx.`
-            : "The requested role could not be found.",
+            ? (marketingPrototype?.metaTitle ?? `${role.role.title} — Quorisx`)
+            : "Role Not Found — Quorisx",
+        },
+        {
+          property: "og:description",
+          content: roleDescription,
         },
       ],
+      links: role
+        ? [
+            {
+              rel: "canonical",
+              href: `https://quorisx.com/expertise/${params.category}/${params.role}`,
+            },
+          ]
+        : [],
     };
   },
-  component: RoleComingSoonPage,
+  component: RoleDetailPage,
 });
 
 function findRole(category: string, roleSlug: string) {
-  const group = expertiseFunctions.find(
+  // Finance detail URLs remain directly available without adding the category to advertised navigation.
+  const detailGroups = [...expertiseFunctions, financeAccountingFunction];
+  const group = detailGroups.find(
     (functionGroup) => functionGroup.href === `/expertise/${category}`,
   );
   const role = group?.roles.find((item) => toRoleSlug(item.title) === roleSlug);
@@ -42,7 +91,7 @@ function findRole(category: string, roleSlug: string) {
   return group && role ? { group, role } : undefined;
 }
 
-function RoleComingSoonPage() {
+function RoleDetailPage() {
   const { category, role: roleSlug } = Route.useParams();
   const result = findRole(category, roleSlug);
 
@@ -52,87 +101,73 @@ function RoleComingSoonPage() {
 
   const { group, role } = result;
 
+  if (group.href === softwareDevelopmentFunction.href) {
+    return withExpertiseScrollMotion(category, roleSlug, <SoftwareRoleDetailPage role={role} />);
+  }
+
+  if (role.title === "Live Chat Support Agent") {
+    return withExpertiseScrollMotion(category, roleSlug, <LiveChatSupportAgentPage />);
+  }
+
+  if (group.href === marketingCreativeFunction.href && isMarketingPrototypeRole(role.title)) {
+    return withExpertiseScrollMotion(
+      category,
+      roleSlug,
+      <MarketingRolePrototypePage role={role.title} />,
+    );
+  }
+
   if (role.title === "General Virtual Assistant") {
-    return <GeneralVirtualAssistantPage />;
+    return withExpertiseScrollMotion(category, roleSlug, <GeneralVirtualAssistantPage />);
   }
 
   if (role.title === "Administrative Assistant") {
-    return <AdministrativeAssistantPage />;
+    return withExpertiseScrollMotion(category, roleSlug, <AdministrativeAssistantPage />);
   }
 
   if (role.title === "Personal Assistant") {
-    return <PersonalAssistantPage />;
+    return withExpertiseScrollMotion(category, roleSlug, <PersonalAssistantPage />);
   }
 
   if (role.title === "Executive Assistant") {
-    return <ExecutiveAssistantPage />;
+    return withExpertiseScrollMotion(category, roleSlug, <ExecutiveAssistantPage />);
   }
 
   if (role.title === "Corporate Travel Coordinator") {
-    return <CorporateTravelCoordinatorPage />;
+    return withExpertiseScrollMotion(category, roleSlug, <CorporateTravelCoordinatorPage />);
   }
 
   if (role.title === "Data Entry Assistant") {
-    return <DataEntryAssistantPage />;
+    return withExpertiseScrollMotion(category, roleSlug, <DataEntryAssistantPage />);
   }
 
   if (role.title === "Project Manager") {
-    return <ProjectManagerPage />;
+    return withExpertiseScrollMotion(category, roleSlug, <ProjectManagerPage />);
   }
 
   if (role.title === "Event Coordinator") {
-    return <EventCoordinatorPage />;
+    return withExpertiseScrollMotion(category, roleSlug, <EventCoordinatorPage />);
   }
 
   if (role.title === "Sales Development Representative") {
-    return <SalesDevelopmentRepresentativePage />;
+    return withExpertiseScrollMotion(category, roleSlug, <SalesDevelopmentRepresentativePage />);
   }
 
   if (role.title === "Outbound Calling Agent") {
-    return <OutboundCallingAgentPage />;
+    return withExpertiseScrollMotion(category, roleSlug, <OutboundCallingAgentPage />);
   }
 
   if (role.title === "IT SDR") {
-    return <ItSdrPage />;
+    return withExpertiseScrollMotion(category, roleSlug, <ItSdrPage />);
   }
 
-  return (
-    <div className="min-h-screen bg-background">
-      <SiteHeader />
-      <main className="flex min-h-[calc(100vh-5rem)] items-center bg-ink px-6 py-16">
-        <section className="mx-auto w-full max-w-5xl">
-          <a
-            href={group.href}
-            className="inline-flex items-center gap-2 text-sm font-semibold text-ink-muted transition-colors hover:text-ink-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
-          >
-            <ArrowLeft aria-hidden="true" className="h-4 w-4" />
-            Back to {group.label} roles
-          </a>
-          <div className="mt-10 max-w-3xl">
-            <p className="eyebrow mb-4">{group.label}</p>
-            <h1 className="font-display text-4xl leading-tight text-ink-foreground sm:text-5xl md:text-6xl">
-              {role.title}
-            </h1>
-            <p className="mt-6 max-w-2xl text-base leading-relaxed text-ink-muted sm:text-lg">
-              {role.description}
-            </p>
-            <span className="mt-8 inline-flex rounded-full border border-accent/40 bg-accent/10 px-4 py-2 text-xs font-bold uppercase tracking-[0.2em] text-accent">
-              Coming Soon
-            </span>
-            <p className="mt-6 max-w-xl text-sm leading-relaxed text-ink-muted">
-              We’re preparing more details about this role. Contact our team to discuss your
-              requirements in the meantime.
-            </p>
-            <a
-              href="/contact#inquiry"
-              className="mt-8 inline-flex min-h-12 items-center gap-2 rounded-md bg-accent px-5 py-3 text-sm font-bold text-accent-foreground transition-all hover:-translate-y-0.5 hover:bg-accent/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-ink"
-            >
-              Ask about this role
-              <ArrowUpRight aria-hidden="true" className="h-4 w-4" />
-            </a>
-          </div>
-        </section>
-      </main>
-    </div>
+  return withExpertiseScrollMotion(
+    category,
+    roleSlug,
+    <RoleDetailExperience group={group} role={role} />,
   );
+}
+
+function withExpertiseScrollMotion(category: string, roleSlug: string, page: ReactNode) {
+  return <ExpertiseScrollMotion pageKey={`${category}/${roleSlug}`}>{page}</ExpertiseScrollMotion>;
 }

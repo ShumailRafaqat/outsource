@@ -26,6 +26,7 @@ import {
   Database,
   FileCode2,
   FileSpreadsheet,
+  GitBranch,
   GraduationCap,
   Handshake,
   HandCoins,
@@ -55,6 +56,7 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import { SiteHeader } from "@/components/site-header";
+import { useExpertiseScrollMotion } from "./use-expertise-scroll-motion";
 import { expertiseFunctions } from "./data";
 import type { ExpertisePageConfig } from "./data/types";
 
@@ -115,6 +117,17 @@ function getRoleIcon(title: string): LucideIcon {
   if (roleTitle.includes("data validation")) return BadgeCheck;
   if (roleTitle.includes("technical writer")) return FileCode2;
   if (roleTitle.includes("technical ops")) return Workflow;
+  if (roleTitle.includes("data analyst") || roleTitle.includes("data engineer")) return Database;
+  if (roleTitle.includes("database administrator")) return Server;
+  if (roleTitle.includes("devops") || roleTitle.includes("cloud")) return Server;
+  if (roleTitle.includes("automation qa") || roleTitle.includes("software tester")) return Bug;
+  if (roleTitle.includes("technical support") || roleTitle.includes("it support")) return LifeBuoy;
+  if (roleTitle.includes("software maintenance")) return Wrench;
+  if (roleTitle.includes("ai")) return Workflow;
+  if (roleTitle.includes("api integration")) return GitBranch;
+  if (roleTitle.includes("crm developer")) return Database;
+  if (roleTitle.includes("mobile app")) return Smartphone;
+  if (roleTitle.includes("web application")) return Code2;
   if (roleTitle.includes("n8n")) return Workflow;
   if (roleTitle.includes("php")) return FileCode2;
   if (roleTitle.includes("ai developer") || roleTitle.includes("ml engineer")) return Code2;
@@ -183,6 +196,7 @@ export function ExpertiseRolesLayout({
     (group) => group.href === selectedFunction.href,
   );
   const [openFaq, setOpenFaq] = useState<number | null>(0);
+  const motionRef = useExpertiseScrollMotion<HTMLElement>(selectedFunction.href);
   const primaryPhoto = heroPhotos[0];
   const supportPhoto = heroPhotos[1];
   const teamPhoto = heroPhotos[2];
@@ -192,7 +206,7 @@ export function ExpertiseRolesLayout({
   return (
     <div className="min-h-screen bg-background">
       <SiteHeader />
-      <main>
+      <main ref={motionRef} data-disable-hero-reveal>
         <section className="relative isolate overflow-hidden bg-background px-6 py-8 sm:py-10 lg:py-10">
           <div
             aria-hidden="true"

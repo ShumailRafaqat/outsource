@@ -131,13 +131,6 @@ const performanceSignals = [
   ["Website action", "Form submissions, calls, and conversion rate"],
 ];
 
-const marketingChannels: [string, string, LucideIcon][] = [
-  ["Organic search", "Build visibility", Search],
-  ["Local presence", "Reach nearby customers", MapPin],
-  ["Paid campaigns", "Capture active demand", Target],
-  ["Useful content", "Answer real questions", FileText],
-];
-
 export function DigitalMarketingSeoPage() {
   const pageRef = useRef<HTMLElement>(null);
 
@@ -171,23 +164,22 @@ export function DigitalMarketingSeoPage() {
       <SiteHeader />
       <main className="dm-page" ref={pageRef}>
         <section className="dm-hero" aria-labelledby="dm-hero-title">
-          <div className="dm-hero-orbit dm-hero-orbit-one" aria-hidden="true" />
-          <div className="dm-hero-orbit dm-hero-orbit-two" aria-hidden="true" />
           <div className="dm-container dm-hero-layout">
             <div className="dm-hero-copy">
               <p className="dm-eyebrow" data-dm-hero-entry>
-                <span /> DIGITAL MARKETING &amp; SEARCH VISIBILITY
+                <span /> DIGITAL MARKETING, BUILT AROUND GROWTH
               </p>
               <h1 id="dm-hero-title" data-dm-hero-entry>
-                Your Competitors
+                Be There When
                 <br />
-                <em>Are Ranking. Are You?</em>
+                <em>Customers Are Ready.</em>
               </h1>
               <p className="dm-hero-lead" data-dm-hero-entry>
-                People are searching for your services every day.
+                Get in front of the right people, at the right moment.
               </p>
               <p className="dm-hero-description" data-dm-hero-entry>
-                If you’re not showing up, someone else is getting the business.
+                Bring search, content, and campaigns together with a clear path from first click to
+                meaningful action.
               </p>
               <div className="dm-hero-actions" data-dm-hero-entry>
                 <a className="dm-button" href="/contact#inquiry">
@@ -198,41 +190,48 @@ export function DigitalMarketingSeoPage() {
                 </a>
               </div>
             </div>
-            <aside
-              className="dm-hero-panel"
-              aria-label="A connected marketing approach"
-              data-dm-hero-panel
-            >
-              <div className="dm-panel-top">
-                <span className="dm-live-dot" />
-                <span>YOUR GROWTH PLAN</span>
-                <span>01—04</span>
-              </div>
-              <div className="dm-search-preview">
+            <figure className="dm-hero-visual" data-dm-hero-visual>
+              <img
+                src="/marketing.png"
+                alt="A marketing team collaborating on brand and campaign ideas"
+                width="1024"
+                height="1024"
+                fetchPriority="high"
+              />
+              <figcaption>
+                <span>STRATEGY THAT CONNECTS</span>
+                <strong>From first impression to next step.</strong>
+              </figcaption>
+            </figure>
+          </div>
+          <div className="dm-container dm-hero-services" aria-label="Ways we support growth">
+            <article>
+              <span>
                 <Search aria-hidden="true" />
-                <span>What customers are searching for</span>
-                <ArrowRight aria-hidden="true" />
+              </span>
+              <div>
+                <strong>Search visibility</strong>
+                <small>Show up for relevant intent</small>
               </div>
-              <div className="dm-channel-list">
-                {marketingChannels.map(([label, detail, ChannelIcon]) => {
-                  return (
-                    <div className="dm-channel-row" key={label}>
-                      <span className="dm-channel-icon">
-                        <ChannelIcon aria-hidden="true" />
-                      </span>
-                      <span className="dm-channel-copy">
-                        <strong>{label}</strong>
-                        <small>{detail}</small>
-                      </span>
-                      <ArrowUpRight aria-hidden="true" className="dm-channel-arrow" />
-                    </div>
-                  );
-                })}
+            </article>
+            <article>
+              <span>
+                <Target aria-hidden="true" />
+              </span>
+              <div>
+                <strong>Focused campaigns</strong>
+                <small>Reach the right audience</small>
               </div>
-              <p className="dm-panel-foot">
-                <span /> Plan · Measure · Improve
-              </p>
-            </aside>
+            </article>
+            <article>
+              <span>
+                <FileText aria-hidden="true" />
+              </span>
+              <div>
+                <strong>Useful content</strong>
+                <small>Help people choose confidently</small>
+              </div>
+            </article>
           </div>
           <a className="dm-scroll-cue" href="#dm-reality">
             Scroll to explore <ArrowDown aria-hidden="true" />

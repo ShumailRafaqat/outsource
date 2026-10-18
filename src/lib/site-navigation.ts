@@ -21,7 +21,8 @@ export const navigationGroups: NavigationGroup[] = [
       page("expertise", "sales-development", "Sales & Development"),
       page("expertise", "marketing-creative", "Marketing & Creative"),
       page("expertise", "software-dev", "Software & Dev"),
-      page("expertise", "customer-service", "Customer Service"),
+      page("expertise", "hr-people-operations", "HR & People Operations"),
+      page("expertise", "customer-service", "Customer Services & Support"),
     ],
   },
   {

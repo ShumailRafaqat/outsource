@@ -40,6 +40,8 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import { SiteHeader } from "@/components/site-header";
+import { navigationGroups } from "@/lib/site-navigation";
+import { expertiseFunctions, toRoleSlug } from "@/components/expertise/data";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -63,11 +65,11 @@ export const Route = createFileRoute("/")({
   component: Index,
 });
 
-const socialLinks: [LucideIcon, string][] = [
-  [Linkedin, "LinkedIn"],
-  [Facebook, "Facebook"],
-  [Instagram, "Instagram"],
-  [Mail, "Email"],
+const socialLinks: [LucideIcon, string, string][] = [
+  [Linkedin, "LinkedIn", "https://www.linkedin.com/company/quorisx/home/"],
+  [Facebook, "Facebook", "https://www.facebook.com/Quorisx/"],
+  [Instagram, "Instagram", "https://www.instagram.com/quorisx_/"],
+  [Mail, "Email", "mailto:info@quorisx.com"],
 ];
 
 const initialHeroSlide = {
@@ -142,35 +144,35 @@ const services: [LucideIcon, string, string, string, string][] = [
     "Admin & Executive",
     "Seamless management of calendars, inboxes, documentation, and day-to-day operations.",
     "/expertise/admin-executive",
-    "/images/image2.jpg",
+    "/admin.png",
   ],
   [
     Target,
     "Sales & Development",
     "Lead research, qualification, CRM updates, and appointment setting that accelerate your sales pipeline.",
     "/expertise/sales-development",
-    "/images/imag%204.jpg",
+    "/sale.png",
   ],
   [
     Megaphone,
     "Marketing & Creative",
     "Campaign coordination, content production, and creative support that make your brand stand out.",
     "/expertise/marketing-creative",
-    "/images/imag%204.jpg",
+    "/mar.png",
   ],
   [
     Code2,
     "Software & Dev",
     "Reliable software engineering, quality assurance, and ongoing product support that keep your systems running smoothly.",
     "/expertise/software-dev",
-    "/images/img.jpg",
+    "/dev.png",
   ],
   [
     Headset,
-    "Customer Service",
+    "Customer Services & Support",
     "Responsive support across calls, email, and chat that turns every customer interaction into a positive experience.",
     "/expertise/customer-service",
-    "/images/imag%204.jpg",
+    "/2.jpg",
   ],
 ];
 
@@ -588,8 +590,7 @@ function Index() {
   const [activeModel, setActiveModel] = useState(0);
   const [openQuality, setOpenQuality] = useState<number | null>(null);
   const [hoveredQuality, setHoveredQuality] = useState<number | null>(null);
-  const [qualityVisible, setQualityVisible] = useState(false);
-  const qualitySectionRef = useRef<HTMLElement>(null);
+  const homeRef = useRef<HTMLDivElement>(null);
   const activeHeroSlideData = heroSlides[activeHeroSlide] ?? initialHeroSlide;
 
   useEffect(() => {
@@ -605,25 +606,50 @@ function Index() {
   }, [activeHeroSlide]);
 
   useEffect(() => {
-    const section = qualitySectionRef.current;
-    if (!section) return;
+    const root = homeRef.current;
+    if (
+      !root ||
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches ||
+      !("IntersectionObserver" in window)
+    ) {
+      return;
+    }
+
+    const cards = root.querySelectorAll<HTMLElement>("[data-home-card]");
+    if (!cards.length) return;
+
+    const siblingIndexes = new Map<Element, number>();
+    cards.forEach((card) => {
+      const parent = card.parentElement;
+      if (!parent) return;
+
+      const index = siblingIndexes.get(parent) ?? 0;
+      siblingIndexes.set(parent, index + 1);
+      card.style.setProperty("--home-card-delay", `${(index % 3) * 100}ms`);
+    });
+
+    root.classList.add("home-card-reveal-active");
 
     const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setQualityVisible(true);
-          observer.disconnect();
-        }
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add("home-card-revealed");
+          observer.unobserve(entry.target);
+        });
       },
-      { rootMargin: "0px 0px -8% 0px", threshold: 0.12 },
+      { threshold: 0.12, rootMargin: "0px 0px -6% 0px" },
     );
 
-    observer.observe(section);
-    return () => observer.disconnect();
+    cards.forEach((card) => observer.observe(card));
+    return () => {
+      observer.disconnect();
+      root.classList.remove("home-card-reveal-active");
+    };
   }, []);
 
   return (
-    <div className="min-h-screen">
+    <div ref={homeRef} className="min-h-screen">
       <SiteHeader />
 
       {/* Hero */}
@@ -655,19 +681,25 @@ function Index() {
             <p className="eyebrow mb-5 text-[0.625rem]">
               Global Outsourcing & Business Solutions · Canton, Georgia, USA
             </p>
-            <h1 className="max-w-5xl font-display text-[1.7rem] font-bold uppercase leading-[1.02] tracking-[-0.045em] text-ink-foreground sm:text-[2.1rem] md:text-[2.7rem] lg:text-[3.35rem]">
+            <h1
+              data-home-hero-reveal="heading"
+              className="max-w-5xl font-display text-[1.7rem] font-normal leading-[1.08] tracking-[-0.025em] text-ink-foreground sm:text-[2.1rem] md:text-[2.7rem] lg:text-[3.35rem]"
+            >
               Extend Your Team.
               <br />
               Streamline Operations.
               <br />
               <span className="text-accent">Accelerate Growth.</span>
             </h1>
-            <p className="mt-6 max-w-xl text-sm leading-relaxed text-ink-muted sm:text-base">
+            <p
+              data-home-hero-reveal="description"
+              className="mt-6 max-w-xl text-sm leading-relaxed text-ink-muted sm:text-base"
+            >
               From individual offshore professionals to fully managed business functions, Quorisx
               helps organizations scale through flexible staffing, operational support, and
               specialized technology and digital solutions.
             </p>
-            <div className="mt-8 flex flex-wrap gap-3 sm:gap-4">
+            <div data-home-hero-reveal="actions" className="mt-8 flex flex-wrap gap-3 sm:gap-4">
               <a
                 href="#outsourcing"
                 className="group inline-flex h-12 items-center justify-between gap-4 rounded-md bg-accent py-1.5 pl-5 pr-2 text-sm font-semibold text-accent-foreground shadow-lg shadow-accent/20 transition-all duration-300 hover:-translate-y-1 hover:bg-accent/90 hover:shadow-xl hover:shadow-accent/25 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-ink motion-reduce:transition-none sm:h-14 sm:pl-6"
@@ -827,7 +859,7 @@ function Index() {
           {ways.map(([Icon, title, description, slug], index) => {
             const selected = activeWay === index;
             return (
-              <li key={title} className="relative">
+              <li key={title} className="relative" data-home-card>
                 <button
                   type="button"
                   aria-pressed={selected}
@@ -897,6 +929,7 @@ function Index() {
           {services.map(([Icon, title, description, href, image], index) => (
             <article
               key={title}
+              data-home-card
               className="group relative isolate flex min-h-[27rem] flex-col overflow-hidden border border-border bg-card text-foreground shadow-sm transition-all duration-300 ease-out hover:-translate-y-1 hover:border-accent/50 hover:shadow-xl"
             >
               <div className="relative h-40 overflow-hidden sm:h-44">
@@ -1011,6 +1044,7 @@ function Index() {
               <button
                 key={title}
                 type="button"
+                data-home-card
                 aria-pressed={selected}
                 onClick={() => setActiveIndustry(index)}
                 className={`group flex min-h-16 items-center gap-3 rounded-md border px-3 py-3 text-left transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-ink sm:px-4 ${
@@ -1053,6 +1087,7 @@ function Index() {
             return (
               <article
                 key={title}
+                data-home-card
                 className={`group flex flex-col rounded-xl border bg-card p-5 shadow-sm transition-all duration-300 ease-out hover:-translate-y-1 hover:border-accent/50 hover:shadow-lg sm:p-6 ${
                   expanded ? "border-accent/50 shadow-md" : "border-border"
                 }`}
@@ -1328,6 +1363,7 @@ function Index() {
               {trustSteps.map(([Icon, title, description], index) => (
                 <li
                   key={title}
+                  data-home-card
                   className="group relative rounded-lg border border-white/10 bg-white/[0.035] p-4 transition-colors duration-200 hover:border-accent/35 hover:bg-white/[0.06] sm:p-5"
                 >
                   <div className="flex items-center justify-between">
@@ -1349,11 +1385,7 @@ function Index() {
 
       {/* Quality */}
       <Section className="bg-background">
-        <section
-          ref={qualitySectionRef}
-          aria-labelledby="quality-heading"
-          data-quality-visible={qualityVisible}
-        >
+        <section aria-labelledby="quality-heading">
           <div className="mb-10 grid gap-8 lg:mb-14 lg:grid-cols-[1fr_auto] lg:items-end">
             <div className="max-w-3xl">
               <p className="eyebrow mb-4">Quality, security & accountability</p>
@@ -1386,6 +1418,7 @@ function Index() {
               return (
                 <article
                   key={title}
+                  data-home-card
                   className={`quality-feature group relative isolate overflow-hidden rounded-xl border bg-card p-5 shadow-sm transition-all duration-300 sm:p-6 ${
                     expanded
                       ? "border-accent/50 shadow-lg shadow-accent/[0.07]"
@@ -1486,10 +1519,14 @@ function Index() {
         </div>
       </Section>
 
-      <footer className="bg-background px-6 pb-5 pt-8 md:pt-12">
-        <div className="mx-auto max-w-7xl">
-          <section className="mb-0 grid overflow-hidden bg-ink md:grid-cols-[0.95fr_1.05fr]">
-            <div className="relative min-h-52 md:min-h-64">
+      <footer className="relative overflow-hidden bg-ink px-5 pb-6 pt-10 text-ink-foreground sm:px-6 md:pt-14">
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute -right-40 top-20 h-96 w-96 rounded-full border border-accent/10 shadow-[0_0_0_50px_rgba(48,171,183,0.025),0_0_0_100px_rgba(48,171,183,0.02)]"
+        />
+        <div className="relative mx-auto max-w-7xl">
+          <section className="mb-10 grid overflow-hidden rounded-3xl border border-ink-border bg-[#0c2635] shadow-2xl shadow-black/15 md:grid-cols-[0.9fr_1.1fr]">
+            <div className="relative min-h-56 md:min-h-72">
               <img
                 src="/images/imag%204.jpg"
                 alt="Quorisx team members collaborating around a table"
@@ -1498,174 +1535,185 @@ function Index() {
               />
               <div
                 aria-hidden="true"
-                className="absolute inset-0 bg-gradient-to-r from-ink/35 via-ink/55 to-ink/90 md:bg-gradient-to-l"
+                className="absolute inset-0 bg-gradient-to-t from-ink/90 via-ink/25 to-ink/10 md:bg-gradient-to-r md:from-transparent md:via-ink/20 md:to-[#0c2635]"
               />
+              <span className="absolute bottom-5 left-5 inline-flex items-center gap-2 rounded-full border border-white/20 bg-ink/45 px-3 py-1.5 text-[9px] font-semibold uppercase tracking-[0.16em] text-white/85 backdrop-blur-md">
+                <span className="h-1.5 w-1.5 rounded-full bg-accent" />
+                One partner. Global reach.
+              </span>
             </div>
-            <div className="flex flex-col items-start justify-center gap-5 p-6 sm:p-8 md:p-10">
+            <div className="flex flex-col items-start justify-center gap-6 p-6 sm:p-9 md:p-12">
               <div className="max-w-2xl">
-                <p className="text-[9px] font-bold uppercase tracking-[0.18em] text-accent">
+                <p className="inline-flex items-center gap-2 text-[9px] font-bold uppercase tracking-[0.19em] text-accent-bright">
+                  <span className="h-px w-6 bg-accent-bright" />
                   Quorisx · Global business solutions
                 </p>
-                <h2 className="mt-2 font-sans text-2xl font-bold uppercase leading-tight text-ink-foreground sm:text-3xl">
-                  Contact us <span className="font-normal text-white/60">today!</span>
+                <h2 className="mt-4 max-w-xl font-display text-3xl leading-[1.08] tracking-tight text-ink-foreground sm:text-4xl md:text-5xl">
+                  Let’s move your business
+                  <span className="mt-1 block text-accent-bright">forward, together.</span>
                 </h2>
-                <p className="mt-3 max-w-lg text-xs leading-relaxed text-ink-muted sm:text-sm">
+                <p className="mt-4 max-w-lg text-sm leading-relaxed text-ink-muted">
                   Tell us what your business needs. We’ll help you find the right people, support,
                   or solution to move forward.
                 </p>
               </div>
               <a
-                href="/contact"
-                className="inline-flex shrink-0 items-center justify-center gap-2 rounded-full bg-accent px-4 py-2 text-xs font-semibold text-accent-foreground transition-all hover:-translate-y-0.5 hover:shadow-lg hover:shadow-accent/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-ink"
+                href="/contact#inquiry"
+                className="group inline-flex min-h-12 shrink-0 items-center justify-center gap-3 rounded-full bg-accent px-5 text-sm font-bold text-accent-foreground shadow-lg shadow-accent/15 transition-all duration-300 hover:-translate-y-0.5 hover:bg-accent-bright hover:shadow-xl hover:shadow-accent/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-ink"
               >
-                Contact us now <ArrowUpRight aria-hidden="true" className="h-3.5 w-3.5" />
+                Talk to our team
+                <ArrowUpRight
+                  aria-hidden="true"
+                  className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                />
               </a>
             </div>
           </section>
 
-          <div className="grid gap-8 border-b border-border py-8 sm:grid-cols-2 lg:grid-cols-[1.25fr_0.65fr_0.8fr_0.85fr_1fr] lg:gap-7 lg:py-10">
-            <div>
-              <a href="/" className="inline-flex font-display text-3xl text-foreground">
-                Quorisx<span className="text-accent">.</span>
+          <div className="grid gap-10 border-y border-ink-border py-9 sm:py-11 lg:grid-cols-[1.1fr_2.9fr] lg:gap-12">
+            <div className="max-w-sm">
+              <a
+                href="/"
+                className="group inline-flex font-display text-3xl tracking-tight text-ink-foreground"
+              >
+                Quorisx
+                <span className="text-accent transition-colors group-hover:text-accent-bright">
+                  .
+                </span>
               </a>
-              <p className="mt-3 max-w-sm text-xs leading-relaxed text-muted-foreground">
+              <p className="mt-3 text-sm leading-relaxed text-ink-muted">
                 People, processes, and digital expertise to help your business grow—with U.S.
                 headquarters and global delivery.
               </p>
-              <div className="mt-4 flex items-start gap-2 text-xs leading-relaxed text-muted-foreground">
-                <MapPin aria-hidden="true" className="mt-0.5 h-4 w-4 shrink-0 text-accent" />
+              <div className="mt-5 flex items-start gap-2 text-xs leading-relaxed text-ink-muted">
+                <MapPin aria-hidden="true" className="mt-0.5 h-4 w-4 shrink-0 text-accent-bright" />
                 Canton, Georgia · Bangkok, Thailand
               </div>
+              <div className="mt-6 flex flex-wrap gap-x-5 gap-y-3 text-xs">
+                <a
+                  className="inline-flex items-center gap-2 text-ink-muted transition-colors hover:text-accent-bright"
+                  href="mailto:info@quorisx.com"
+                >
+                  <Mail aria-hidden="true" className="h-4 w-4 text-accent-bright" />
+                  info@quorisx.com
+                </a>
+                <a
+                  className="inline-flex items-center gap-2 text-ink-muted transition-colors hover:text-accent-bright"
+                  href="tel:+12018129584"
+                >
+                  <Phone aria-hidden="true" className="h-4 w-4 text-accent-bright" />
+                  201-812-9584
+                </a>
+              </div>
               <div className="mt-6">
-                <p className="mb-3 text-[0.65rem] font-bold uppercase tracking-[0.18em] text-foreground">
+                <p className="mb-3 text-[0.62rem] font-bold uppercase tracking-[0.18em] text-ink-muted">
                   Connect with us
                 </p>
                 <div className="flex gap-2">
-                  {socialLinks.map(([Icon, label]) =>
-                    label === "Email" ? (
-                      <a
-                        key={label}
-                        href="mailto:info@quorisx.com"
-                        aria-label={label}
-                        title={label}
-                        className="group flex h-8 w-8 items-center justify-center rounded-full border border-border bg-card text-muted-foreground transition-all hover:-translate-y-0.5 hover:border-accent/70 hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
-                      >
-                        <Icon aria-hidden="true" className="h-4 w-4" />
-                      </a>
-                    ) : (
-                      <span
-                        key={label}
-                        role="img"
-                        aria-label={label}
-                        title={`${label} profile link has not been provided`}
-                        className="flex h-8 w-8 items-center justify-center rounded-full border border-border bg-card text-muted-foreground"
-                      >
-                        <Icon aria-hidden="true" className="h-4 w-4" />
-                      </span>
-                    ),
-                  )}
+                  {socialLinks.map(([Icon, label, href]) => (
+                    <a
+                      key={label}
+                      href={href}
+                      aria-label={label}
+                      title={label}
+                      target={label === "Email" ? undefined : "_blank"}
+                      rel={label === "Email" ? undefined : "noreferrer"}
+                      className="group flex h-9 w-9 items-center justify-center rounded-full border border-ink-border bg-white/[0.04] text-ink-muted transition-all hover:-translate-y-0.5 hover:border-accent/70 hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+                    >
+                      <Icon aria-hidden="true" className="h-4 w-4" />
+                    </a>
+                  ))}
                 </div>
               </div>
             </div>
 
-            <div>
-              <h2 className="text-xs font-bold text-foreground">Home</h2>
-              <nav
-                aria-label="Footer home links"
-                className="mt-4 flex flex-col gap-2.5 text-xs text-muted-foreground"
-              >
-                <a className="transition-colors hover:text-accent" href="/">
-                  Home
-                </a>
-                <a className="transition-colors hover:text-accent" href="#about">
-                  About us
-                </a>
-                <a className="transition-colors hover:text-accent" href="#industries">
-                  Industries
-                </a>
-                <a className="transition-colors hover:text-accent" href="/contact">
-                  Contact us
-                </a>
-              </nav>
-            </div>
-
-            <div>
-              <h2 className="text-xs font-bold text-foreground">Services</h2>
-              <nav
-                aria-label="Footer service links"
-                className="mt-4 flex flex-col gap-2.5 text-xs text-muted-foreground"
-              >
-                <a className="transition-colors hover:text-accent" href="#outsourcing">
-                  Outsourcing
-                </a>
-                <a
-                  className="transition-colors hover:text-accent"
-                  href="/solutions/software-development"
+            <nav
+              aria-label="Footer navigation"
+              className="grid grid-cols-2 gap-x-5 gap-y-8 sm:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4"
+            >
+              <section className="col-span-full" aria-labelledby="footer-expertise-heading">
+                <h2
+                  id="footer-expertise-heading"
+                  className="mb-4 flex items-center gap-2 text-[0.68rem] font-bold uppercase tracking-[0.13em] text-ink-foreground"
                 >
-                  Digital solutions
-                </a>
-                <a className="transition-colors hover:text-accent" href="#industries">
-                  Industries
-                </a>
-              </nav>
-            </div>
-
-            <div>
-              <h2 className="text-xs font-bold text-foreground">Quick Links</h2>
-              <nav
-                aria-label="Footer quick links"
-                className="mt-4 flex flex-col gap-2.5 text-xs text-muted-foreground"
-              >
-                <a className="transition-colors hover:text-accent" href="#why">
-                  Why Quorisx
-                </a>
-                <a className="transition-colors hover:text-accent" href="/about">
-                  About Quorisx
-                </a>
-                <a className="transition-colors hover:text-accent" href="/resources/faqs">
-                  FAQs
-                </a>
-              </nav>
-            </div>
-
-            <div>
-              <h2 className="text-xs font-bold text-foreground">Contact Us</h2>
-              <div className="mt-4 flex flex-col gap-3 text-xs text-muted-foreground">
-                <a
-                  className="flex items-center gap-3 transition-colors hover:text-accent"
-                  href="mailto:info@quorisx.com"
-                >
-                  <Mail aria-hidden="true" className="h-4 w-4 shrink-0 text-accent" />
-                  info@quorisx.com
-                </a>
-                <a
-                  className="flex items-center gap-3 transition-colors hover:text-accent"
-                  href="tel:+12018129584"
-                >
-                  <Phone aria-hidden="true" className="h-4 w-4 shrink-0 text-accent" />
-                  201-812-9584
-                </a>
-                <a
-                  className="flex items-start gap-3 transition-colors hover:text-accent"
-                  href="https://www.google.com/maps/search/?api=1&query=225%20Reformation%20Pkwy%20Ste%20200%2C%20Canton%2C%20GA%2030114"
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  <MapPin aria-hidden="true" className="mt-0.5 h-4 w-4 shrink-0 text-accent" />
-                  <span>
-                    225 Reformation Pkwy Ste 200
-                    <br />
-                    Canton, GA 30114
-                  </span>
-                </a>
-              </div>
-            </div>
+                  <span className="font-mono text-[9px] text-accent-bright">01</span>
+                  Our Expertise
+                </h2>
+                <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                  {expertiseFunctions.map((group) => (
+                    <li
+                      key={group.href}
+                      className="min-w-0 rounded-lg border border-ink-border bg-white/[0.025] p-3.5"
+                    >
+                      <a
+                        className="inline-flex min-h-6 items-center text-xs font-semibold text-ink-foreground transition-colors hover:text-accent-bright focus-visible:rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+                        href={group.href}
+                      >
+                        {group.label}
+                      </a>
+                      <details className="group mt-2 border-t border-ink-border pt-2">
+                        <summary className="flex min-h-8 cursor-pointer list-none items-center justify-between gap-3 text-[10px] font-medium text-ink-muted transition-colors hover:text-accent-bright focus-visible:rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent [&::-webkit-details-marker]:hidden">
+                          <span>Explore {group.roles.length} roles</span>
+                          <ChevronDown
+                            aria-hidden="true"
+                            className="size-3.5 shrink-0 transition-transform group-open:rotate-180"
+                          />
+                        </summary>
+                        <ul
+                          className="mt-2 grid gap-y-1.5 border-t border-ink-border pt-2 sm:grid-cols-2"
+                          aria-label={`${group.label} roles`}
+                        >
+                          {group.roles.map((role) => (
+                            <li key={role.title} className="min-w-0">
+                              <a
+                                className="inline-flex text-[10px] leading-relaxed text-ink-muted transition-colors hover:text-accent-bright focus-visible:rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+                                href={`${group.href}/${toRoleSlug(role.title)}`}
+                              >
+                                {role.title}
+                              </a>
+                            </li>
+                          ))}
+                        </ul>
+                      </details>
+                    </li>
+                  ))}
+                </ul>
+              </section>
+              {navigationGroups
+                .filter((group) => group.label !== "Our Expertise")
+                .map((group, groupIndex) => (
+                  <section key={group.label} aria-labelledby={`footer-group-${groupIndex}`}>
+                    <h2
+                      id={`footer-group-${groupIndex}`}
+                      className="mb-3 flex items-center gap-2 text-[0.68rem] font-bold uppercase tracking-[0.13em] text-ink-foreground"
+                    >
+                      <span className="font-mono text-[9px] text-accent-bright">
+                        {String(groupIndex + 2).padStart(2, "0")}
+                      </span>
+                      {group.label}
+                    </h2>
+                    <ul className="flex flex-col gap-2.5">
+                      {group.items.map((item) => (
+                        <li key={`${item.label}-${item.href}`}>
+                          <a
+                            className="group inline-flex items-start gap-1.5 text-[11px] leading-relaxed text-ink-muted transition-colors duration-200 hover:text-accent-bright focus-visible:rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+                            href={item.href}
+                          >
+                            <span className="mt-[0.45em] h-1 w-1 shrink-0 rounded-full bg-accent/55 transition-transform group-hover:scale-125 group-hover:bg-accent-bright" />
+                            {item.label}
+                          </a>
+                        </li>
+                      ))}
+                    </ul>
+                  </section>
+                ))}
+            </nav>
           </div>
 
-          <div className="flex flex-col gap-3 pt-4 text-[10px] text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex flex-col gap-3 pt-5 text-[10px] text-ink-muted sm:flex-row sm:items-center sm:justify-between">
             <span>© {new Date().getFullYear()} Quorisx. All rights reserved.</span>
             <span className="inline-flex items-center gap-2">
-              <span className="h-1.5 w-1.5 rounded-full bg-accent" />
+              <span className="h-1.5 w-1.5 rounded-full bg-accent shadow-[0_0_10px_rgba(48,171,183,0.8)]" />
               U.S. headquartered · Globally delivered
             </span>
           </div>

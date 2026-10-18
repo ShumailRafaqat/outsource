@@ -1,5 +1,7 @@
-import { fireEvent, render, screen, within } from "@testing-library/react";
+import { act, fireEvent, render, screen, within } from "@testing-library/react";
 import { beforeAll, afterAll, describe, expect, it, vi } from "vitest";
+
+import { getWebsiteArticle, websiteArticles } from "@/lib/website-articles";
 
 import { WebsiteDevelopmentPage } from "./website-development";
 
@@ -47,6 +49,21 @@ describe("WebsiteDevelopmentPage", () => {
       expect((panel as HTMLElement).style.position).not.toBe("sticky");
       expect((panel as HTMLElement).style.getPropertyValue("--wd-panel-top")).toBe("");
     });
+  });
+
+  it("marks hero copy for staggered entrance after the intro splash", () => {
+    render(<WebsiteDevelopmentPage />);
+
+    const hero = document.querySelector(".wd-hero");
+    const heroTitle = screen.getByRole("heading", {
+      name: "Give people a reason to choose your business.",
+    });
+
+    expect(hero).not.toHaveAttribute("data-hero-intro-ready", "true");
+    expect(heroTitle.querySelectorAll('[data-hero-reveal="item"]')).toHaveLength(3);
+    expect(document.querySelectorAll(".wd-hero [data-hero-reveal='item']")).toHaveLength(8);
+    expect(hero?.querySelector(".wd-hero-lead")).toHaveAttribute("data-hero-reveal", "item");
+    expect(hero?.querySelector(".wd-hero-actions")).toBeInTheDocument();
   });
 
   it("keeps the website path choices without rendering the removed detail panel", () => {
@@ -308,6 +325,12 @@ describe("WebsiteDevelopmentPage", () => {
     expect(screen.getByRole("heading", { name: /Our approach/i })).toBeInTheDocument();
     const processSection = document.querySelector(".wd-process-section") as HTMLElement;
     const process = within(processSection);
+    expect(processSection).toHaveClass("wd-process-editorial");
+    expect(processSection).not.toHaveClass("wd-approach-showcase");
+    expect(processSection.querySelector(".wd-process-film")).toBe(processSection.firstElementChild);
+    expect(processSection.querySelector(".wd-process-header")).toBe(
+      processSection.querySelector(".wd-process-film")?.nextElementSibling,
+    );
     expect(
       process.getByText(
         /We don’t just build and disappear\. We take your website from planning to a complete, search-ready launch/i,
@@ -470,19 +493,108 @@ describe("WebsiteDevelopmentPage", () => {
     expect(stackSection.querySelector(".wd-tech-outcome")).not.toBeInTheDocument();
   });
 
-  it("shows six crawlable, image-led insights before the audit form", () => {
+  it("auto-advances the eight-article carousel and pauses while the section has focus", async () => {
+    vi.useFakeTimers();
+    const { unmount } = render(<WebsiteDevelopmentPage />);
+    const insights = document.querySelector(".wd-insights") as HTMLElement;
+    const carousel = insights.querySelector("#wd-journal-carousel") as HTMLDivElement;
+    const carouselScroll = vi.fn();
+
+    insights.getBoundingClientRect = () => ({ top: 10, bottom: 600 }) as DOMRect;
+    Object.defineProperty(carousel, "scrollWidth", { configurable: true, value: 1200 });
+    Object.defineProperty(carousel, "clientWidth", { configurable: true, value: 500 });
+    Object.defineProperty(carousel.querySelector(".wd-journal-card"), "getBoundingClientRect", {
+      configurable: true,
+      value: () => ({ width: 320 }),
+    });
+    Object.defineProperty(carousel, "scrollBy", { configurable: true, value: carouselScroll });
+
+    try {
+      await act(async () => {
+        await vi.advanceTimersByTimeAsync(5200);
+      });
+      expect(carouselScroll).toHaveBeenCalledWith({ left: 320, behavior: "smooth" });
+
+      carousel.focus();
+      await act(async () => {
+        await vi.advanceTimersByTimeAsync(7000);
+      });
+      expect(carouselScroll).toHaveBeenCalledTimes(1);
+    } finally {
+      unmount();
+      vi.useRealTimers();
+    }
+  });
+
+  it("shows two featured articles and eight concise carousel cards without dates", () => {
     render(<WebsiteDevelopmentPage />);
     const insights = document.querySelector(".wd-insights") as HTMLElement;
     const section = within(insights);
     const cards = insights.querySelectorAll(".wd-journal-card");
+    const featured = insights.querySelector(".wd-journal-featured") as HTMLDivElement;
+    const carousel = insights.querySelector("#wd-journal-carousel") as HTMLDivElement;
 
     expect(
       section.getByRole("heading", {
         name: /Web Development Insights for Growing Businesses/i,
       }),
     ).toBeInTheDocument();
-    expect(cards).toHaveLength(6);
-    const carousel = insights.querySelector("#wd-journal-carousel") as HTMLDivElement;
+    expect(cards).toHaveLength(10);
+    expect(Array.from(cards).every((card) => card.hasAttribute("data-wd-reveal"))).toBe(true);
+    expect(featured.querySelectorAll(".wd-journal-card")).toHaveLength(2);
+    expect(carousel.querySelectorAll(".wd-journal-card")).toHaveLength(8);
+    expect(featured.querySelectorAll(".wd-editorial-art")).toHaveLength(2);
+    expect(featured.querySelectorAll('.wd-editorial-art img[src="/art1.png"]')).toHaveLength(1);
+    expect(featured.querySelectorAll('.wd-editorial-art img[src="/art2.png"]')).toHaveLength(1);
+    const enquiryArticle = Array.from(cards).find(
+      (card) =>
+        card.querySelector("h3")?.textContent ===
+        "A better website enquiry form starts with better questions.",
+    );
+    expect(enquiryArticle?.querySelector("img")).toHaveAttribute("src", "/art3.png");
+    expect(carousel).toHaveClass("wd-journal-row--carousel");
+    expect(featured).toHaveAttribute("aria-label", "Featured website articles");
+    expect(carousel).toHaveAttribute("aria-label", "More website development articles");
+    expect(
+      within(cards[9] as HTMLElement).getByRole("heading", {
+        name: "A practical routine for keeping website content current.",
+      }),
+    ).toBeInTheDocument();
+    expect(
+      cards[6].querySelector("a[href='/insights/benefits-of-a-business-website']"),
+    ).toBeTruthy();
+    expect(cards[0].querySelector("h3")).toHaveTextContent(
+      "They Heard About You. Then They Googled You.",
+    );
+    expect(cards[0].querySelector(".wd-journal-summary")).toHaveTextContent(
+      "A recommendation gets your name into the conversation. Your website helps people decide whether to take that conversation further.",
+    );
+    expect(cards[0].querySelectorAll(".wd-journal-summary")).toHaveLength(1);
+    expect(cards[1].querySelector("h3")).toHaveTextContent(
+      "Looks Impressive. But What Do You Actually Do?",
+    );
+    expect(cards[1].querySelector(".wd-journal-summary")).toHaveTextContent(
+      "Beautiful design earns attention. Clear messaging helps visitors understand your offer, recognise its value, and decide what to do next.",
+    );
+    expect(cards[1].querySelectorAll(".wd-journal-summary")).toHaveLength(1);
+    expect(cards[1].querySelector(".wd-journal-link")).toHaveAttribute(
+      "href",
+      "/insights/looks-impressive-but-what-do-you-actually-do",
+    );
+    expect(cards[2].querySelector("h3")).toHaveTextContent(
+      "They Clicked. They Waited. Did They Stay?",
+    );
+    expect(cards[2].querySelector(".wd-journal-link")).toHaveAttribute(
+      "href",
+      "/insights/they-clicked-they-waited-did-they-stay",
+    );
+    expect(cards[3].querySelector("h3")).toHaveTextContent(
+      "Your Website Looks Great on Your Laptop. What About Their Phone?",
+    );
+    expect(cards[3].querySelector(".wd-journal-link")).toHaveAttribute(
+      "href",
+      "/insights/your-website-looks-great-on-your-laptop-what-about-their-phone",
+    );
     expect(carousel).toHaveAttribute("tabindex", "0");
     expect(section.getByRole("button", { name: "Show previous articles" })).toHaveAttribute(
       "aria-controls",
@@ -492,56 +604,82 @@ describe("WebsiteDevelopmentPage", () => {
       "aria-controls",
       "wd-journal-carousel",
     );
-    expect(insights.querySelector(".wd-carousel-status")).toHaveTextContent("AUTO PLAY");
-    const scrollBy = vi.fn((options: ScrollToOptions) => {
+    expect(insights.querySelector(".wd-carousel-status")).not.toBeInTheDocument();
+    expect(section.queryByText(/auto\s*play/i)).not.toBeInTheDocument();
+    const carouselScrollBy = vi.fn((options: ScrollToOptions) => {
       Object.defineProperty(carousel, "scrollLeft", {
         configurable: true,
         value: options.left,
       });
     });
-    const scrollTo = vi.fn();
-    Object.defineProperty(carousel, "scrollBy", { configurable: true, value: scrollBy });
-    Object.defineProperty(carousel, "scrollTo", { configurable: true, value: scrollTo });
+    const carouselScrollTo = vi.fn();
     Object.defineProperty(carousel, "scrollWidth", { configurable: true, value: 1200 });
     Object.defineProperty(carousel, "clientWidth", { configurable: true, value: 500 });
-    Object.defineProperty(cards[0], "getBoundingClientRect", {
+    Object.defineProperty(carousel.querySelector(".wd-journal-card"), "getBoundingClientRect", {
       configurable: true,
       value: () => ({ width: 320 }),
     });
+    Object.defineProperty(carousel, "scrollBy", { configurable: true, value: carouselScrollBy });
+    Object.defineProperty(carousel, "scrollTo", {
+      configurable: true,
+      value: carouselScrollTo,
+    });
     fireEvent.click(section.getByRole("button", { name: "Show next articles" }));
-    expect(scrollBy).toHaveBeenCalledWith({ left: 320, behavior: "smooth" });
+    expect(carouselScrollBy).toHaveBeenCalledWith({ left: 320, behavior: "smooth" });
     fireEvent.click(section.getByRole("button", { name: "Show previous articles" }));
-    expect(scrollBy).toHaveBeenLastCalledWith({ left: -320, behavior: "smooth" });
+    expect(carouselScrollBy).toHaveBeenLastCalledWith({ left: -320, behavior: "smooth" });
     fireEvent.click(section.getByRole("button", { name: "Show previous articles" }));
-    expect(scrollTo).toHaveBeenCalledWith({ left: 700, behavior: "smooth" });
-    expect(insights.querySelectorAll('img[loading="lazy"][decoding="async"]')).toHaveLength(6);
-    expect(insights.querySelectorAll(".wd-journal-action")).toHaveLength(6);
-    expect(cards[3].querySelector("img")).toHaveAttribute("src", "/insight-performance.webp");
+    expect(carouselScrollTo).toHaveBeenCalledWith({ left: 700, behavior: "smooth" });
+    expect(insights.querySelectorAll('img[loading="lazy"][decoding="async"]')).toHaveLength(10);
+    expect(insights.querySelectorAll(".wd-journal-action")).toHaveLength(10);
+    expect(cards[2].querySelector("img")).toHaveAttribute("src", "/insight-performance.webp");
+    expect(cards[3].querySelector("img")).toHaveAttribute("src", "/insight-mobile-design.webp");
     expect(cards[4].querySelector("img")).toHaveAttribute("src", "/beautiful.png");
     expect(cards[4].querySelector("img")).toHaveAttribute(
       "alt",
       "Responsive business website designs displayed across desktop and mobile screens",
+    );
+    expect(within(cards[4] as HTMLElement).getByRole("heading", { level: 3 })).toHaveTextContent(
+      "A live website is only the beginning of being found.",
+    );
+    expect(within(cards[5] as HTMLElement).getByRole("heading", { level: 3 })).toHaveTextContent(
+      "WordPress or a custom build? Start with your workflow.",
+    );
+    expect(within(cards[6] as HTMLElement).getByRole("heading", { level: 3 })).toHaveTextContent(
+      "A good business website keeps working after hours.",
+    );
+    expect(within(cards[7] as HTMLElement).getByRole("heading", { level: 3 })).toHaveTextContent(
+      "What should a service page answer before someone gets in touch?",
+    );
+    expect(within(cards[8] as HTMLElement).getByRole("heading", { level: 3 })).toHaveTextContent(
+      "A better website enquiry form starts with better questions.",
+    );
+    expect(within(cards[9] as HTMLElement).getByRole("heading", { level: 3 })).toHaveTextContent(
+      "A practical routine for keeping website content current.",
     );
     cards.forEach((card) => {
       const cardQueries = within(card as HTMLElement);
       const title = cardQueries.getByRole("heading", { level: 3 });
       expect(title.querySelector("a")).toHaveAttribute(
         "href",
-        expect.stringMatching(/^\/insights#/),
+        expect.stringMatching(/^\/insights\/[a-z0-9-]+$/),
       );
       expect(cardQueries.queryByText("Quorisx Editorial Team")).not.toBeInTheDocument();
       expect(card.querySelector(".wd-journal-byline")).not.toBeInTheDocument();
-      expect(card.querySelector("time[datetime]")).toBeInTheDocument();
-      const excerpt = card.querySelector(".wd-journal-copy > p")?.textContent?.trim() ?? "";
+      expect(card.querySelector("time[datetime]")).not.toBeInTheDocument();
+      expect(card.querySelectorAll(".wd-journal-preview")).toHaveLength(0);
+      expect(card.querySelector(".wd-journal-action")).toBeInTheDocument();
+      const excerpt = card.querySelector(".wd-journal-summary")?.textContent?.trim() ?? "";
       expect(excerpt.length).toBeGreaterThanOrEqual(120);
       expect(excerpt.length).toBeLessThanOrEqual(160);
-      expect(card.querySelector("img")?.getAttribute("src")).toMatch(/\.(webp|png)$/);
+      expect(card.querySelector("img")?.getAttribute("src")).toMatch(/\.(webp|png|jpe?g)$/);
       expect(card.querySelector("img")?.getAttribute("alt")).toBeTruthy();
       expect(card.querySelector("button")).not.toBeInTheDocument();
-      expect(cardQueries.getByRole("link", { name: /Learn more/i })).toHaveAttribute(
+      expect(cardQueries.getByRole("link", { name: /Read article/i })).toHaveAttribute(
         "href",
-        expect.stringMatching(/^\/insights#/),
+        expect.stringMatching(/^\/insights\/[a-z0-9-]+$/),
       );
+      expect(cardQueries.queryByRole("button")).not.toBeInTheDocument();
     });
     expect(section.getByRole("link", { name: /View all articles/i })).toHaveAttribute(
       "href",
@@ -554,7 +692,13 @@ describe("WebsiteDevelopmentPage", () => {
     expect(
       JSON.parse(insights.querySelector('script[type="application/ld+json"]')?.textContent ?? "")
         .itemListElement,
-    ).toHaveLength(6);
+    ).toHaveLength(10);
+    expect(websiteArticles).toHaveLength(10);
+    websiteArticles.slice(7).forEach((article) => {
+      expect(getWebsiteArticle(article.slug)).toBe(article);
+      expect(article.sections.length).toBeGreaterThanOrEqual(5);
+      expect(article.sections.every((section) => section.body.length > 200)).toBe(true);
+    });
     expect(insights.querySelector(".wd-article-dialog")).not.toBeInTheDocument();
   });
 });

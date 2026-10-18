@@ -7,100 +7,85 @@ export const softwareDevelopmentFunction: FunctionGroup = {
   href: "/expertise/software-dev",
   icon: Code2,
   intro:
-    "Skilled developers and technical operators who embed into your stack and keep systems, products, and pipelines moving.",
+    "Add role-matched software and data specialists to your existing team for product work, technical operations, and ongoing maintenance.",
   roles: [
     {
-      title: "N8N / Full Stack Developer",
-      description: "Handles API integrations, backend logic, and workflow automation builds.",
+      title: "Mobile App Developer",
+      description: "Builds and tests iOS or Android app features, with release-ready handoffs.",
     },
     {
-      title: "PHP Developer",
-      description: "Develops and maintains PHP applications, scripts, and legacy code.",
+      title: "API Integration Developer",
+      description: "Connects systems with documented APIs, data mapping, and error handling.",
     },
     {
-      title: "AI Developer",
-      description: "Trains, fine-tunes, and integrates machine learning models into your stack.",
+      title: "CRM Developer",
+      description: "Configures CRM objects, pipelines, permissions, integrations, and handoffs.",
     },
     {
-      title: "WordPress Developer",
-      description: "Builds, customizes, and maintains WordPress themes, plugins, and integrations.",
-    },
-    {
-      title: "Web & Frontend Developer",
-      description: "Implements responsive UI, components, and performance improvements.",
-    },
-    {
-      title: "Framer Developer",
-      description: "Builds responsive Framer pages with CMS setup and animations.",
-    },
-    {
-      title: "Data Scientist",
-      description: "Develops models, dashboards, and data analysis to support decisions.",
-    },
-    {
-      title: "Technical Ops Specialist",
-      description: "Documents systems, monitors workflows, and coordinates issue resolution.",
-    },
-    {
-      title: "Laravel Developer",
-      description: "Builds and maintains Laravel applications, APIs, and database migrations.",
-    },
-    {
-      title: "MERN Front End Developer",
-      description: "Builds React components, layouts, and state management for MERN apps.",
-    },
-    {
-      title: "MERN Back End Developer",
-      description: "Builds Node and Express APIs, schemas, and backend logic for MERN apps.",
-    },
-    {
-      title: "Full-Stack MERN Developer",
-      description: "Builds and maintains both frontend and backend for MERN applications.",
-    },
-    {
-      title: "MERN E-Commerce Developer",
-      description: "Builds MERN storefronts, catalogs, search, and checkout functionality.",
-    },
-    {
-      title: "Full-Stack Developer",
-      description: "Builds and maintains full-stack features across frontend and backend.",
-    },
-    {
-      title: "WooCommerce Developer",
-      description: "Builds and maintains WooCommerce stores, catalogs, and checkout flows.",
-    },
-    {
-      title: "iOS App Developer",
-      description: "Builds and maintains native iOS features, releases, and App Store submissions.",
-    },
-    {
-      title: "Android App Developer",
+      title: "QA / Software Tester",
       description:
-        "Builds and maintains native Android features, releases, and Play Store submissions.",
+        "Checks product behavior with test cases, defect reports, and regression coverage.",
     },
     {
-      title: "React Native/Ionic Developer",
-      description: "Builds cross-platform apps in React Native and Ionic, from state to release.",
+      title: "Automation QA Engineer",
+      description: "Builds and maintains automated tests that fit your release and CI workflow.",
     },
     {
-      title: "ML Engineer",
-      description: "Deploys and maintains machine learning models, pipelines, and infrastructure.",
+      title: "DevOps & Cloud Engineer",
+      description: "Supports deployment pipelines, cloud configuration, monitoring, and runbooks.",
     },
     {
-      title: "Data Collection Specialist",
-      description: "Sources, records, and organizes datasets from web, APIs, and raw inputs.",
+      title: "IT Support Specialist",
+      description: "Handles user troubleshooting, device and account setup, and ticket follow-up.",
     },
     {
-      title: "Data Annotation Specialist",
-      description: "Labels and classifies images, text, and data for machine learning models.",
+      title: "Technical Support Engineer",
+      description:
+        "Investigates complex product issues using logs, reproduction steps, and escalation notes.",
     },
     {
-      title: "Data Validation Specialist",
-      description: "Reviews, cleans, and validates datasets for accuracy and consistency.",
+      title: "AI Integration Developer",
+      description:
+        "Connects AI models to applications with agreed guardrails, evaluations, and tests.",
     },
     {
-      title: "Technical Writer",
-      description: "Writes documentation, guides, and content for products and developers.",
+      title: "AI Automation Engineer",
+      description:
+        "Builds supervised AI-assisted workflows with approvals, monitoring, and exception paths.",
+    },
+    {
+      title: "AI Chatbot Developer",
+      description:
+        "Creates tested conversation flows, knowledge retrieval, and human handoff paths.",
+    },
+    {
+      title: "AI Agent Developer",
+      description:
+        "Develops bounded tool-using agent workflows with permissions, oversight, and evaluation.",
+    },
+    {
+      title: "Data Analyst",
+      description:
+        "Turns agreed business questions into KPI definitions, dashboards, and reporting.",
+    },
+    {
+      title: "Data Engineer",
+      description: "Builds documented data pipelines, transformations, and quality checks.",
+    },
+    {
+      title: "Database Administrator",
+      description:
+        "Supports database operations, backup checks, performance reviews, and access administration.",
+    },
+    {
+      title: "Software Maintenance Specialist",
+      description:
+        "Handles scoped bug fixes, dependency upgrades, monitoring, and release support.",
+    },
+    {
+      title: "Web Application Developer",
+      description:
+        "Builds web application features across accessible interfaces and connected backend services.",
     },
   ],
 };

@@ -1,9 +1,13 @@
-import { render, screen, within } from "@testing-library/react";
-import { describe, expect, it } from "vitest";
+import { act, render, screen, within } from "@testing-library/react";
+import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { AiAutomationPage } from "./ai-automation";
 
 describe("AiAutomationPage", () => {
+  afterEach(() => {
+    vi.unstubAllGlobals();
+  });
+
   it("presents the requested automation story and all page sections", () => {
     render(<AiAutomationPage />);
 
@@ -62,5 +66,43 @@ describe("AiAutomationPage", () => {
       "href",
       "#ai-capabilities",
     );
+  });
+
+  it("reveals each section as it scrolls into view", () => {
+    const observedElements: Element[] = [];
+    let intersectionCallback: IntersectionObserverCallback | undefined;
+
+    class MockIntersectionObserver {
+      constructor(callback: IntersectionObserverCallback) {
+        intersectionCallback = callback;
+      }
+
+      observe(element: Element) {
+        observedElements.push(element);
+      }
+
+      unobserve = vi.fn();
+      disconnect = vi.fn();
+    }
+
+    vi.stubGlobal("IntersectionObserver", MockIntersectionObserver);
+
+    const { container } = render(<AiAutomationPage />);
+    const sections = Array.from(container.querySelectorAll(".ai-page > section"));
+    const hero = sections[0];
+
+    expect(sections).toHaveLength(8);
+    expect(observedElements).toEqual(expect.arrayContaining(sections));
+    expect(container.querySelector(".expertise-scroll-motion-active")).toBeInTheDocument();
+    expect(hero).toHaveAttribute("data-expertise-reveal", "section");
+
+    act(() => {
+      intersectionCallback?.(
+        [{ target: hero, isIntersecting: true } as IntersectionObserverEntry],
+        {} as IntersectionObserver,
+      );
+    });
+
+    expect(hero).toHaveClass("expertise-scroll-motion-visible");
   });
 });

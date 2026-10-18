@@ -351,11 +351,10 @@ const websiteHealthChecks = [
 ];
 
 function WebsiteInsights() {
-  const journalViewportRef = useRef<HTMLDivElement>(null);
-  const [activeArticleIndex, setActiveArticleIndex] = useState(0);
+  const journalViewportRef = useRef<HTMLDivElement | null>(null);
+  const featuredInsightImages = ["/art1.png", "/art2.png"];
 
-  const scrollJournal = useCallback((direction: -1 | 1) => {
-    const viewport = journalViewportRef.current;
+  const scrollJournal = useCallback((direction: -1 | 1, viewport: HTMLDivElement | null) => {
     if (!viewport) return;
 
     const firstCard = viewport.querySelector<HTMLElement>(".wd-journal-card");
@@ -379,12 +378,12 @@ function WebsiteInsights() {
   }, []);
 
   useEffect(() => {
-    const viewport = journalViewportRef.current;
     const reducedMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ?? false;
-    if (!viewport || reducedMotion) return;
+    if (reducedMotion) return;
 
-    const interval = window.setInterval(() => {
-      const section = viewport.closest(".wd-insights");
+    const advanceCarousel = () => {
+      const viewport = journalViewportRef.current;
+      const section = viewport?.closest(".wd-insights");
       const bounds = section?.getBoundingClientRect();
       if (
         document.hidden ||
@@ -397,11 +396,51 @@ function WebsiteInsights() {
         return;
       }
 
-      scrollJournal(1);
-    }, 5200);
+      scrollJournal(1, viewport);
+    };
 
-    return () => window.clearInterval(interval);
+    const carouselInterval = window.setInterval(advanceCarousel, 5200);
+
+    return () => {
+      window.clearInterval(carouselInterval);
+    };
   }, [scrollJournal]);
+
+  const renderArticleCard = (item: (typeof websiteArticles)[number], position: number) => (
+    <article
+      role="group"
+      aria-label={`Article ${position + 1} of ${websiteArticles.length}`}
+      className="wd-journal-card"
+      key={item.slug}
+      data-wd-reveal
+    >
+      <div className="wd-editorial-art">
+        <img
+          src={featuredInsightImages[position] ?? item.image}
+          alt={item.imageAlt}
+          width="1200"
+          height="800"
+          loading="lazy"
+          decoding="async"
+        />
+      </div>
+      <div className="wd-journal-copy">
+        <div className="wd-journal-meta">
+          <span>{item.category}</span>
+        </div>
+        <h3>
+          <a href={`/insights/${item.slug}`}>{item.title}</a>
+        </h3>
+        <p className="wd-journal-summary">{item.summary}</p>
+        <div className="wd-journal-action">
+          <a className="wd-journal-link" href={`/insights/${item.slug}`}>
+            Read article
+            <ArrowRight size={16} aria-hidden="true" />
+          </a>
+        </div>
+      </div>
+    </article>
+  );
 
   return (
     <section className="wd-insights" aria-labelledby="wd-insights-title">
@@ -418,14 +457,11 @@ function WebsiteInsights() {
             visits into confident next steps.
           </p>
           <div className="wd-insights-controls" aria-label="Article carousel controls">
-            <span className="wd-carousel-status" aria-hidden="true">
-              <i /> AUTO PLAY
-            </span>
             <button
               type="button"
               aria-label="Show previous articles"
               aria-controls="wd-journal-carousel"
-              onClick={() => scrollJournal(-1)}
+              onClick={() => scrollJournal(-1, journalViewportRef.current)}
             >
               <ChevronLeft aria-hidden="true" />
             </button>
@@ -433,73 +469,26 @@ function WebsiteInsights() {
               type="button"
               aria-label="Show next articles"
               aria-controls="wd-journal-carousel"
-              onClick={() => scrollJournal(1)}
+              onClick={() => scrollJournal(1, journalViewportRef.current)}
             >
               <ChevronRight aria-hidden="true" />
             </button>
           </div>
         </div>
       </header>
+      <div className="wd-journal-featured" role="region" aria-label="Featured website articles">
+        {websiteArticles.slice(0, 2).map((item, index) => renderArticleCard(item, index))}
+      </div>
+      <h3 className="wd-journal-more-title">More website insights</h3>
       <div
-        className="wd-journal-grid"
+        className="wd-journal-grid wd-journal-row--carousel"
         id="wd-journal-carousel"
         role="region"
-        aria-label="Website development articles carousel"
+        aria-label="More website development articles"
         ref={journalViewportRef}
         tabIndex={0}
-        onScroll={(event) => {
-          const viewport = event.currentTarget;
-          const firstCard = viewport.querySelector<HTMLElement>(".wd-journal-card");
-          if (!firstCard) return;
-
-          const gap = Number.parseFloat(getComputedStyle(viewport).columnGap) || 0;
-          const step = firstCard.getBoundingClientRect().width + gap;
-          setActiveArticleIndex(Math.round(viewport.scrollLeft / step));
-        }}
       >
-        {websiteArticles.map((item, index) => (
-          <article
-            role="group"
-            aria-label={`Article ${index + 1} of ${websiteArticles.length}`}
-            className={`wd-journal-card${activeArticleIndex === index ? " is-active" : ""}`}
-            key={item.slug}
-            data-wd-reveal
-          >
-            <div className="wd-editorial-art">
-              <img
-                src={item.image}
-                alt={item.imageAlt}
-                width="1200"
-                height="800"
-                loading="lazy"
-                decoding="async"
-              />
-            </div>
-            <div className="wd-journal-copy">
-              <div className="wd-journal-meta">
-                <span>{item.category}</span>
-                <time dateTime={item.datePublished}>
-                  {new Date(`${item.datePublished}T00:00:00Z`).toLocaleDateString("en-US", {
-                    month: "short",
-                    day: "numeric",
-                    year: "numeric",
-                    timeZone: "UTC",
-                  })}
-                </time>
-              </div>
-              <h3>
-                <a href={`/insights#${item.slug}`}>{item.title}</a>
-              </h3>
-              <p>{item.summary}</p>
-              <div className="wd-journal-action">
-                <a className="wd-journal-link" href={`/insights#${item.slug}`}>
-                  Learn more
-                  <ArrowUpRight size={17} aria-hidden="true" />
-                </a>
-              </div>
-            </div>
-          </article>
-        ))}
+        {websiteArticles.slice(2).map((item, index) => renderArticleCard(item, index + 2))}
       </div>
       <div className="wd-insights-footer">
         <a className="wd-insights-all" href="/insights">
@@ -520,8 +509,8 @@ function WebsiteInsights() {
               image: `https://quorisx.com${item.image}`,
               datePublished: item.datePublished,
               author: { "@type": "Organization", name: item.author },
-              mainEntityOfPage: `https://quorisx.com/insights#${item.slug}`,
-              url: `https://quorisx.com/insights#${item.slug}`,
+              mainEntityOfPage: `https://quorisx.com/insights/${item.slug}`,
+              url: `https://quorisx.com/insights/${item.slug}`,
             },
           })),
         })}
@@ -622,24 +611,35 @@ export function WebsiteDevelopmentPage() {
           </div>
         )}
         <div className="wd-scroll-panel">
-          <section className="wd-hero" aria-labelledby="wd-hero-title">
+          <section
+            className="wd-hero"
+            aria-labelledby="wd-hero-title"
+            data-hero-intro-ready={!showSplash ? "true" : undefined}
+          >
             <div className="wd-hero-inner">
               <div className="wd-hero-copy">
-                <p className="wd-eyebrow" data-hero-eyebrow>
+                <p className="wd-eyebrow" data-hero-eyebrow data-hero-reveal="item">
                   <span /> WEBSITE DESIGN &amp; DEVELOPMENT
                 </p>
                 <h1 id="wd-hero-title">
-                  <span className="wd-hero-title-line">Give people a</span>
-                  <span className="wd-hero-title-line">reason to choose</span>
-                  <em className="wd-hero-title-line">your business.</em>
+                  <span className="wd-hero-title-line" data-hero-reveal="item">
+                    Give people a
+                  </span>
+                  <span className="wd-hero-title-line" data-hero-reveal="item">
+                    reason to choose
+                  </span>
+                  <em className="wd-hero-title-line" data-hero-reveal="item">
+                    your business.
+                  </em>
                 </h1>
-                <p className="wd-hero-lead">
+                <p className="wd-hero-lead" data-hero-reveal="item">
                   Your website isn't just a digital address. It's your business identity, your first
                   impression, and your opportunity to stand out.
                 </p>
                 <div className="wd-hero-actions">
                   <a
                     className="wd-button"
+                    data-hero-reveal="item"
                     href="#website-path"
                     onClick={() => setActivePath("no-site")}
                   >
@@ -647,13 +647,14 @@ export function WebsiteDevelopmentPage() {
                   </a>
                   <a
                     className="wd-button wd-button-outline"
+                    data-hero-reveal="item"
                     href="#website-path"
                     onClick={() => setActivePath("not-working")}
                   >
                     Improve My Existing Website <ArrowRight aria-hidden="true" />
                   </a>
                 </div>
-                <a className="wd-scroll-cue" href="#website-path">
+                <a className="wd-scroll-cue" data-hero-reveal="item" href="#website-path">
                   Explore your next step <ArrowDown aria-hidden="true" />
                 </a>
               </div>
@@ -891,7 +892,7 @@ export function WebsiteDevelopmentPage() {
 
         <div className="wd-scroll-panel">
           <section
-            className={`wd-process-section wd-approach-showcase${processIsVisible ? " is-visible" : ""}`}
+            className={`wd-process-section wd-process-editorial${processIsVisible ? " is-visible" : ""}`}
             aria-labelledby="wd-process-title"
             ref={processSectionRef}
           >

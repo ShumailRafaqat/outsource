@@ -3,7 +3,7 @@ import { Headset } from "lucide-react";
 import type { FunctionGroup } from "./types";
 
 export const customerServiceFunction: FunctionGroup = {
-  label: "Customer Service",
+  label: "Customer Services & Support",
   href: "/expertise/customer-service",
   icon: Headset,
   intro:
@@ -12,6 +12,11 @@ export const customerServiceFunction: FunctionGroup = {
     {
       title: "Customer Support Representative",
       description: "Handles inquiries, tickets, and support emails so customers get responses.",
+    },
+    {
+      title: "Live Chat Support Agent",
+      description:
+        "Handles live website or in-app chats with approved guidance, clear handoffs, and useful case notes.",
     },
     {
       title: "Dedicated Receptionist",

@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Outlet, useRouterState } from "@tanstack/react-router";
 import { ArrowLeft, ArrowUpRight } from "lucide-react";
 
 import { SiteHeader } from "@/components/site-header";
@@ -28,6 +28,12 @@ export const Route = createFileRoute("/insights")({
 });
 
 function WebsiteInsightsPage() {
+  const pathname = useRouterState({ select: (state) => state.location.pathname });
+
+  if (pathname !== "/insights" && pathname !== "/insights/") {
+    return <Outlet />;
+  }
+
   return (
     <div className="min-h-screen bg-background">
       <SiteHeader />
@@ -46,26 +52,26 @@ function WebsiteInsightsPage() {
             growing businesses make the most of their online presence.
           </p>
         </header>
-        <div className="wd-insights-articles">
+        <div className="wd-article-directory">
           {websiteArticles.map((article) => (
             <article
-              className="wd-full-article"
-              id={article.slug}
+              className="wd-article-card"
               key={article.slug}
               itemScope
               itemType="https://schema.org/BlogPosting"
             >
-              <img
-                className="wd-full-article-image"
-                src={article.image}
-                alt={article.imageAlt}
-                width="1200"
-                height="800"
-                loading="lazy"
-                decoding="async"
-                itemProp="image"
-              />
-              <div className="wd-full-article-body">
+              <a className="wd-article-card-image" href={`/insights/${article.slug}`}>
+                <img
+                  src={article.image}
+                  alt={article.imageAlt}
+                  width="1200"
+                  height="800"
+                  loading="lazy"
+                  decoding="async"
+                  itemProp="image"
+                />
+              </a>
+              <div className="wd-article-card-body">
                 <div className="wd-journal-meta">
                   <span itemProp="articleSection">{article.category}</span>
                   <time dateTime={article.datePublished} itemProp="datePublished">
@@ -78,28 +84,19 @@ function WebsiteInsightsPage() {
                   </time>
                   <span>{article.time}</span>
                 </div>
-                <h2 itemProp="headline">{article.title}</h2>
-                <p className="wd-full-article-summary" itemProp="description">
+                <h2 itemProp="headline">
+                  <a href={`/insights/${article.slug}`}>{article.title}</a>
+                </h2>
+                <p className="wd-article-card-summary" itemProp="description">
                   {article.summary}
                 </p>
-                <p
-                  className="wd-full-article-author"
-                  itemProp="author"
-                  itemScope
-                  itemType="https://schema.org/Organization"
-                >
-                  By <span itemProp="name">{article.author}</span>
-                </p>
-                <div itemProp="articleBody">
-                  {article.sections.map((section) => (
-                    <section key={section.title}>
-                      <h3>{section.title}</h3>
-                      <p>{section.body}</p>
-                    </section>
-                  ))}
-                </div>
-                <a href="/solutions/website-development#wd-audit" className="wd-full-article-cta">
-                  Put these ideas to work <ArrowUpRight size={17} aria-hidden="true" />
+                {article.introduction?.map((paragraph) => (
+                  <p className="wd-article-card-preview" key={paragraph}>
+                    {paragraph}
+                  </p>
+                ))}
+                <a className="wd-journal-link" href={`/insights/${article.slug}`}>
+                  Read Article <ArrowUpRight size={17} aria-hidden="true" />
                 </a>
               </div>
             </article>
@@ -123,8 +120,8 @@ function WebsiteInsightsPage() {
                 image: `https://quorisx.com${article.image}`,
                 datePublished: article.datePublished,
                 author: { "@type": "Organization", name: article.author },
-                mainEntityOfPage: `https://quorisx.com/insights#${article.slug}`,
-                url: `https://quorisx.com/insights#${article.slug}`,
+                mainEntityOfPage: `https://quorisx.com/insights/${article.slug}`,
+                url: `https://quorisx.com/insights/${article.slug}`,
               },
             })),
           })}

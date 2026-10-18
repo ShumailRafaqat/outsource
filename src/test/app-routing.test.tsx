@@ -4,7 +4,13 @@ import { describe, expect, it } from "vitest";
 
 import { routeTree } from "@/routeTree.gen";
 import { navigationGroups } from "@/lib/site-navigation";
-import { expertiseFunctions, toRoleSlug } from "@/components/expertise/data";
+import {
+  expertiseFunctions,
+  financeAccountingFunction,
+  softwareDevelopmentFunction,
+  toRoleSlug,
+} from "@/components/expertise/data";
+import { softwareRoleContent } from "@/components/expertise/software-role-content";
 import { shouldShowSplash } from "@/routes/__root";
 
 // Match routes without running loaders or rendering: loaders may need a server or
@@ -57,6 +63,16 @@ describe("App routing", () => {
 
     const matches = router.matchRoutes("/");
 
+    expect(matches.at(-1)?.routeId).not.toBe(rootRouteId);
+  });
+
+  it("matches the dedicated outsourcing guide from the Resources menu", () => {
+    const router = createRouter({ routeTree, context: { queryClient: new QueryClient() } });
+    const resourcesNavigation = navigationGroups.find((group) => group.label === "Resources");
+    const guideLink = resourcesNavigation?.items.find((item) => item.label === "Outsourcing Guide");
+    const matches = router.matchRoutes("/resources/outsourcing-guide");
+
+    expect(guideLink?.href).toBe("/resources/outsourcing-guide");
     expect(matches.at(-1)?.routeId).not.toBe(rootRouteId);
   });
 
@@ -115,7 +131,7 @@ describe("App routing", () => {
   it("matches a dedicated detail route for every expertise role", () => {
     const router = createRouter({ routeTree, context: { queryClient: new QueryClient() } });
 
-    for (const group of expertiseFunctions) {
+    for (const group of [...expertiseFunctions, financeAccountingFunction]) {
       const category = group.href.split("/").at(-1);
       if (!category) {
         throw new Error(`Missing category slug for ${group.label}`);
@@ -127,5 +143,50 @@ describe("App routing", () => {
         expect(matches.at(-1)?.routeId, destination).not.toBe(rootRouteId);
       }
     }
+  });
+
+  it("publishes only the 17 approved Software & Development roles with unique detail content", () => {
+    const approvedRoles = [
+      "Mobile App Developer",
+      "API Integration Developer",
+      "CRM Developer",
+      "QA / Software Tester",
+      "Automation QA Engineer",
+      "DevOps & Cloud Engineer",
+      "IT Support Specialist",
+      "Technical Support Engineer",
+      "AI Integration Developer",
+      "AI Automation Engineer",
+      "AI Chatbot Developer",
+      "AI Agent Developer",
+      "Data Analyst",
+      "Data Engineer",
+      "Database Administrator",
+      "Software Maintenance Specialist",
+      "Web Application Developer",
+    ];
+
+    expect(softwareDevelopmentFunction.roles.map((role) => role.title)).toEqual(approvedRoles);
+    expect(Object.keys(softwareRoleContent).sort()).toEqual([...approvedRoles].sort());
+
+    for (const role of softwareDevelopmentFunction.roles) {
+      const content = softwareRoleContent[role.title];
+      if (!content) {
+        throw new Error(`Software role content is missing for "${role.title}".`);
+      }
+      expect(content.problems, role.title).toHaveLength(3);
+      expect(content.responsibilities, role.title).toHaveLength(6);
+      expect(content.deliverables, role.title).toHaveLength(4);
+      expect(content.industries, role.title).toHaveLength(3);
+      expect(content.tools, role.title).toHaveLength(4);
+    }
+
+    expect(
+      softwareDevelopmentFunction.roles.some((role) =>
+        /cybersecurity|workflow automation specialist|systems administrator|no-code|^cloud engineer$/i.test(
+          role.title,
+        ),
+      ),
+    ).toBe(false);
   });
 });

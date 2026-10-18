@@ -17,8 +17,12 @@ import { Route as IndustriesRouteImport } from './routes/industries'
 import { Route as InsightsRouteImport } from './routes/insights'
 import { Route as CategorySlugRouteImport } from './routes/$category/$slug'
 import { Route as ContactDetailsTestRouteImport } from './routes/contact-details.test'
+import { Route as InsightsSlugRouteImport } from './routes/insights.$slug'
 import { Route as ResourcesFaqsRouteImport } from './routes/resources/faqs'
+import { Route as ResourcesInsightsRouteImport } from './routes/resources/insights'
+import { Route as ResourcesOutsourcingGuideRouteImport } from './routes/resources/outsourcing-guide'
 import { Route as ExpertiseCategoryRoleRouteImport } from './routes/expertise.$category.$role'
+import { Route as ResourcesInsightsSlugRouteImport } from './routes/resources/insights.$slug'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -60,15 +64,36 @@ const ContactDetailsTestRoute = ContactDetailsTestRouteImport.update({
   path: '/test',
   getParentRoute: () => ContactDetailsRoute,
 } as any)
+const InsightsSlugRoute = InsightsSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => InsightsRoute,
+} as any)
 const ResourcesFaqsRoute = ResourcesFaqsRouteImport.update({
   id: '/resources/faqs',
   path: '/resources/faqs',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ResourcesInsightsRoute = ResourcesInsightsRouteImport.update({
+  id: '/resources/insights',
+  path: '/resources/insights',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ResourcesOutsourcingGuideRoute =
+  ResourcesOutsourcingGuideRouteImport.update({
+    id: '/resources/outsourcing-guide',
+    path: '/resources/outsourcing-guide',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const ExpertiseCategoryRoleRoute = ExpertiseCategoryRoleRouteImport.update({
   id: '/expertise/$category/$role',
   path: '/expertise/$category/$role',
   getParentRoute: () => rootRouteImport,
+} as any)
+const ResourcesInsightsSlugRoute = ResourcesInsightsSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => ResourcesInsightsRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
@@ -77,11 +102,15 @@ export interface FileRoutesByFullPath {
   '/contact': typeof ContactRoute
   '/contact-details': typeof ContactDetailsRouteWithChildren
   '/industries': typeof IndustriesRoute
-  '/insights': typeof InsightsRoute
+  '/insights': typeof InsightsRouteWithChildren
   '/$category/$slug': typeof CategorySlugRoute
   '/contact-details/test': typeof ContactDetailsTestRoute
+  '/insights/$slug': typeof InsightsSlugRoute
   '/resources/faqs': typeof ResourcesFaqsRoute
+  '/resources/insights': typeof ResourcesInsightsRouteWithChildren
+  '/resources/outsourcing-guide': typeof ResourcesOutsourcingGuideRoute
   '/expertise/$category/$role': typeof ExpertiseCategoryRoleRoute
+  '/resources/insights/$slug': typeof ResourcesInsightsSlugRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -89,11 +118,15 @@ export interface FileRoutesByTo {
   '/contact': typeof ContactRoute
   '/contact-details': typeof ContactDetailsRouteWithChildren
   '/industries': typeof IndustriesRoute
-  '/insights': typeof InsightsRoute
+  '/insights': typeof InsightsRouteWithChildren
   '/$category/$slug': typeof CategorySlugRoute
   '/contact-details/test': typeof ContactDetailsTestRoute
+  '/insights/$slug': typeof InsightsSlugRoute
   '/resources/faqs': typeof ResourcesFaqsRoute
+  '/resources/insights': typeof ResourcesInsightsRouteWithChildren
+  '/resources/outsourcing-guide': typeof ResourcesOutsourcingGuideRoute
   '/expertise/$category/$role': typeof ExpertiseCategoryRoleRoute
+  '/resources/insights/$slug': typeof ResourcesInsightsSlugRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -102,11 +135,15 @@ export interface FileRoutesById {
   '/contact': typeof ContactRoute
   '/contact-details': typeof ContactDetailsRouteWithChildren
   '/industries': typeof IndustriesRoute
-  '/insights': typeof InsightsRoute
+  '/insights': typeof InsightsRouteWithChildren
   '/$category/$slug': typeof CategorySlugRoute
   '/contact-details/test': typeof ContactDetailsTestRoute
+  '/insights/$slug': typeof InsightsSlugRoute
   '/resources/faqs': typeof ResourcesFaqsRoute
+  '/resources/insights': typeof ResourcesInsightsRouteWithChildren
+  '/resources/outsourcing-guide': typeof ResourcesOutsourcingGuideRoute
   '/expertise/$category/$role': typeof ExpertiseCategoryRoleRoute
+  '/resources/insights/$slug': typeof ResourcesInsightsSlugRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -119,8 +156,12 @@ export interface FileRouteTypes {
     | '/insights'
     | '/$category/$slug'
     | '/contact-details/test'
+    | '/insights/$slug'
     | '/resources/faqs'
+    | '/resources/insights'
+    | '/resources/outsourcing-guide'
     | '/expertise/$category/$role'
+    | '/resources/insights/$slug'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -131,8 +172,12 @@ export interface FileRouteTypes {
     | '/insights'
     | '/$category/$slug'
     | '/contact-details/test'
+    | '/insights/$slug'
     | '/resources/faqs'
+    | '/resources/insights'
+    | '/resources/outsourcing-guide'
     | '/expertise/$category/$role'
+    | '/resources/insights/$slug'
   id:
     | '__root__'
     | '/'
@@ -143,8 +188,12 @@ export interface FileRouteTypes {
     | '/insights'
     | '/$category/$slug'
     | '/contact-details/test'
+    | '/insights/$slug'
     | '/resources/faqs'
+    | '/resources/insights'
+    | '/resources/outsourcing-guide'
     | '/expertise/$category/$role'
+    | '/resources/insights/$slug'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -153,9 +202,11 @@ export interface RootRouteChildren {
   ContactRoute: typeof ContactRoute
   ContactDetailsRoute: typeof ContactDetailsRouteWithChildren
   IndustriesRoute: typeof IndustriesRoute
-  InsightsRoute: typeof InsightsRoute
+  InsightsRoute: typeof InsightsRouteWithChildren
   CategorySlugRoute: typeof CategorySlugRoute
   ResourcesFaqsRoute: typeof ResourcesFaqsRoute
+  ResourcesInsightsRoute: typeof ResourcesInsightsRouteWithChildren
+  ResourcesOutsourcingGuideRoute: typeof ResourcesOutsourcingGuideRoute
   ExpertiseCategoryRoleRoute: typeof ExpertiseCategoryRoleRoute
 }
 
@@ -217,11 +268,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ContactDetailsTestRouteImport
       parentRoute: typeof ContactDetailsRoute
     }
+    '/insights/$slug': {
+      id: '/insights/$slug'
+      path: '/$slug'
+      fullPath: '/insights/$slug'
+      preLoaderRoute: typeof InsightsSlugRouteImport
+      parentRoute: typeof InsightsRoute
+    }
     '/resources/faqs': {
       id: '/resources/faqs'
       path: '/resources/faqs'
       fullPath: '/resources/faqs'
       preLoaderRoute: typeof ResourcesFaqsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/resources/insights': {
+      id: '/resources/insights'
+      path: '/resources/insights'
+      fullPath: '/resources/insights'
+      preLoaderRoute: typeof ResourcesInsightsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/resources/outsourcing-guide': {
+      id: '/resources/outsourcing-guide'
+      path: '/resources/outsourcing-guide'
+      fullPath: '/resources/outsourcing-guide'
+      preLoaderRoute: typeof ResourcesOutsourcingGuideRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/expertise/$category/$role': {
@@ -230,6 +302,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/expertise/$category/$role'
       preLoaderRoute: typeof ExpertiseCategoryRoleRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/resources/insights/$slug': {
+      id: '/resources/insights/$slug'
+      path: '/$slug'
+      fullPath: '/resources/insights/$slug'
+      preLoaderRoute: typeof ResourcesInsightsSlugRouteImport
+      parentRoute: typeof ResourcesInsightsRoute
     }
   }
 }
@@ -246,15 +325,40 @@ const ContactDetailsRouteWithChildren = ContactDetailsRoute._addFileChildren(
   ContactDetailsRouteChildren,
 )
 
+interface InsightsRouteChildren {
+  InsightsSlugRoute: typeof InsightsSlugRoute
+}
+
+const InsightsRouteChildren: InsightsRouteChildren = {
+  InsightsSlugRoute: InsightsSlugRoute,
+}
+
+const InsightsRouteWithChildren = InsightsRoute._addFileChildren(
+  InsightsRouteChildren,
+)
+
+interface ResourcesInsightsRouteChildren {
+  ResourcesInsightsSlugRoute: typeof ResourcesInsightsSlugRoute
+}
+
+const ResourcesInsightsRouteChildren: ResourcesInsightsRouteChildren = {
+  ResourcesInsightsSlugRoute: ResourcesInsightsSlugRoute,
+}
+
+const ResourcesInsightsRouteWithChildren =
+  ResourcesInsightsRoute._addFileChildren(ResourcesInsightsRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
   ContactRoute: ContactRoute,
   ContactDetailsRoute: ContactDetailsRouteWithChildren,
   IndustriesRoute: IndustriesRoute,
-  InsightsRoute: InsightsRoute,
+  InsightsRoute: InsightsRouteWithChildren,
   CategorySlugRoute: CategorySlugRoute,
   ResourcesFaqsRoute: ResourcesFaqsRoute,
+  ResourcesInsightsRoute: ResourcesInsightsRouteWithChildren,
+  ResourcesOutsourcingGuideRoute: ResourcesOutsourcingGuideRoute,
   ExpertiseCategoryRoleRoute: ExpertiseCategoryRoleRoute,
 }
 export const routeTree = rootRouteImport
