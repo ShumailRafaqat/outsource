@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import {
   ArrowRight,
   Check,
@@ -47,6 +47,7 @@ const engagementModels = [
 export function EngagementModelsPage() {
   const [selectedModelId, setSelectedModelId] =
     useState<(typeof engagementModels)[number]["id"]>("team");
+  const detailsRef = useRef<HTMLDivElement>(null);
   const selectedModel = engagementModels.find((model) => model.id === selectedModelId);
 
   if (!selectedModel) {
@@ -54,6 +55,21 @@ export function EngagementModelsPage() {
   }
 
   const SelectedIcon = selectedModel.icon;
+
+  function selectModel(id: (typeof engagementModels)[number]["id"]) {
+    setSelectedModelId(id);
+
+    const prefersReducedMotion =
+      window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ?? false;
+    const details = detailsRef.current;
+
+    if (typeof details?.scrollIntoView === "function") {
+      details.scrollIntoView({
+        behavior: prefersReducedMotion ? "auto" : "smooth",
+        block: "start",
+      });
+    }
+  }
 
   return (
     <div className="min-h-screen bg-background">
@@ -143,7 +159,7 @@ export function EngagementModelsPage() {
                     key={id}
                     type="button"
                     aria-pressed={isSelected}
-                    onClick={() => setSelectedModelId(id)}
+                    onClick={() => selectModel(id)}
                     className={`group rounded-xl border p-5 text-left transition-all duration-200 hover:-translate-y-0.5 hover:border-accent/60 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent ${
                       isSelected
                         ? "border-accent bg-accent/[0.06] shadow-sm"
@@ -185,8 +201,10 @@ export function EngagementModelsPage() {
             </div>
 
             <div
+              ref={detailsRef}
+              id="selected-model-details"
               aria-live="polite"
-              className="mt-5 grid overflow-hidden rounded-2xl border bg-card lg:grid-cols-[0.75fr_1.25fr]"
+              className="mt-5 grid scroll-mt-24 overflow-hidden rounded-2xl border bg-card lg:grid-cols-[0.75fr_1.25fr]"
             >
               <div className="bg-ink p-6 text-ink-foreground md:p-9">
                 <p className="eyebrow mb-4">Your selected model</p>

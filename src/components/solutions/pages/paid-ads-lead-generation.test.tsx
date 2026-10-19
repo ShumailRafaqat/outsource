@@ -1,9 +1,15 @@
-import { fireEvent, render, screen, within } from "@testing-library/react";
-import { describe, expect, it } from "vitest";
+import { act, fireEvent, render, screen, within } from "@testing-library/react";
+import { afterEach, describe, expect, it, vi } from "vitest";
+
+import { paidAdsInsights } from "@/lib/editorial-articles";
 
 import { PaidAdsLeadGenerationPage } from "./paid-ads-lead-generation";
 
 describe("PaidAdsLeadGenerationPage", () => {
+  afterEach(() => {
+    vi.unstubAllGlobals();
+  });
+
   it("presents the campaign story, all nine sections, and the interactive dashboard", () => {
     const { container } = render(<PaidAdsLeadGenerationPage />);
 
@@ -22,9 +28,23 @@ describe("PaidAdsLeadGenerationPage", () => {
     }
 
     expect(container.querySelectorAll(".paid-ads-page > section")).toHaveLength(9);
-    expect(container.querySelector("main.paid-ads-page")).toHaveAttribute(
-      "data-disable-hero-reveal",
+    expect(container.querySelectorAll(".paid-ads-page [data-expertise-reveal]")).toHaveLength(0);
+    expect(container.querySelector(".pa-hero")).toHaveAttribute("data-custom-hero-intro");
+    expect(container.querySelector("#pa-hero-title")).toHaveAttribute(
+      "data-pa-hero-entry",
+      "heading",
     );
+    expect(container.querySelector(".pa-hero-description")).toHaveAttribute(
+      "data-pa-hero-entry",
+      "description",
+    );
+    expect(container.querySelector(".pa-hero-actions")).toHaveAttribute(
+      "data-pa-hero-entry",
+      "actions",
+    );
+    expect(screen.getAllByText("$18")).toHaveLength(2);
+    expect(screen.queryByText("$38.75")).not.toBeInTheDocument();
+    expect(screen.queryByText("$38.57")).not.toBeInTheDocument();
     expect(screen.getByLabelText("Illustrative campaign journey dashboard")).toBeInTheDocument();
     expect(
       screen.getByText("Illustrative campaign view. Actual results vary by business and campaign."),
@@ -37,7 +57,7 @@ describe("PaidAdsLeadGenerationPage", () => {
       "href",
       "#pa-customer-journey",
     );
-  });
+  }, 10_000);
 
   it("shows the four paid-ad challenges and the five-step customer journey", () => {
     render(<PaidAdsLeadGenerationPage />);
@@ -59,6 +79,49 @@ describe("PaidAdsLeadGenerationPage", () => {
     expect(
       screen.getByText("An illustrative journey — actual customer paths vary."),
     ).toBeInTheDocument();
+  });
+
+  it("reveals the hero, sections, and cards as they enter the viewport", () => {
+    const observedElements: Element[] = [];
+    const intersectionCallbacks: IntersectionObserverCallback[] = [];
+
+    class MockIntersectionObserver {
+      constructor(callback: IntersectionObserverCallback) {
+        intersectionCallbacks.push(callback);
+      }
+
+      observe(element: Element) {
+        observedElements.push(element);
+      }
+
+      unobserve = vi.fn();
+      disconnect = vi.fn();
+    }
+
+    vi.stubGlobal("IntersectionObserver", MockIntersectionObserver);
+
+    const { container } = render(<PaidAdsLeadGenerationPage />);
+    const hero = container.querySelector(".pa-hero") as HTMLElement;
+    const scenarioCard = container.querySelector(".pa-scenario-card") as HTMLElement;
+
+    expect(container.querySelector(".expertise-scroll-motion-active")).toBeInTheDocument();
+    expect(hero).toHaveAttribute("data-expertise-reveal", "section");
+    expect(hero.querySelector("[data-role-hero-intro]")).toBeNull();
+    expect(scenarioCard).toHaveAttribute("data-expertise-reveal", "card");
+    expect(observedElements).toEqual(expect.arrayContaining([hero, scenarioCard]));
+
+    act(() => {
+      intersectionCallbacks[0]?.(
+        [
+          { target: hero, isIntersecting: true },
+          { target: scenarioCard, isIntersecting: true },
+        ] as IntersectionObserverEntry[],
+        {} as IntersectionObserver,
+      );
+    });
+
+    expect(hero).toHaveClass("expertise-scroll-motion-visible");
+    expect(scenarioCard).toHaveClass("expertise-scroll-motion-visible");
   });
 
   it("opens service explanations with practical examples and includes scenario imagery", () => {
@@ -106,7 +169,7 @@ describe("PaidAdsLeadGenerationPage", () => {
   }, 10_000);
 
   it("explains campaign visibility, lead follow-up, FAQs, and related Quorisx services", () => {
-    render(<PaidAdsLeadGenerationPage />);
+    const { container } = render(<PaidAdsLeadGenerationPage />);
 
     for (const phase of [
       "Plan around the goal",
@@ -121,7 +184,7 @@ describe("PaidAdsLeadGenerationPage", () => {
       expect(screen.getByText(step)).toBeInTheDocument();
     }
 
-    expect(screen.getByRole("link", { name: /Sales & Growth/ })).toHaveAttribute(
+    expect(screen.getByRole("link", { name: /Sales & Revenue Growth/ })).toHaveAttribute(
       "href",
       "/expertise/sales-development",
     );
@@ -146,6 +209,11 @@ describe("PaidAdsLeadGenerationPage", () => {
     expect(screen.getByRole("link", { name: /Discuss My Campaign/ })).toHaveAttribute(
       "href",
       "/contact?service=paid-ads#inquiry",
+    );
+    const insightLinks = Array.from(container.querySelectorAll(".pa-insight-link"));
+    expect(insightLinks).toHaveLength(9);
+    expect(insightLinks.map((link) => link.getAttribute("href")).sort()).toEqual(
+      paidAdsInsights.map((insight) => `/resources/insights/${insight.slug}`).sort(),
     );
   });
 });

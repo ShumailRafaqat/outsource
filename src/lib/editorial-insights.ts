@@ -1,8 +1,10 @@
+import { additionalInsights, marketingSeoInsights, paidAdsInsights } from "./editorial-articles";
+
 export const insightTopics = [
   { id: "all", label: "All Insights" },
   { id: "sales", label: "Sales & Growth" },
   { id: "marketing", label: "Marketing & Visibility" },
-  { id: "technology", label: "Technology, AI & Automation" },
+  { id: "ai-automation", label: "AI & Automation" },
   { id: "customer-experience", label: "Customer Experience" },
 ] as const;
 
@@ -133,7 +135,29 @@ export function readingTime(wordCount: number) {
   return `${Math.max(1, Math.ceil(wordCount / 220))} min read`;
 }
 
-export const existingInsightCards: InsightCard[] = [];
+const editorialArticles = [...paidAdsInsights, ...additionalInsights, ...marketingSeoInsights];
+
+export const existingInsightCards: InsightCard[] = editorialArticles.map((insight) => ({
+  slug: insight.slug,
+  title: insight.title,
+  summary: insight.summary,
+  category: insight.category,
+  topic: insight.topic,
+  image: insight.image,
+  imageAlt: insight.imageAlt,
+  href: `/resources/insights/${insight.slug}`,
+  wordCount: [
+    insight.title,
+    insight.summary,
+    insight.dek,
+    ...insight.opening,
+    ...insight.sections.flatMap((section) => [section.heading, ...section.paragraphs]),
+    ...insight.actionSteps.flatMap((step) => [step.heading, step.body]),
+    ...insight.takeaways,
+  ]
+    .join(" ")
+    .split(/\s+/).length,
+}));
 
 export const featuredInsightCard: InsightCard = {
   slug: featuredInsight.slug,

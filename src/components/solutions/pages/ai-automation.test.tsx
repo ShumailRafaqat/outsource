@@ -1,6 +1,8 @@
 import { act, render, screen, within } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
+import { additionalInsights } from "@/lib/editorial-articles";
+
 import { AiAutomationPage } from "./ai-automation";
 
 describe("AiAutomationPage", () => {
@@ -23,7 +25,7 @@ describe("AiAutomationPage", () => {
     ]) {
       expect(screen.getByRole("heading", { name: heading })).toBeInTheDocument();
     }
-  });
+  }, 10_000);
 
   it("includes practical capabilities, benefits, workflow steps, and working CTAs", () => {
     render(<AiAutomationPage />);
@@ -66,7 +68,28 @@ describe("AiAutomationPage", () => {
       "href",
       "#ai-capabilities",
     );
-  });
+    const insightsSection = document.querySelector(".ai-insights");
+    expect(
+      within(insightsSection as HTMLElement).getByRole("heading", {
+        name: "Real workflows. Useful automation ideas.",
+      }),
+    ).toBeInTheDocument();
+    expect(insightsSection?.querySelectorAll(".topic-insights__card")).toHaveLength(3);
+    const aiArticles = additionalInsights
+      .filter(({ topic }) => topic === "ai-automation")
+      .slice(0, 3);
+    expect(
+      [
+        ...(insightsSection?.querySelectorAll<HTMLImageElement>(".topic-insights__image img") ??
+          []),
+      ].map((image) => image.getAttribute("src")),
+    ).toEqual(["/ai1.png", "/ai2.png", "/ai3.png"]);
+    for (const article of aiArticles) {
+      expect(
+        within(insightsSection as HTMLElement).getByRole("link", { name: article.title }),
+      ).toHaveAttribute("href", `/resources/insights/${article.slug}`);
+    }
+  }, 10_000);
 
   it("reveals each section as it scrolls into view", () => {
     const observedElements: Element[] = [];
@@ -91,7 +114,7 @@ describe("AiAutomationPage", () => {
     const sections = Array.from(container.querySelectorAll(".ai-page > section"));
     const hero = sections[0];
 
-    expect(sections).toHaveLength(8);
+    expect(sections).toHaveLength(9);
     expect(observedElements).toEqual(expect.arrayContaining(sections));
     expect(container.querySelector(".expertise-scroll-motion-active")).toBeInTheDocument();
     expect(hero).toHaveAttribute("data-expertise-reveal", "section");
@@ -104,5 +127,5 @@ describe("AiAutomationPage", () => {
     });
 
     expect(hero).toHaveClass("expertise-scroll-motion-visible");
-  });
+  }, 10_000);
 });

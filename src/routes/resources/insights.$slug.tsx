@@ -1,14 +1,24 @@
 import { createFileRoute, notFound } from "@tanstack/react-router";
 
 import { EditorialInsightArticle } from "@/components/resources/editorial-insight-article";
+import { TopicInsightArticle } from "@/components/resources/topic-insight-article";
 import { featuredInsight } from "@/lib/editorial-insights";
+import {
+  additionalInsights,
+  marketingSeoInsights,
+  paidAdsInsights,
+} from "@/lib/editorial-articles";
 
 export const Route = createFileRoute("/resources/insights/$slug")({
   loader: ({ params }) => {
-    if (params.slug !== featuredInsight.slug) {
-      throw notFound();
+    if (params.slug === featuredInsight.slug) {
+      return { type: "featured" as const, insight: featuredInsight };
     }
-    return { insight: featuredInsight };
+    const insight = [...paidAdsInsights, ...additionalInsights, ...marketingSeoInsights].find(
+      (article) => article.slug === params.slug,
+    );
+    if (!insight) throw notFound();
+    return { type: "editorial" as const, insight };
   },
   head: ({ loaderData }) => ({
     meta: [
@@ -30,5 +40,10 @@ export const Route = createFileRoute("/resources/insights/$slug")({
 });
 
 function InsightArticleRoute() {
-  return <EditorialInsightArticle />;
+  const { type, insight } = Route.useLoaderData();
+  return type === "editorial" ? (
+    <TopicInsightArticle insight={insight} />
+  ) : (
+    <EditorialInsightArticle />
+  );
 }

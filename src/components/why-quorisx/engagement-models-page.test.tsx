@@ -1,5 +1,5 @@
 import { fireEvent, render, screen } from "@testing-library/react";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 
 import { EngagementModelsPage } from "./engagement-models-page";
 
@@ -36,5 +36,31 @@ describe("EngagementModelsPage", () => {
       "href",
       "/contact#inquiry",
     );
+  });
+
+  it("scrolls to the updated details when a model card is selected", () => {
+    const originalDescriptor = Object.getOwnPropertyDescriptor(
+      HTMLElement.prototype,
+      "scrollIntoView",
+    );
+    const scrollIntoView = vi.fn();
+    Object.defineProperty(HTMLElement.prototype, "scrollIntoView", {
+      configurable: true,
+      value: scrollIntoView,
+    });
+
+    try {
+      render(<EngagementModelsPage />);
+      fireEvent.click(screen.getByRole("button", { name: /Managed Function/ }));
+
+      expect(document.querySelector("#selected-model-details")).toBeInTheDocument();
+      expect(scrollIntoView).toHaveBeenCalledWith(expect.objectContaining({ block: "start" }));
+    } finally {
+      if (originalDescriptor) {
+        Object.defineProperty(HTMLElement.prototype, "scrollIntoView", originalDescriptor);
+      } else {
+        Reflect.deleteProperty(HTMLElement.prototype, "scrollIntoView");
+      }
+    }
   });
 });

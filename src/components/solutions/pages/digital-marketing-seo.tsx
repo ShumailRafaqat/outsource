@@ -1,6 +1,4 @@
-import { useEffect, useRef } from "react";
 import {
-  ArrowDown,
   ArrowRight,
   ArrowUpRight,
   BarChart3,
@@ -19,6 +17,8 @@ import {
 } from "lucide-react";
 
 import { SiteHeader } from "@/components/site-header";
+import { TopicInsightsSection } from "@/components/resources/topic-insights-section";
+import { marketingSeoInsights } from "@/lib/editorial-articles";
 
 import "./digital-marketing-seo.css";
 
@@ -132,37 +132,10 @@ const performanceSignals = [
 ];
 
 export function DigitalMarketingSeoPage() {
-  const pageRef = useRef<HTMLElement>(null);
-
-  useEffect(() => {
-    const revealNodes = pageRef.current?.querySelectorAll<HTMLElement>("[data-dm-reveal]");
-    const reducedMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ?? false;
-
-    if (!revealNodes?.length || reducedMotion || !("IntersectionObserver" in window)) return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (!entry.isIntersecting) return;
-          entry.target.classList.add("dm-revealed");
-          observer.unobserve(entry.target);
-        });
-      },
-      { threshold: 0.12, rootMargin: "0px 0px -32px 0px" },
-    );
-
-    revealNodes.forEach((node) => {
-      node.classList.add("dm-reveal-ready");
-      observer.observe(node);
-    });
-
-    return () => observer.disconnect();
-  }, []);
-
   return (
     <div className="min-h-screen bg-background">
       <SiteHeader />
-      <main className="dm-page" ref={pageRef}>
+      <main className="dm-page" data-disable-hero-reveal>
         <section className="dm-hero" aria-labelledby="dm-hero-title">
           <div className="dm-container dm-hero-layout">
             <div className="dm-hero-copy">
@@ -204,38 +177,6 @@ export function DigitalMarketingSeoPage() {
               </figcaption>
             </figure>
           </div>
-          <div className="dm-container dm-hero-services" aria-label="Ways we support growth">
-            <article>
-              <span>
-                <Search aria-hidden="true" />
-              </span>
-              <div>
-                <strong>Search visibility</strong>
-                <small>Show up for relevant intent</small>
-              </div>
-            </article>
-            <article>
-              <span>
-                <Target aria-hidden="true" />
-              </span>
-              <div>
-                <strong>Focused campaigns</strong>
-                <small>Reach the right audience</small>
-              </div>
-            </article>
-            <article>
-              <span>
-                <FileText aria-hidden="true" />
-              </span>
-              <div>
-                <strong>Useful content</strong>
-                <small>Help people choose confidently</small>
-              </div>
-            </article>
-          </div>
-          <a className="dm-scroll-cue" href="#dm-reality">
-            Scroll to explore <ArrowDown aria-hidden="true" />
-          </a>
         </section>
 
         <section
@@ -245,7 +186,7 @@ export function DigitalMarketingSeoPage() {
         >
           <div className="dm-container">
             <div className="dm-reality-layout">
-              <div className="dm-reality-copy" data-dm-reveal>
+              <div className="dm-reality-copy">
                 <p className="dm-eyebrow">
                   <span /> 01 / THE REALITY
                 </p>
@@ -273,7 +214,6 @@ export function DigitalMarketingSeoPage() {
               <div
                 className="dm-search-moment"
                 aria-label="A customer comparing Google search results"
-                data-dm-reveal
               >
                 <div className="dm-search-moment-top">
                   <Search aria-hidden="true" />
@@ -314,7 +254,7 @@ export function DigitalMarketingSeoPage() {
           aria-labelledby="dm-competition-title"
         >
           <div className="dm-container dm-competition-layout">
-            <div className="dm-competition-copy" data-dm-reveal>
+            <div className="dm-competition-copy">
               <p className="dm-eyebrow">
                 <span /> 02 / THE COMPETITION
               </p>
@@ -348,7 +288,7 @@ export function DigitalMarketingSeoPage() {
                 ))}
               </ul>
             </div>
-            <aside className="dm-competitor-panel" data-dm-reveal>
+            <aside className="dm-competitor-panel">
               <div className="dm-competitor-panel-top">
                 <span className="dm-live-dot" />
                 <span>THE SEARCH MOMENT</span>
@@ -375,7 +315,7 @@ export function DigitalMarketingSeoPage() {
                 Visibility helps you enter the conversation.
               </div>
             </aside>
-            <a className="dm-button dm-competition-cta" href="/contact#inquiry" data-dm-reveal>
+            <a className="dm-button dm-competition-cta" href="/contact#inquiry">
               Get a Free SEO Audit <ArrowUpRight aria-hidden="true" />
             </a>
           </div>
@@ -383,7 +323,7 @@ export function DigitalMarketingSeoPage() {
 
         <section className="dm-section dm-benefits" aria-labelledby="dm-benefits-title">
           <div className="dm-container">
-            <div className="dm-section-heading dm-heading-split" data-dm-reveal>
+            <div className="dm-section-heading dm-heading-split">
               <div>
                 <p className="dm-eyebrow">
                   <span /> 03 / WHAT PROPER SEO &amp; MARKETING DOES
@@ -401,7 +341,7 @@ export function DigitalMarketingSeoPage() {
             </div>
             <div className="dm-benefits-grid">
               {marketingBenefits.map(({ title, description, icon: Icon }, index) => (
-                <article className="dm-benefit-card" key={title} data-dm-reveal>
+                <article className="dm-benefit-card" key={title}>
                   <span className="dm-benefit-index">0{index + 1}</span>
                   <span className="dm-benefit-icon">
                     <Icon aria-hidden="true" />
@@ -411,7 +351,7 @@ export function DigitalMarketingSeoPage() {
                 </article>
               ))}
             </div>
-            <a className="dm-button dm-benefits-cta" href="/contact#inquiry" data-dm-reveal>
+            <a className="dm-button dm-benefits-cta" href="/contact#inquiry">
               Talk through your goals <ArrowRight aria-hidden="true" />
             </a>
           </div>
@@ -419,7 +359,7 @@ export function DigitalMarketingSeoPage() {
 
         <section className="dm-approach" aria-labelledby="dm-approach-title">
           <div className="dm-container">
-            <div className="dm-approach-heading" data-dm-reveal>
+            <div className="dm-approach-heading">
               <p className="dm-eyebrow">
                 <span /> 04 / OUR APPROACH
               </p>
@@ -435,7 +375,7 @@ export function DigitalMarketingSeoPage() {
             </div>
             <div className="dm-approach-grid">
               {marketingApproach.map(([title, description, Icon], index) => (
-                <article className="dm-approach-card" key={title} data-dm-reveal>
+                <article className="dm-approach-card" key={title}>
                   <span className="dm-approach-card-index">0{index + 1}</span>
                   <span className="dm-approach-card-icon">
                     <Icon aria-hidden="true" />
@@ -450,7 +390,7 @@ export function DigitalMarketingSeoPage() {
 
         <section className="dm-proof" aria-labelledby="dm-proof-title">
           <div className="dm-container dm-proof-layout">
-            <div className="dm-proof-heading" data-dm-reveal>
+            <div className="dm-proof-heading">
               <p className="dm-eyebrow">
                 <span /> MEASURE WHAT MATTERS
               </p>
@@ -464,7 +404,7 @@ export function DigitalMarketingSeoPage() {
                 specific ranking or result.
               </p>
             </div>
-            <div className="dm-signals" data-dm-reveal>
+            <div className="dm-signals">
               {performanceSignals.map(([title, detail], index) => (
                 <div className="dm-signal-row" key={title}>
                   <span className="dm-signal-index">0{index + 1}</span>
@@ -488,7 +428,7 @@ export function DigitalMarketingSeoPage() {
           aria-labelledby="dm-services-title"
         >
           <div className="dm-container">
-            <div className="dm-section-heading dm-services-heading" data-dm-reveal>
+            <div className="dm-section-heading dm-services-heading">
               <div>
                 <p className="dm-eyebrow">
                   <span /> 05 / MARKETING SERVICES
@@ -506,7 +446,7 @@ export function DigitalMarketingSeoPage() {
             </div>
             <div className="dm-services-grid">
               {marketingServices.map(({ title, description, icon: Icon, services }, index) => (
-                <article className="dm-service-card" key={title} data-dm-reveal>
+                <article className="dm-service-card" key={title}>
                   <div className="dm-service-card-top">
                     <span className="dm-service-icon">
                       <Icon aria-hidden="true" />
@@ -535,8 +475,17 @@ export function DigitalMarketingSeoPage() {
           </div>
         </section>
 
+        <TopicInsightsSection
+          articles={marketingSeoInsights}
+          topic="marketing"
+          eyebrow="SEARCH & SEO FIELD NOTES"
+          title="Practical ideas for getting found."
+          description="Explore helpful guides on local search, content people actually need, and the technical foundations that make your site easier to use."
+          className="dm-insights"
+        />
+
         <section className="dm-cta" id="dm-audit" aria-labelledby="dm-cta-title">
-          <div className="dm-container dm-cta-inner" data-dm-reveal>
+          <div className="dm-container dm-cta-inner">
             <div>
               <p className="dm-eyebrow">
                 <span /> YOUR NEXT STEP

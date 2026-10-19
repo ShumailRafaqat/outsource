@@ -5,6 +5,7 @@ import { EngagementModelsPage } from "@/components/why-quorisx/engagement-models
 import { QualitySecurityPage } from "@/components/why-quorisx/quality-security-page";
 import { RecruitmentMethodologyPage } from "@/components/why-quorisx/recruitment-methodology-page";
 import { DigitalMarketingSeoPage } from "@/components/solutions/pages/digital-marketing-seo";
+import { CustomerSupportPage } from "@/components/solutions/pages/customer-support";
 import { PaidAdsLeadGenerationPage } from "@/components/solutions/pages/paid-ads-lead-generation";
 import { AiAutomationPage } from "@/components/solutions/pages/ai-automation";
 import { WebsiteDevelopmentPage } from "@/components/solutions/pages/website-development";
@@ -40,6 +41,7 @@ export const Route = createFileRoute("/$category/$slug")({
       params.category === "solutions" && params.slug === "digital-marketing-seo";
     const isPaidAdsLeadGeneration =
       params.category === "solutions" && params.slug === "paid-ads-lead-generation";
+    const isCustomerSupport = params.category === "solutions" && params.slug === "customer-support";
     const isAiAutomation = params.category === "solutions" && params.slug === "ai-automation";
     const isEngagementModels =
       params.category === "why-quorisx" && params.slug === "engagement-models";
@@ -95,21 +97,23 @@ export const Route = createFileRoute("/$category/$slug")({
                 ? "Digital Marketing & SEO — Quorisx"
                 : isPaidAdsLeadGeneration
                   ? "Paid Ads & Lead Generation — Quorisx"
-                  : isAiAutomation
-                    ? "AI & Automation — Quorisx"
-                    : isEngagementModels
-                      ? "Engagement Models — Quorisx"
-                      : isQualitySecurity
-                        ? "Quality & Security — Quorisx"
-                        : isRecruitmentMethodology
-                          ? "Our Recruitment Methodology — Quorisx"
-                          : waysToWorkPage
-                            ? `${waysToWorkPage.title} — How to Work With Quorisx`
-                            : isDedicatedExpertisePage
-                              ? `${expertiseTitle} Roles — Quorisx`
-                              : page
-                                ? `${page.label} — Quorisx`
-                                : "Page Not Found — Quorisx",
+                  : isCustomerSupport
+                    ? "24/7 Customer Support — Quorisx"
+                    : isAiAutomation
+                      ? "AI & Automation — Quorisx"
+                      : isEngagementModels
+                        ? "Engagement Models — Quorisx"
+                        : isQualitySecurity
+                          ? "Quality & Security — Quorisx"
+                          : isRecruitmentMethodology
+                            ? "Our Recruitment Methodology — Quorisx"
+                            : waysToWorkPage
+                              ? `${waysToWorkPage.title} — How to Work With Quorisx`
+                              : isDedicatedExpertisePage
+                                ? `${expertiseTitle} Roles — Quorisx`
+                                : page
+                                  ? `${page.label} — Quorisx`
+                                  : "Page Not Found — Quorisx",
         },
         {
           name: "description",
@@ -121,21 +125,23 @@ export const Route = createFileRoute("/$category/$slug")({
                 ? "SEO, local search, paid campaigns, and useful content to help customers discover your business and take the next step."
                 : isPaidAdsLeadGeneration
                   ? "Reach the right audience, turn interest into meaningful enquiries, and build paid advertising campaigns around your business goals."
-                  : isAiAutomation
-                    ? "Practical AI and automation to streamline customer support, lead follow-up, admin tasks, and business workflows."
-                    : isEngagementModels
-                      ? "Explore dedicated team, managed function, and project-based engagement models with Quorisx."
-                      : isQualitySecurity
-                        ? "Learn how Quorisx approaches quality assurance, clear ownership, confidentiality, client access, and delivery oversight."
-                        : isRecruitmentMethodology
-                          ? "We follow a structured, skills-based recruitment process to connect businesses with qualified professionals who align with their operational needs, company culture, and long-term goals."
-                          : waysToWorkPage
-                            ? `${waysToWorkPage.title}: ${waysToWorkPage.summary}`
-                            : isDedicatedExpertisePage
-                              ? `Explore ${expertiseTitle} roles from Quorisx, with dedicated professionals matched to your team's requirements.`
-                              : page
-                                ? `${page.label}: dedicated information from Quorisx is coming soon.`
-                                : "The requested page could not be found.",
+                  : isCustomerSupport
+                    ? "Round-the-clock customer support across agreed channels, with clear workflows, escalation paths, and service visibility."
+                    : isAiAutomation
+                      ? "Practical AI and automation to streamline customer support, lead follow-up, admin tasks, and business workflows."
+                      : isEngagementModels
+                        ? "Explore dedicated team, managed function, and project-based engagement models with Quorisx."
+                        : isQualitySecurity
+                          ? "Learn how Quorisx approaches quality assurance, clear ownership, confidentiality, client access, and delivery oversight."
+                          : isRecruitmentMethodology
+                            ? "We follow a structured, skills-based recruitment process to connect businesses with qualified professionals who align with their operational needs, company culture, and long-term goals."
+                            : waysToWorkPage
+                              ? `${waysToWorkPage.title}: ${waysToWorkPage.summary}`
+                              : isDedicatedExpertisePage
+                                ? `Explore ${expertiseTitle} roles from Quorisx, with dedicated professionals matched to your team's requirements.`
+                                : page
+                                  ? `${page.label}: dedicated information from Quorisx is coming soon.`
+                                  : "The requested page could not be found.",
         },
       ],
     };
@@ -163,6 +169,10 @@ function ComingSoonPage() {
 
   if (category === "solutions" && slug === "paid-ads-lead-generation") {
     return <PaidAdsLeadGenerationPage />;
+  }
+
+  if (category === "solutions" && slug === "customer-support") {
+    return <CustomerSupportPage />;
   }
 
   if (category === "solutions" && slug === "ai-automation") {

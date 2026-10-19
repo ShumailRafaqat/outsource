@@ -77,6 +77,11 @@ function ContactPage() {
   const formRef = useRef<HTMLFormElement>(null);
 
   useEffect(() => {
+    const requestedService = new URLSearchParams(window.location.search).get("service");
+    if (requestedService === "Customer support") {
+      setService(requestedService);
+    }
+
     const requestedRole = new URLSearchParams(window.location.search).get("role");
     const role =
       softwareDevelopmentFunction.roles.find((item) => item.title === requestedRole) ??
@@ -110,7 +115,9 @@ function ContactPage() {
     const additionalDetails = [
       (isLiveChatRole || isMarketingRole) && industry && `Industry: ${industry}`,
       isLiveChatRole && agentCount && `Number of agents: ${agentCount}`,
-      isLiveChatRole && supportChannels && `Support channels: ${supportChannels}`,
+      (isLiveChatRole || service === "Customer support") &&
+        supportChannels &&
+        `Support channels: ${supportChannels}`,
       isLiveChatRole && coverageWindow && `Preferred hours or time zone: ${coverageWindow}`,
       isLiveChatRole && currentSupportTools && `Current support tools: ${currentSupportTools}`,
       isMarketingRole && marketingTools && `Current marketing platforms: ${marketingTools}`,
@@ -483,14 +490,18 @@ function ContactPage() {
                   />
                 </label>
                 <label className="text-sm font-semibold">
-                  Company
+                  {service === "Customer support" ? "Company / website" : "Company"}
                   <input
                     autoComplete="organization"
                     name="company"
                     maxLength={200}
                     readOnly={submitting || submitted}
                     type="text"
-                    placeholder="Your company"
+                    placeholder={
+                      service === "Customer support"
+                        ? "Your company website (optional)"
+                        : "Your company"
+                    }
                     className="mt-2 w-full rounded-lg border bg-background px-4 py-3 font-normal outline-none transition-shadow placeholder:text-muted-foreground/70 focus:ring-2 focus:ring-accent/50"
                   />
                 </label>
@@ -577,7 +588,10 @@ function ContactPage() {
                   />
                 </label>
                 <label className="text-sm font-semibold sm:col-span-2">
-                  What work do you need help with? <span className="text-accent">*</span>
+                  {service === "Customer support"
+                    ? "What do you need help with?"
+                    : "What work do you need help with?"}{" "}
+                  <span className="text-accent">*</span>
                   <textarea
                     required
                     name="projectNeed"
@@ -587,71 +601,81 @@ function ContactPage() {
                     placeholder={
                       selectedRole === "Live Chat Support Agent"
                         ? "Describe your chat queue, common questions, approved policies, and where agents should escalate..."
-                        : "Describe the project, tasks, or skills you need..."
+                        : service === "Customer support"
+                          ? "Tell us about your customers, channels, coverage needs, and what support should handle..."
+                          : "Describe the project, tasks, or skills you need..."
                     }
                     className="mt-2 w-full resize-y rounded-lg border bg-background px-4 py-3 font-normal outline-none transition-shadow placeholder:text-muted-foreground/70 focus:ring-2 focus:ring-accent/50"
                   />
                 </label>
-                {selectedRole === "Live Chat Support Agent" && (
+                {(selectedRole === "Live Chat Support Agent" || service === "Customer support") && (
                   <>
+                    {selectedRole === "Live Chat Support Agent" && (
+                      <label className="text-sm font-semibold">
+                        Industry
+                        <input
+                          name="industry"
+                          value={industry}
+                          disabled={submitting || submitted}
+                          onChange={(event) => setIndustry(event.target.value)}
+                          placeholder="e.g. E-commerce or SaaS"
+                          className="mt-2 w-full rounded-lg border bg-background px-4 py-3 font-normal outline-none transition-shadow placeholder:text-muted-foreground/70 focus:ring-2 focus:ring-accent/50"
+                        />
+                      </label>
+                    )}
+                    {selectedRole === "Live Chat Support Agent" && (
+                      <label className="text-sm font-semibold">
+                        Number of agents
+                        <input
+                          name="agentCount"
+                          type="number"
+                          min="1"
+                          max="500"
+                          value={agentCount}
+                          disabled={submitting || submitted}
+                          onChange={(event) => setAgentCount(event.target.value)}
+                          placeholder="Optional"
+                          className="mt-2 w-full rounded-lg border bg-background px-4 py-3 font-normal outline-none transition-shadow placeholder:text-muted-foreground/70 focus:ring-2 focus:ring-accent/50"
+                        />
+                      </label>
+                    )}
                     <label className="text-sm font-semibold">
-                      Industry
-                      <input
-                        name="industry"
-                        value={industry}
-                        disabled={submitting || submitted}
-                        onChange={(event) => setIndustry(event.target.value)}
-                        placeholder="e.g. E-commerce or SaaS"
-                        className="mt-2 w-full rounded-lg border bg-background px-4 py-3 font-normal outline-none transition-shadow placeholder:text-muted-foreground/70 focus:ring-2 focus:ring-accent/50"
-                      />
-                    </label>
-                    <label className="text-sm font-semibold">
-                      Number of agents
-                      <input
-                        name="agentCount"
-                        type="number"
-                        min="1"
-                        max="500"
-                        value={agentCount}
-                        disabled={submitting || submitted}
-                        onChange={(event) => setAgentCount(event.target.value)}
-                        placeholder="Optional"
-                        className="mt-2 w-full rounded-lg border bg-background px-4 py-3 font-normal outline-none transition-shadow placeholder:text-muted-foreground/70 focus:ring-2 focus:ring-accent/50"
-                      />
-                    </label>
-                    <label className="text-sm font-semibold">
-                      Chat channels
+                      Support channels needed
                       <input
                         name="supportChannels"
                         value={supportChannels}
                         disabled={submitting || submitted}
                         onChange={(event) => setSupportChannels(event.target.value)}
-                        placeholder="Website, in-app, or other"
+                        placeholder="Live chat, phone, email, social, or messaging"
                         className="mt-2 w-full rounded-lg border bg-background px-4 py-3 font-normal outline-none transition-shadow placeholder:text-muted-foreground/70 focus:ring-2 focus:ring-accent/50"
                       />
                     </label>
-                    <label className="text-sm font-semibold">
-                      Preferred hours or time zone
-                      <input
-                        name="coverageWindow"
-                        value={coverageWindow}
-                        disabled={submitting || submitted}
-                        onChange={(event) => setCoverageWindow(event.target.value)}
-                        placeholder="Optional"
-                        className="mt-2 w-full rounded-lg border bg-background px-4 py-3 font-normal outline-none transition-shadow placeholder:text-muted-foreground/70 focus:ring-2 focus:ring-accent/50"
-                      />
-                    </label>
-                    <label className="text-sm font-semibold sm:col-span-2">
-                      Current support tools
-                      <input
-                        name="currentSupportTools"
-                        value={currentSupportTools}
-                        disabled={submitting || submitted}
-                        onChange={(event) => setCurrentSupportTools(event.target.value)}
-                        placeholder="Optional — name your chat, ticketing, or CRM platforms"
-                        className="mt-2 w-full rounded-lg border bg-background px-4 py-3 font-normal outline-none transition-shadow placeholder:text-muted-foreground/70 focus:ring-2 focus:ring-accent/50"
-                      />
-                    </label>
+                    {selectedRole === "Live Chat Support Agent" && (
+                      <label className="text-sm font-semibold">
+                        Preferred hours or time zone
+                        <input
+                          name="coverageWindow"
+                          value={coverageWindow}
+                          disabled={submitting || submitted}
+                          onChange={(event) => setCoverageWindow(event.target.value)}
+                          placeholder="Optional"
+                          className="mt-2 w-full rounded-lg border bg-background px-4 py-3 font-normal outline-none transition-shadow placeholder:text-muted-foreground/70 focus:ring-2 focus:ring-accent/50"
+                        />
+                      </label>
+                    )}
+                    {selectedRole === "Live Chat Support Agent" && (
+                      <label className="text-sm font-semibold sm:col-span-2">
+                        Current support tools
+                        <input
+                          name="currentSupportTools"
+                          value={currentSupportTools}
+                          disabled={submitting || submitted}
+                          onChange={(event) => setCurrentSupportTools(event.target.value)}
+                          placeholder="Optional — name your chat, ticketing, or CRM platforms"
+                          className="mt-2 w-full rounded-lg border bg-background px-4 py-3 font-normal outline-none transition-shadow placeholder:text-muted-foreground/70 focus:ring-2 focus:ring-accent/50"
+                        />
+                      </label>
+                    )}
                   </>
                 )}
                 {isMarketingPrototypeRole(selectedRole) && (

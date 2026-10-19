@@ -53,8 +53,9 @@ describe("App routing", () => {
       { label: "Digital Marketing & SEO", href: "/solutions/digital-marketing-seo" },
       { label: "Paid Ads & Lead Generation", href: "/solutions/paid-ads-lead-generation" },
       { label: "AI & Automation", href: "/solutions/ai-automation" },
-      { label: "Admin & Executive Support", href: "/expertise/admin-executive" },
-      { label: "Sales & Growth", href: "/expertise/sales-growth" },
+      { label: "Executive Support", href: "/expertise/admin-executive#roles" },
+      { label: "Sales & Revenue Growth", href: "/expertise/sales-growth#roles" },
+      { label: "24/7 Customer Support", href: "/solutions/customer-support" },
     ]);
   });
 
@@ -74,6 +75,12 @@ describe("App routing", () => {
 
     expect(guideLink?.href).toBe("/resources/outsourcing-guide");
     expect(matches.at(-1)?.routeId).not.toBe(rootRouteId);
+  });
+
+  it("keeps Case Studies out of the Resources navigation", () => {
+    const resourcesNavigation = navigationGroups.find((group) => group.label === "Resources");
+
+    expect(resourcesNavigation?.items.map((item) => item.label)).not.toContain("Case Studies");
   });
 
   it("matches every destination exposed in the navigation menus", () => {
@@ -103,6 +110,13 @@ describe("App routing", () => {
   it("matches the dedicated Digital Marketing & SEO solution page", () => {
     const router = createRouter({ routeTree, context: { queryClient: new QueryClient() } });
     const matches = router.matchRoutes("/solutions/digital-marketing-seo");
+
+    expect(matches.at(-1)?.routeId).not.toBe(rootRouteId);
+  });
+
+  it("matches the dedicated 24/7 Customer Support solution page", () => {
+    const router = createRouter({ routeTree, context: { queryClient: new QueryClient() } });
+    const matches = router.matchRoutes("/solutions/customer-support");
 
     expect(matches.at(-1)?.routeId).not.toBe(rootRouteId);
   });

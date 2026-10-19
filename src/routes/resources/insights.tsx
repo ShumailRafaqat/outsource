@@ -77,7 +77,7 @@ function InsightsPage() {
             <h1 id="insights-title">Ideas Worth Exploring. Insights Worth Applying.</h1>
             <p>
               Practical perspectives on business operations, customer experience, digital growth,
-              and technology—written to help you make better decisions.
+              and AI-powered workflows—written to help you make better decisions.
             </p>
           </div>
           <div className="insights-hero__art" aria-hidden="true">
@@ -228,13 +228,10 @@ function InsightsPage() {
             </>
           ) : (
             <div className="insights-empty" role="status">
-              <h3>Service-specific articles live on their service pages.</h3>
-              <p>
-                Browse our website development guides on the Website Development page, or explore
-                the featured business insight above.
-              </p>
-              <a href="/solutions/website-development#wd-insights-title">
-                Browse website development guides <ArrowRight aria-hidden="true" />
+              <h3>More insights are on the way.</h3>
+              <p>Try another topic or return to All Insights for the latest practical guides.</p>
+              <a href="/resources/insights">
+                Explore all insights <ArrowRight aria-hidden="true" />
               </a>
             </div>
           )}
@@ -258,7 +255,7 @@ function InsightsPage() {
               </a>
             </li>
             <li>
-              <a href={`/resources/insights?topic=technology#latest-heading`}>
+              <a href={`/resources/insights?topic=ai-automation#latest-heading`}>
                 Your tools and processes are not working smoothly together{" "}
                 <ArrowRight aria-hidden="true" />
               </a>

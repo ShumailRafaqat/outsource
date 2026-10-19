@@ -32,8 +32,9 @@ export const navigationGroups: NavigationGroup[] = [
       page("solutions", "digital-marketing-seo", "Digital Marketing & SEO"),
       page("solutions", "paid-ads-lead-generation", "Paid Ads & Lead Generation"),
       page("solutions", "ai-automation", "AI & Automation"),
-      { label: "Admin & Executive Support", href: "/expertise/admin-executive" },
-      { label: "Sales & Growth", href: "/expertise/sales-growth" },
+      { label: "Executive Support", href: "/expertise/admin-executive#roles" },
+      { label: "Sales & Revenue Growth", href: "/expertise/sales-growth#roles" },
+      { label: "24/7 Customer Support", href: "/solutions/customer-support" },
     ],
   },
   {
@@ -62,7 +63,6 @@ export const navigationGroups: NavigationGroup[] = [
   {
     label: "Resources",
     items: [
-      page("resources", "case-studies", "Case Studies"),
       page("resources", "insights", "Insights"),
       page("resources", "faqs", "FAQs"),
       page("resources", "outsourcing-guide", "Outsourcing Guide"),

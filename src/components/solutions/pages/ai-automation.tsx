@@ -18,6 +18,8 @@ import {
 
 import { SiteHeader } from "@/components/site-header";
 import { ExpertiseScrollMotion } from "@/components/expertise/expertise-scroll-motion";
+import { TopicInsightsSection } from "@/components/resources/topic-insights-section";
+import { additionalInsights } from "@/lib/editorial-articles";
 
 import "./ai-automation.css";
 
@@ -373,6 +375,15 @@ export function AiAutomationPage() {
               </ul>
             </div>
           </section>
+
+          <TopicInsightsSection
+            articles={additionalInsights.filter((article) => article.topic === "ai-automation")}
+            topic="ai-automation"
+            eyebrow="PRACTICAL AI & AUTOMATION GUIDES"
+            title="Real workflows. Useful automation ideas."
+            description="Explore practical ways to choose automation opportunities, connect repetitive work, and keep people in control."
+            className="ai-insights"
+          />
 
           <section className="ai-cta" aria-labelledby="ai-cta-title">
             <div className="ai-container ai-cta-inner">

@@ -9,6 +9,7 @@ import {
   insightTopics,
   readingTime,
 } from "./editorial-insights";
+import { additionalInsights, marketingSeoInsights, paidAdsInsights } from "./editorial-articles";
 
 describe("editorial insights", () => {
   it("keeps service-specific website articles out of the global Insights feed", () => {
@@ -16,16 +17,38 @@ describe("editorial insights", () => {
       "All Insights",
       "Sales & Growth",
       "Marketing & Visibility",
-      "Technology, AI & Automation",
+      "AI & Automation",
       "Customer Experience",
     ]);
-    expect(existingInsightCards).toEqual([]);
-    expect(allInsightCards).toHaveLength(1);
+    expect(existingInsightCards).toHaveLength(20);
+    expect(allInsightCards).toHaveLength(21);
     expect(allInsightCards[0].slug).toBe(featuredInsight.slug);
+    expect(allInsightCards.filter((article) => article.topic === "marketing")).toHaveLength(12);
+    expect(allInsightCards.filter((article) => article.topic === "sales")).toHaveLength(4);
+    expect(allInsightCards.filter((article) => article.topic === "ai-automation")).toHaveLength(4);
+    expect(
+      allInsightCards.filter((article) => article.topic === "customer-experience"),
+    ).toHaveLength(1);
+    expect(paidAdsInsights).toHaveLength(9);
+    expect(marketingSeoInsights).toHaveLength(3);
+    expect(marketingSeoInsights.every((article) => article.topic === "marketing")).toBe(true);
+    expect(paidAdsInsights.every((article) => article.sections.length >= 2)).toBe(true);
+    expect(additionalInsights).toHaveLength(8);
+    expect(additionalInsights.every((article) => article.sections.length >= 3)).toBe(true);
+    expect(
+      insightTopics
+        .filter(({ id }) => id !== "all")
+        .every(({ id }) => allInsightCards.some((article) => article.topic === id)),
+    ).toBe(true);
     expect(new Set(allInsightCards.map((article) => article.slug)).size).toBe(
       allInsightCards.length,
     );
     expect(allInsightCards.some((article) => article.href.startsWith("/insights/"))).toBe(false);
+    expect(
+      allInsightCards
+        .filter((article) => article.topic === "marketing")
+        .every((article) => article.href === `/resources/insights/${article.slug}`),
+    ).toBe(true);
   });
 
   it("uses a complete, explicitly illustrative sample article and computed reading time", () => {

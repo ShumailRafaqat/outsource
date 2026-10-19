@@ -9,6 +9,7 @@ export function useExpertiseScrollMotion<T extends HTMLElement = HTMLElement>(pa
     const hero = root.matches("main")
       ? root.querySelector<HTMLElement>(":scope > section")
       : root.querySelector<HTMLElement>("main > section");
+    if (hero?.hasAttribute("data-custom-hero-intro")) return;
     const heading = hero?.querySelector<HTMLElement>("h1");
     if (!hero || !heading) return;
 

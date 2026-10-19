@@ -243,8 +243,8 @@ export function PaidAdsLeadGenerationPage() {
     <div className="min-h-screen bg-background">
       <SiteHeader />
       <ExpertiseScrollMotion pageKey="paid-ads-lead-generation">
-        <main className="paid-ads-page" data-disable-hero-reveal>
-          <section className="pa-hero" aria-labelledby="pa-hero-title">
+        <main className="paid-ads-page">
+          <section className="pa-hero" aria-labelledby="pa-hero-title" data-custom-hero-intro>
             <div className="pa-hero-orbit pa-hero-orbit-one" aria-hidden="true" />
             <div className="pa-hero-orbit pa-hero-orbit-two" aria-hidden="true" />
             <div className="pa-container pa-hero-layout">
@@ -252,16 +252,16 @@ export function PaidAdsLeadGenerationPage() {
                 <p className="pa-eyebrow">
                   <span /> PAID ADS &amp; LEAD GENERATION
                 </p>
-                <h1 id="pa-hero-title">
+                <h1 id="pa-hero-title" data-pa-hero-entry="heading">
                   More Than Clicks.
                   <br />
                   <em>More Opportunities to Grow.</em>
                 </h1>
-                <p className="pa-hero-description">
+                <p className="pa-hero-description" data-pa-hero-entry="description">
                   Reach the right audience, turn interest into meaningful enquiries, and build paid
                   advertising campaigns around your business goals.
                 </p>
-                <div className="pa-hero-actions">
+                <div className="pa-hero-actions" data-pa-hero-entry="actions">
                   <a className="pa-button" href="/contact?service=paid-ads#inquiry">
                     Plan My Campaign <ArrowUpRight aria-hidden="true" />
                   </a>
@@ -269,12 +269,18 @@ export function PaidAdsLeadGenerationPage() {
                     Explore How It Works <ArrowDown aria-hidden="true" />
                   </a>
                 </div>
-                <div className="pa-hero-proof">
+                <div className="pa-hero-proof" data-pa-hero-entry="proof">
                   <span className="pa-proof-mark">
                     <Check aria-hidden="true" />
                   </span>
                   <span>Strategy, tracking, and follow-up—connected around your goals.</span>
                 </div>
+                <a
+                  className="pa-insight-link"
+                  href="/resources/insights/plan-paid-advertising-around-business-goals"
+                >
+                  Read: plan campaigns around business goals <ArrowUpRight aria-hidden="true" />
+                </a>
               </div>
               <div className="pa-dashboard" aria-label="Illustrative campaign journey dashboard">
                 <div className="pa-dashboard-header">
@@ -289,17 +295,17 @@ export function PaidAdsLeadGenerationPage() {
                 <div className="pa-dashboard-metrics">
                   <div>
                     <span>Ad spend</span>
-                    <strong>$2,480</strong>
+                    <strong>$2,484</strong>
                     <small>Illustrative</small>
                   </div>
                   <div>
                     <span>Enquiries</span>
-                    <strong>64</strong>
+                    <strong>138</strong>
                     <small>Illustrative</small>
                   </div>
                   <div>
                     <span>Cost / enquiry</span>
-                    <strong>$38.75</strong>
+                    <strong>$18</strong>
                     <small>Illustrative</small>
                   </div>
                 </div>
@@ -383,6 +389,12 @@ export function PaidAdsLeadGenerationPage() {
                   );
                 })}
               </div>
+              <a
+                className="pa-insight-link"
+                href="/resources/insights/why-paid-ad-clicks-dont-become-enquiries"
+              >
+                Read: why clicks may not become enquiries <ArrowUpRight aria-hidden="true" />
+              </a>
             </div>
           </section>
 
@@ -419,6 +431,12 @@ export function PaidAdsLeadGenerationPage() {
                 ))}
               </div>
               <p className="pa-disclaimer">An illustrative journey — actual customer paths vary.</p>
+              <a
+                className="pa-insight-link"
+                href="/resources/insights/from-first-ad-click-to-first-customer-conversation"
+              >
+                Read: map the journey from click to conversation <ArrowUpRight aria-hidden="true" />
+              </a>
             </div>
           </section>
 
@@ -467,6 +485,12 @@ export function PaidAdsLeadGenerationPage() {
                   );
                 })}
               </div>
+              <a
+                className="pa-insight-link"
+                href="/resources/insights/the-moving-parts-of-a-paid-ad-campaign"
+              >
+                Read: how campaign services work together <ArrowUpRight aria-hidden="true" />
+              </a>
             </div>
           </section>
 
@@ -520,6 +544,12 @@ export function PaidAdsLeadGenerationPage() {
               <p className="pa-disclaimer">
                 Examples are illustrative and do not represent guaranteed campaign outcomes.
               </p>
+              <a
+                className="pa-insight-link"
+                href="/resources/insights/paid-ad-campaigns-for-real-estate-healthcare-and-ecommerce"
+              >
+                Read: campaign paths for different industries <ArrowUpRight aria-hidden="true" />
+              </a>
             </div>
           </section>
 
@@ -553,6 +583,12 @@ export function PaidAdsLeadGenerationPage() {
                     </div>
                   ))}
                 </div>
+                <a
+                  className="pa-insight-link"
+                  href="/resources/insights/understand-ad-spend-cost-per-lead-and-conversion-rate"
+                >
+                  Read: understand campaign metrics <ArrowUpRight aria-hidden="true" />
+                </a>
               </div>
               <div className="pa-report-card">
                 <div className="pa-report-head">
@@ -580,14 +616,14 @@ export function PaidAdsLeadGenerationPage() {
                       <i className="pa-report-dot leads" />
                       Enquiries
                     </span>
-                    <strong>126</strong>
+                    <strong>270</strong>
                   </div>
                   <div>
                     <span>
                       <i className="pa-report-dot cpl" />
                       Example cost per lead
                     </span>
-                    <strong>$38.57</strong>
+                    <strong>$18</strong>
                   </div>
                   <div>
                     <span>
@@ -632,7 +668,7 @@ export function PaidAdsLeadGenerationPage() {
                     <a href="/expertise/sales-development">
                       <UsersRound aria-hidden="true" />
                       <span>
-                        <strong>Sales &amp; Growth</strong>
+                        <strong>Sales &amp; Revenue Growth</strong>
                         <small>Prospecting, qualification, and sales support</small>
                       </span>
                       <ArrowUpRight aria-hidden="true" />
@@ -646,6 +682,12 @@ export function PaidAdsLeadGenerationPage() {
                       <ArrowUpRight aria-hidden="true" />
                     </a>
                   </div>
+                  <a
+                    className="pa-insight-link"
+                    href="/resources/insights/what-happens-after-a-paid-ad-lead-arrives"
+                  >
+                    Read: what happens after a lead arrives <ArrowUpRight aria-hidden="true" />
+                  </a>
                 </div>
                 <div className="pa-lead-flow">
                   {leadFlow.map(([title, description], index) => (
@@ -681,6 +723,12 @@ export function PaidAdsLeadGenerationPage() {
                 <p>Have a question about getting started? Here are a few helpful details.</p>
                 <a href="/contact#inquiry">
                   Ask our team <ArrowUpRight aria-hidden="true" />
+                </a>
+                <a
+                  className="pa-insight-link"
+                  href="/resources/insights/paid-advertising-questions-to-answer-before-launch"
+                >
+                  Read: questions to answer before launch <ArrowUpRight aria-hidden="true" />
                 </a>
               </div>
               <div className="pa-faq-list">
@@ -720,6 +768,13 @@ export function PaidAdsLeadGenerationPage() {
                   Talk to Our Team <ArrowRight aria-hidden="true" />
                 </a>
               </div>
+              <a
+                className="pa-insight-link"
+                href="/resources/insights/turn-paid-ad-campaign-planning-into-a-practical-brief"
+              >
+                Read: turn campaign planning into a practical brief{" "}
+                <ArrowUpRight aria-hidden="true" />
+              </a>
             </div>
           </section>
         </main>
