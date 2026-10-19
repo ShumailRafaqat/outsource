@@ -22,8 +22,8 @@ export const paidAdsInsights: EditorialInsightArticle[] = [
     dek: "A campaign plan becomes more useful when it connects what the business needs with the customer action it can actually support.",
     category: "CAMPAIGN STRATEGY",
     topic: "marketing",
-    image: "/insight-strategy.webp",
-    imageAlt: "Illustration representing a considered digital campaign strategy",
+    image: "/one.png",
+    imageAlt: "Restaurant advertising campaign shown on a food delivery website",
     opening: [
       "It is tempting to begin with a platform or an ad format. But deciding to run search or social ads before clarifying the goal can leave the campaign optimised for activity that does not help the business.",
       "A more grounded plan begins with the audience, the action you want to make easier, and the capacity to respond when people take that action.",
@@ -83,8 +83,8 @@ export const paidAdsInsights: EditorialInsightArticle[] = [
     dek: "Clicks show that someone chose to visit. A relevant page and a clear next step help explain whether that attention can become a conversation.",
     category: "CONVERSION",
     topic: "marketing",
-    image: "/insight-conversion.webp",
-    imageAlt: "Illustration representing how website visits can lead to enquiries",
+    image: "/2.png",
+    imageAlt: "Healthcare website with appointment information for potential patients",
     opening: [
       "An ad campaign can attract visitors without producing many enquiries. That gap does not, by itself, reveal the cause. The ad may set an expectation the page does not meet, the offer may be unclear, or the contact step may ask for too much too soon.",
       "Treat the journey as a sequence to inspect rather than assuming that more clicks will solve a conversion problem.",
@@ -144,8 +144,8 @@ export const paidAdsInsights: EditorialInsightArticle[] = [
     dek: "A useful paid campaign connects the first message to the real conversation that follows—not just the moment someone clicks.",
     category: "CUSTOMER JOURNEY",
     topic: "marketing",
-    image: "/insight-conversion.webp",
-    imageAlt: "Illustration representing a connected customer journey",
+    image: "/3.png",
+    imageAlt: "Healthcare service website illustrating a customer journey from ad click to enquiry",
     opening: [
       "A customer journey rarely happens in one neat line. Someone might see an ad, return later through search, ask a question by phone, and then submit a form. Still, mapping a simple illustrative path helps a business find missing information and unclear hand-offs.",
       "Use the map to identify what each step needs to do, while remembering that real customer paths vary.",
@@ -205,8 +205,8 @@ export const paidAdsInsights: EditorialInsightArticle[] = [
     dek: "Campaign management is more than placing ads. The supporting decisions and hand-offs determine whether teams can interpret what is happening.",
     category: "CAMPAIGN MANAGEMENT",
     topic: "marketing",
-    image: "/insight-platform.webp",
-    imageAlt: "Illustration representing connected campaign platforms and services",
+    image: "/12.png",
+    imageAlt: "Illustrative business website showing campaign messaging and customer feedback",
     opening: [
       "Paid advertising often involves several related tasks: choosing an audience, creating and testing messages, sending traffic to a useful page, measuring meaningful actions, and routing enquiries.",
       "Bringing those activities together helps a team understand how the campaign is working. It does not remove the need for business decisions, customer insight, or regular review.",
@@ -327,8 +327,8 @@ export const paidAdsInsights: EditorialInsightArticle[] = [
     dek: "A dashboard is useful when the team knows what each number includes and what it leaves out.",
     category: "MEASUREMENT",
     topic: "marketing",
-    image: "/insight-performance.webp",
-    imageAlt: "Illustration representing campaign performance metrics",
+    image: "/14.png",
+    imageAlt: "Developers reviewing website and analytics details on a shared screen",
     opening: [
       "Ad spend, leads, cost per lead, and conversion rate are common campaign measures. Each can be helpful, but none explains performance by itself.",
       "Before interpreting a report, confirm the time period, what qualifies as a lead, how tracking works, and whether the enquiries are relevant to the business.",
@@ -574,7 +574,7 @@ export const additionalInsights: EditorialInsightArticle[] = [
     dek: "A consistent qualification process gives sales teams useful context without turning the first conversation into an interrogation.",
     category: "LEAD QUALIFICATION",
     topic: "sales",
-    image: "/insight-conversion.webp",
+    image: "/fo1.png",
     imageAlt: "Illustration of a potential customer moving through an enquiry journey",
     opening: [
       "When enquiry volume grows, sales teams need a way to decide which conversations to prioritise. A long form or rigid script can create friction, while no shared criteria can leave every representative making a different call.",
@@ -635,7 +635,7 @@ export const additionalInsights: EditorialInsightArticle[] = [
     dek: "Good follow-up is dependable and relevant; it does not rely on sending the same message repeatedly.",
     category: "SALES PROCESS",
     topic: "sales",
-    image: "/insight-strategy.webp",
+    image: "/fo2.png",
     imageAlt: "Illustration representing a considered and organized sales process",
     opening: [
       "A potential customer may need time to compare options, gather information, or coordinate with colleagues. If follow-up depends entirely on memory, useful conversations can be missed; if it is automated without context, messages can feel impersonal.",
@@ -879,8 +879,8 @@ export const additionalInsights: EditorialInsightArticle[] = [
     dek: "Human review is most useful when the reviewer knows what to verify and has the authority and time to intervene.",
     category: "AI GOVERNANCE",
     topic: "ai-automation",
-    image: "/insight-strategy.webp",
-    imageAlt: "Illustration representing a team reviewing a digital workflow",
+    image: "/new.png",
+    imageAlt: "Food ordering workflow example displayed on a restaurant delivery website",
     opening: [
       "Adding a human approval button does not automatically make an AI-supported process safe. Reviewers need enough context to judge the output, clear standards for acceptance, and an easy way to reject or escalate it.",
       "Design review around the real consequences of an error and the decisions people are qualified to make.",
@@ -940,7 +940,7 @@ export const additionalInsights: EditorialInsightArticle[] = [
     dek: "A dependable hand-off helps sales continue the customer’s conversation instead of making them start over.",
     category: "SALES & MARKETING",
     topic: "sales",
-    image: "/insight-conversion.webp",
+    image: "/fo3.png",
     imageAlt: "Illustration representing a customer enquiry handed from marketing to sales",
     opening: [
       "A new lead often arrives with some context: the service they asked about, the page they used, or the question they included. If that context is lost between teams, customers may have to repeat themselves and sales may not know what to prioritise.",
@@ -1001,7 +1001,7 @@ export const additionalInsights: EditorialInsightArticle[] = [
     dek: "A useful forecast makes uncertainty visible so teams can plan without treating every opportunity as guaranteed revenue.",
     category: "SALES PLANNING",
     topic: "sales",
-    image: "/insight-performance.webp",
+    image: "/fo4.png",
     imageAlt: "Illustration representing a sales team reviewing pipeline information",
     opening: [
       "Pipeline forecasts help teams discuss workload, timing, and potential revenue. They can mislead when stages mean different things to different people or when an optimistic estimate is presented as a confirmed outcome.",

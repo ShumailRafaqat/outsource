@@ -25,11 +25,31 @@ describe("editorial insights", () => {
     expect(allInsightCards[0].slug).toBe(featuredInsight.slug);
     expect(allInsightCards.filter((article) => article.topic === "marketing")).toHaveLength(12);
     expect(allInsightCards.filter((article) => article.topic === "sales")).toHaveLength(4);
+    expect(
+      additionalInsights.filter(({ topic }) => topic === "sales").map(({ image }) => image),
+    ).toEqual(["/fo1.png", "/fo2.png", "/fo3.png", "/fo4.png"]);
     expect(allInsightCards.filter((article) => article.topic === "ai-automation")).toHaveLength(4);
     expect(
       allInsightCards.filter((article) => article.topic === "customer-experience"),
     ).toHaveLength(1);
     expect(paidAdsInsights).toHaveLength(9);
+    expect(paidAdsInsights.slice(0, 3).map(({ image }) => image)).toEqual([
+      "/one.png",
+      "/2.png",
+      "/3.png",
+    ]);
+    expect(
+      paidAdsInsights
+        .slice(0, 3)
+        .map(({ slug }) => allInsightCards.find((article) => article.slug === slug)?.image),
+    ).toEqual(["/one.png", "/2.png", "/3.png"]);
+    expect(
+      [
+        "the-moving-parts-of-a-paid-ad-campaign",
+        "paid-ad-campaigns-for-real-estate-healthcare-and-ecommerce",
+        "understand-ad-spend-cost-per-lead-and-conversion-rate",
+      ].map((slug) => allInsightCards.find((article) => article.slug === slug)?.image),
+    ).toEqual(["/12.png", "/realstate.png", "/14.png"]);
     expect(marketingSeoInsights).toHaveLength(3);
     expect(marketingSeoInsights.every((article) => article.topic === "marketing")).toBe(true);
     expect(paidAdsInsights.every((article) => article.sections.length >= 2)).toBe(true);

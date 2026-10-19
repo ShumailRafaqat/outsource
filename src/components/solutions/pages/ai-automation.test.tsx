@@ -84,6 +84,11 @@ describe("AiAutomationPage", () => {
           []),
       ].map((image) => image.getAttribute("src")),
     ).toEqual(["/ai1.png", "/ai2.png", "/ai3.png"]);
+    expect(
+      additionalInsights.find(
+        ({ slug }) => slug === "create-safe-human-review-points-for-ai-workflows",
+      )?.image,
+    ).toBe("/new.png");
     for (const article of aiArticles) {
       expect(
         within(insightsSection as HTMLElement).getByRole("link", { name: article.title }),
